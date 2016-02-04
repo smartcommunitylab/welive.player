@@ -1,0 +1,8 @@
+*.class
+*.war
+*.jar
+/weliveplayer-mobile/.brackets.json
+weliveplayer-mobile/.bowerrc
+weliveplayer-mobile/.editorconfig
+*.project
+weliveplayer-mobile/.settings/.jsdtscope
