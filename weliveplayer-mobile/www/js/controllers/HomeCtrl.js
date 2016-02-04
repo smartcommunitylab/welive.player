@@ -1,14 +1,12 @@
 angular.module('weliveplayer.controllers.home', [])
 .controller('HomeCtrl',function($scope, $ionicPopup, $timeout) {
-
- // Triggered on a button click, or some other target
- $scope.showPopup = function() {
-   $scope.data = {}
-
-   // An elaborate, custom popup
+   $scope.sort = {};
+   $scope.sort.choice = 'Consigliati';
+   $scope.showPopup = function() {
+   
    var myPopup = $ionicPopup.show({
-	 template: '<ion-radio ng-model="data.choice" ng-value="Consigliati">Consigliati</ion-radio><ion-radio ng-model="data.choice" ng-value="Recenti">Recenti</ion-radio><ion-radio ng-model="data.choice" ng-value="Popolari">Popolari</ion-radio><ion-radio ng-model="data.choice" ng-value="Alfabetico">Alfabetico</ion-radio>',
-     title: 'Scegli Una Ordinamento',
+	 templateUrl: "templates/sort.html",
+     title: "Scegli Una Ordinamento",
      scope: $scope,
      buttons: [
        { text: 'ANNULLA' },
@@ -16,22 +14,18 @@ angular.module('weliveplayer.controllers.home', [])
          text: '<b>ORDINA</b>',
          type: 'button-positive',
          onTap: function(e) {
-//        	 debugger;
-        	 if (!$scope.data.choice) {
+        	 if (!$scope.sort.choice) {
              //don't allow the user to close unless he enters wifi password
              e.preventDefault();
            } else {
-//        	 debugger;
-        	 console.log($scope.data.choice);
-             return $scope.data.choice;
+             return $scope.sort.choice;
            }
          }
        },
      ]
    });
    myPopup.then(function(res) {
-//	 debugger;
-     console.log('Tapped!', res);
+	 console.log('Tapped!', res);
    });
    $timeout(function() {
       myPopup.close(); //close the popup after 3 seconds for some reason
