@@ -6,3 +6,4 @@ weliveplayer-mobile/.bowerrc
 weliveplayer-mobile/.editorconfig
 *.project
 weliveplayer-mobile/.settings/.jsdtscope
+weliveplayer-mobile/.tern-project

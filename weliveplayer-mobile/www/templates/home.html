@@ -1,11 +1,24 @@
 <ion-view title="WeLivePlayer">
 <ion-nav-buttons side="right">
         <a href="#" class="button button-icon ion-android-search padding-left" ng-click=""></a>
+        <button class="button button-positive" ng-click="showPopup()"></button>
     </ion-nav-buttons>
     <ion-content>
-    <h1>{{'menu_info'| translate}}</h1>
+       <!-- The list directive is great, but be sure to also checkout the collection repeat directive when scrolling through large lists -->
+      
+      <ion-list show-delete="data.showDelete" show-reorder="data.showReorder" show-option="data.showOption">
+
+        <ion-item ng-repeat="item in items" 
+                  item="item"
+                  href="#/item/{{item.id}}" class="item-remove-animate">
+         <!--  {{ item.id }} -->
+          <p>{{item.name}}</p>
+          <ion-option-button class="button-positive" ng-click="share(item)">Share</ion-option-button>
+          <ion-option-button class="button-info" ng-click="edit(item)">Edit</ion-option-button>
+          <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(item)"></ion-delete-button>
+          <ion-reorder-button class="ion-navicon" on-reorder="moveItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
+        </ion-item>
+
+      </ion-list>
   </ion-content>
 </ion-view>
-
-
-    

@@ -22,7 +22,8 @@ angular.module(
 		  'weliveplayer.services.utils',
 		  'weliveplayer.services.cache',
 		  'weliveplayer.directives',
-		  'weliveplayer.controllers',
+		  'weliveplayer.controllers.app',
+		  'weliveplayer.controllers.home',
 		 'leaflet-directive' ])
 
 .run(function($ionicPlatform) {
@@ -72,7 +73,7 @@ angular.module(
 		views : {
 			'menuContent' : {
 				templateUrl : 'templates/home.html',
-				controller : 'PlaylistsCtrl'
+				controller : 'HomeCtrl'
 			}
 		}
 	})
