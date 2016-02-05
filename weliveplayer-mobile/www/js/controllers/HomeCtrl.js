@@ -1,12 +1,19 @@
 angular.module('weliveplayer.controllers.home', [])
-.controller('HomeCtrl',function($scope, $ionicPopup, $timeout, Utils) {
+.controller('HomeCtrl',function($scope, $state, $ionicPopup, $timeout, Utils) {
    
-	$scope.items = Utils.getDummyList();	
+   $scope.selections = ['trento'];	
+   $scope.items = Utils.getAppsByRegion($scope.selections);	
 	
    $scope.sort = {};
    $scope.sort.choice = 'Consigliati';
-   $scope.showPopup = function() {
    
+   // sub controller.
+   $scope.showAppDetails = function(id) {
+	   $state.go('app.single',{appId:id});
+   }
+	
+   $scope.showPopup = function() {
+     
    var myPopup = $ionicPopup.show({
 	 templateUrl: "templates/sort.html",
      title: "Scegli Una Ordinamento",
@@ -32,30 +39,36 @@ angular.module('weliveplayer.controllers.home', [])
 	 
    });
    $timeout(function() {
-      myPopup.close(); //close the popup after 3 seconds for some reason
+      myPopup.close(); //close the popup after 10 seconds for some reason
    }, 10000);
   };
 
-$scope.data = {
-	showDelete : false,
-	showOption : true,
-	};
-
-$scope.edit = function(item) {
-	alert('Edit Item: ' + item.id);
-	};
-$scope.share = function(item) {
-	alert('Share Item: ' + item.id);
-	};
-
-$scope.moveItem = function(item, fromIndex, toIndex) {
-	$scope.items.splice(fromIndex, 1);
-	$scope.items.splice(toIndex, 0, item);
-	};
-
-$scope.onItemDelete = function(item) {
-	$scope.items.splice($scope.items.indexOf(item), 1);
-	};
+  $scope.selectApps = function (city) {
+	  
+	debugger;
 	
+	var index = $scope.selections.indexOf(city);
 	
-});
+	// remove city from selection
+	var index = $scope.selections.indexOf(city);
+	if (index > -1) {
+		$scope.selections.splice(index, 1);
+	} else {
+		$scope.selections.push(city);
+	}
+	
+	$scope.items = Utils.getAppsByRegion($scope.selections);	
+	    	
+
+  }
+})
+
+.controller('AppDetailCtrl',function($scope, $state, $ionicPopup, $timeout, Utils) {
+	
+	// get app info.
+	var app = Utils.getAppDetails($state.params.appId);
+	
+	$scope.city = app.city;
+	$scope.name = app.name
+	
+})

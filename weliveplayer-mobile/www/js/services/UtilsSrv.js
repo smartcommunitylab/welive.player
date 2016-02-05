@@ -3,22 +3,53 @@ angular.module('weliveplayer.services.utils', [])
 .factory('Utils', function ($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, StorageSrv) {
     var utilsService = {};
 
+    var appMap = {
+    	trento: [ { id: 0, name: 'Viaggia Trento', city: 'trento', 'rating': 5, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
+    	          { id: 3, name: 'Comune nel Tasca', city: 'trento', 'rating': 4, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672400 },
+    	          { id: 5, name: '%100 Riciclo Trento', city: 'trento', 'rating': 3.2, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
+    	          { id: 7, name: 'MetroParco', city: 'trento', 'rating': 1, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
+         	       { id: 8, name: 'Infanzia Digitale', city: 'trento', 'rating': 0.9, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672408 },
+         	       { id: 9, name: 'Futura Trento', city: 'trento', 'rating': 2, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
+         	       { id: 10, name: 'CLIMB', city: 'trento', 'rating': 4, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672409 }],	
+    	rovereto: [{ id: 1, name: 'Viaggia Rovereto', city: 'rovereto', 'rating': 5, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
+    	           { id: 4, name: 'iPosto', city: 'rovereto', 'rating': 3.5, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672410 },
+    	           { id: 6, name: '%100 Riciclo Rovereto', city: 'rovereto', 'rating': 3.1, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 }],
+    	novisad: [{ id: 2, name: 'FiemmeSKI', city: 'Cavalese', 'rating': 3, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672400 }]           
+    	           
+    };
+    
+    utilsService.getAppsByRegion = function(region) {
+    	var apps= [];
+    	
+    	region.forEach(function(element){
+    		var arr = appMap[element];
+    		if (arr) apps = apps.concat(arr);	
+    	});
+    		
+    	return apps;
+    }
+    
+    var items = [
+      	       { id: 0, name: 'Viaggia Trento', city: 'Trento', 'rating': 5, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
+      	       { id: 1, name: 'Viaggia Rovereto', city: 'Rovereto', 'rating': 5, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
+      	       { id: 2, name: 'FiemmeSKI', city: 'Cavalese', 'rating': 3, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672400 },
+      	       { id: 3, name: 'Comune nel Tasca', city: 'Trento', 'rating': 4, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672400 },
+      	       { id: 4, name: 'iPosto', city: 'Rovereto', 'rating': 3.5, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672410 },
+      	       { id: 5, name: '%100 Riciclo Trento', city: 'Trento', 'rating': 3.2, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
+      	       { id: 6, name: '%100 Riciclo Rovereto', city: 'Rovereto', 'rating': 3.1, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
+      	       { id: 7, name: 'MetroParco', city: 'Trento', 'rating': 1, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
+      	       { id: 8, name: 'Infanzia Digitale', city: 'Trento', 'rating': 0.9, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672408 },
+      	       { id: 9, name: 'Futura Trento', city: 'Trento', 'rating': 2, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
+      	       { id: 10, name: 'CLIMB', city: 'Trento', 'rating': 4, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672409 }
+      	    ];
     
     utilsService.getDummyList = function () {
-    	var items = [
-    	       { id: 0, name: 'Viaggia Trento', city: 'Trento', 'rating': 5, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
-    	       { id: 1, name: 'Viaggia Rovereto', city: 'Rovereto', 'rating': 5, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
-    	       { id: 2, name: 'FiemmeSKI', city: 'Cavalese', 'rating': 3, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672400 },
-    	       { id: 3, name: 'Comune nel Tasca', city: 'Trento', 'rating': 4, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672400 },
-    	       { id: 4, name: 'iPosto', city: 'Rovereto', 'rating': 3.5, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672410 },
-    	       { id: 5, name: '%100 Riciclo Trento', city: 'Trento', 'rating': 3.2, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
-    	       { id: 6, name: '%100 Riciclo Rovereto', city: 'Rovereto', 'rating': 3.1, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
-    	       { id: 7, name: 'MetroParco', city: 'Trento', 'rating': 1, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
-    	       { id: 8, name: 'Infanzia Digitale', city: 'Trento', 'rating': 0.9, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672408 },
-    	       { id: 9, name: 'Futura Trento', city: 'Trento', 'rating': 2, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
-    	       { id: 10, name: 'CLIMB', city: 'Trento', 'rating': 4, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672409 }
-    	    ];
     	return items;
+    }
+    
+    utilsService.getAppDetails = function (id) {
+    	var app = items[id];
+    	return app;
     }
     
     // a list of sorting functions

@@ -79,11 +79,11 @@ angular.module(
 	})
 
 	.state('app.single', {
-		url : '/playlists/:playlistId',
+		url : '/apps/:appId',
 		views : {
 			'menuContent' : {
-				templateUrl : 'templates/playlist.html',
-				controller : 'PlaylistCtrl'
+				templateUrl : 'templates/appDetails.html',
+				controller : 'AppDetailCtrl'
 			}
 		}
 	});

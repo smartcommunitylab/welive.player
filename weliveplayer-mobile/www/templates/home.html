@@ -1,35 +1,26 @@
 <ion-view title="WeLivePlayer">
-<ion-nav-buttons side="right">
+	
+	<ion-nav-buttons side="right">
         <a href="#" class="button button-icon ion-android-search padding-left" ng-click=""></a>
         <button class="button button-icon ion-settings" ng-click="showPopup()"></button>
     </ion-nav-buttons>
+    
     <ion-content>
-       <!-- The list directive is great, but be sure to also checkout the collection repeat directive when scrolling through large lists -->
-      
-     <!--<ion-list show-delete="data.showDelete" show-reorder="data.showReorder" show-option="data.showOption">-->
-	  <ion-list>
+ 	  <ion-list>
         <ion-item ng-repeat="item in items" 
-                  href="#/item/{{item.id}}" class="item-thumbnail-left" ng-click="showPopup()">
+                  class="item-thumbnail-left" ng-class="{'active': item.active}" ng-click="showAppDetails(item.id)">
           <img ng-src="img/ionic.png">
           <h4>{{ item.city }}</h4>
           <h2>{{ item.name }}</h2>
-          
-          <!-- <ion-option-button class="button-positive" ng-click="share(item)">Share</ion-option-button>
-          <ion-option-button class="button-info" ng-click="edit(item)">Edit</ion-option-button>
-          <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(item)"></ion-delete-button>
-          <ion-reorder-button class="ion-navicon" on-reorder="moveItem(item, $fromIndex, $toIndex)"></ion-reorder-button> -->
         </ion-item>
-
       </ion-list>
   </ion-content>
 
   <div class="bar bar-footer">
-  	
-  		<button class="button button-clear" ng-click="showPopup()">TRENTO</button>
-  		<button class="button button-clear" ng-click="showPopup()">ROVERETO</button>
-  		<button class="button button-clear" ng-click="showPopup()">NOVISAD</button>
-  		<button class="button button-clear" ng-click="showPopup()">HELSINKI REGION</button>
-  	
+  		<button class="button button-clear" ng-class="{'active' : selections.indexOf('trento') >= 0}" ng-click="selectApps('trento')">TRENTO</button>
+  		<button class="button button-clear" ng-class="{'active' : selections.indexOf('rovereto') >= 0}" ng-click="selectApps('rovereto')">ROVERETO</button>
+  		<button class="button button-clear" ng-class="{'active' : selections.indexOf('novisad') >= 0}" ng-click="selectApps('novisad')">NOVISAD</button>
+  		<button class="button button-clear" ng-class="{'active' : selections.indexOf('helsinki') >= 0}" ng-click="selectApps('helsinki')">HELSINKI REGION</button>
   </div>
   
 </ion-view>
