@@ -1,5 +1,5 @@
 angular.module('weliveplayer.controllers.home', [])
-.controller('HomeCtrl',function($scope, $ionicPopup, $timeout) {
+.controller('HomeCtrl',function($scope, $ionicPopup, $timeout, Utils) {
    $scope.sort = {};
    $scope.sort.choice = 'Consigliati';
    $scope.showPopup = function() {
@@ -52,18 +52,6 @@ $scope.moveItem = function(item, fromIndex, toIndex) {
 $scope.onItemDelete = function(item) {
 	$scope.items.splice($scope.items.indexOf(item), 1);
 	};
-
-$scope.items = [
-                { id: 0, name: 'app0' },
-                { id: 1, name: 'app1' },
-                { id: 2, name: 'app2' },
-                { id: 3, name: 'app3' },
-                { id: 4, name: 'app4' },
-                { id: 5, name: 'app5' },
-                { id: 6, name: 'app6' },
-                { id: 7, name: 'app7' },
-                { id: 8, name: 'app8' },
-                { id: 9, name: 'app9' },
-                { id: 10, name: 'app10' }
-              ];
+	
+	$scope.items = Utils.getDummyList();
 });

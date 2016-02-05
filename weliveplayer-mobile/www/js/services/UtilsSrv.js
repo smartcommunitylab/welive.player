@@ -3,6 +3,24 @@ angular.module('weliveplayer.services.utils', [])
 .factory('Utils', function ($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, StorageSrv) {
     var utilsService = {};
 
+    
+    utilsService.getDummyList = function () {
+    	var items = [
+    	       { id: 0, name: 'Viaggia Trento', city: 'Trento', 'rating': 5, 'userId' : 52 },
+    	       { id: 1, name: 'Viaggia Rovereto', city: 'Rovereto', 'rating': 5, 'userId' : 52 },
+    	       { id: 2, name: 'FiemmeSKI', city: 'Cavalese', 'rating': 5, 'userId' : 52 },
+    	       { id: 3, name: 'Comune nel Tasca', city: 'Trento', 'rating': 5, 'userId' : 52 },
+    	       { id: 4, name: 'iPosto', city: 'Rovereto', 'rating': 5, 'userId' : 52 },
+    	       { id: 5, name: '%100 Riciclo Trento', city: 'Trento', 'rating': 5, 'userId' : 52 },
+    	       { id: 6, name: '%100 Riciclo Rovereto', city: 'Rovereto', 'rating': 5, 'userId' : 52 },
+    	       { id: 7, name: 'MetroParco', city: 'Trento', 'rating': 5, 'userId' : 52 },
+    	       { id: 8, name: 'Infanzia Digitale', city: 'Trento', 'rating': 5, 'userId' : 52 },
+    	       { id: 9, name: 'Futura Trento', city: 'Trento', 'rating': 5, 'userId' : 52 },
+    	       { id: 10, name: 'CLIMB', city: 'Trento', 'rating': 5, 'userId' : 52 }
+    	    ];
+    	return items;
+    }
+    
     utilsService.getMonthList = function () {
         var monthList = [
             $filter('translate')('month_jan'),
