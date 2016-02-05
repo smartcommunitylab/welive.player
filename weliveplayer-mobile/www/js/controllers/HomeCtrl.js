@@ -1,15 +1,15 @@
 angular.module('weliveplayer.controllers.home', [])
 .controller('HomeCtrl',function($scope, $state, $ionicPopup, $timeout, Utils) {
    
-   $scope.selections = ['trento'];	
+   $scope.selections = ['Trento'];	
    $scope.items = Utils.getAppsByRegion($scope.selections);	
 	
    $scope.sort = {};
    $scope.sort.choice = 'Consigliati';
    
    // sub controller.
-   $scope.showAppDetails = function(id) {
-	   $state.go('app.single',{appId:id});
+   $scope.showAppDetails = function(id, region) {
+	   $state.go('app.single',{appId:id, appRegion:region});
    }
 	
    $scope.showPopup = function() {
@@ -56,17 +56,25 @@ angular.module('weliveplayer.controllers.home', [])
 	}
 	
 	$scope.items = Utils.getAppsByRegion($scope.selections);	
-	    	
-
   }
+    
+	$scope.getStars = function (vote) {
+        return Utils.getStars(vote);
+    };
+
 })
 
 .controller('AppDetailCtrl',function($scope, $state, $ionicPopup, $timeout, Utils) {
-	
 	// get app info.
-	var app = Utils.getAppDetails($state.params.appId);
+	var app = Utils.getAppDetails($state.params.appId, $state.params.appRegion);
 	
 	$scope.city = app.city;
-	$scope.name = app.name
+	$scope.name = app.name;
+	$scope.rating = app.rating;
+	$scope.tags = app.tags;
 	
+	$scope.getStars = function (vote) {
+        return Utils.getStars(vote);
+    };
+
 })

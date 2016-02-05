@@ -11,19 +11,27 @@
      </div>
  	  <ion-list>
         <ion-item ng-repeat="item in items" 
-                  class="item-thumbnail-left" ng-class="{'active': item.active}" ng-click="showAppDetails(item.id)">
+                  class="item-thumbnail-left" ng-class="{'active': item.active}" ng-click="showAppDetails(item.id, item.city)">
           <img ng-src="img/ionic.png">
           <h4>{{ item.city }}</h4>
           <h2>{{ item.name }}</h2>
+		  <div class="rating-avg-star">
+               <span>
+                   <i ng-repeat="starType in getStars(item.rating) track by $index" class="icon icon-rating" ng-class="{'ion-android-star': starType == 'full', 'ion-android-star-half': starType == 'half', 'ion-android-star-outline': starType == 'empty'}"></i>
+                </span>
+           </div>
+		   <i class="button button-icon ion-person" ng-click=""></i>
         </ion-item>
       </ion-list>
   </ion-content>
 
   <div class="bar bar-footer">
-  		<button class="button button-clear" ng-class="{'active' : selections.indexOf('trento') >= 0}" ng-click="selectApps('trento')">TRENTO</button>
-  		<button class="button button-clear" ng-class="{'active' : selections.indexOf('rovereto') >= 0}" ng-click="selectApps('rovereto')">ROVERETO</button>
-  		<button class="button button-clear" ng-class="{'active' : selections.indexOf('novisad') >= 0}" ng-click="selectApps('novisad')">NOVISAD</button>
-  		<button class="button button-clear" ng-class="{'active' : selections.indexOf('helsinki') >= 0}" ng-click="selectApps('helsinki')">HELSINKI REGION</button>
+  		<div class="button-bar">
+			<button class="button button-clear" ng-class="{'active' : selections.indexOf('Trento') >= 0}" ng-click="selectApps('Trento')">TRENTO</button>
+			<button class="button button-clear" ng-class="{'active' : selections.indexOf('Rovereto') >= 0}" ng-click="selectApps('Rovereto')">ROVERETO</button>
+			<button class="button button-clear" ng-class="{'active' : selections.indexOf('Novisad') >= 0}" ng-click="selectApps('Novisad')">NOVISAD</button>
+			<button class="button button-clear" ng-class="{'active' : selections.indexOf('Helsinki') >= 0}" ng-click="selectApps('Helsinki')">HELSINKI REGION</button>
+		<div>
   </div>
   
 </ion-view>

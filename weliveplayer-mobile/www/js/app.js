@@ -79,7 +79,7 @@ angular.module(
 	})
 
 	.state('app.single', {
-		url : '/apps/:appId',
+		url : '/apps/:appId/:appRegion',
 		views : {
 			'menuContent' : {
 				templateUrl : 'templates/appDetails.html',

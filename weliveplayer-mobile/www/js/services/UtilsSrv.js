@@ -1,54 +1,53 @@
 angular.module('weliveplayer.services.utils', [])
 
 .factory('Utils', function ($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, StorageSrv) {
-    var utilsService = {};
+    
+	var utilsService = {};
 
     var appMap = {
-    	trento: [ { id: 0, name: 'Viaggia Trento', city: 'trento', 'rating': 5, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
-    	          { id: 3, name: 'Comune nel Tasca', city: 'trento', 'rating': 4, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672400 },
-    	          { id: 5, name: '%100 Riciclo Trento', city: 'trento', 'rating': 3.2, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
-    	          { id: 7, name: 'MetroParco', city: 'trento', 'rating': 1, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
-         	       { id: 8, name: 'Infanzia Digitale', city: 'trento', 'rating': 0.9, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672408 },
-         	       { id: 9, name: 'Futura Trento', city: 'trento', 'rating': 2, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
-         	       { id: 10, name: 'CLIMB', city: 'trento', 'rating': 4, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672409 }],	
-    	rovereto: [{ id: 1, name: 'Viaggia Rovereto', city: 'rovereto', 'rating': 5, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
-    	           { id: 4, name: 'iPosto', city: 'rovereto', 'rating': 3.5, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672410 },
-    	           { id: 6, name: '%100 Riciclo Rovereto', city: 'rovereto', 'rating': 3.1, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 }],
-    	novisad: [{ id: 2, name: 'FiemmeSKI', city: 'Cavalese', 'rating': 3, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672400 }]           
+    	Trento: [ { id: 0, name: 'Viaggia Trento', city: 'Trento', rating: 5, userId : 52, consigliati : true, timestamp : 1454672400, tags : 'tag1,tagN' },
+    	          { id: 3, name: 'Comune nel Tasca', city: 'Trento', rating: 4, userId : 52, consigliati : false, timestamp : 1454672400, tags : 'tag1,tagN' },
+    	          { id: 5, name: '%100 Riciclo Trento', city: 'Trento', rating: 3.2, userId : 52, consigliati : true, timestamp : 1454672400, tags : 'tag1,tagN' },
+    	          { id: 7, name: 'MetroParco', city: 'Trento', rating: 1, userId : 52, consigliati : true, timestamp : 1454672400, tags : 'tag1,tagN' },
+         	       { id: 8, name: 'Infanzia Digitale', city: 'Trento', rating: 0.9, userId : 52, consigliati : false, timestamp : 1454672408, tags : 'tag1,tagN' },
+         	       { id: 9, name: 'Futura Trento', city: 'Trento', rating: 2, userId : 52, consigliati : true, timestamp : 1454672400, tags : 'tag1,tagN' },
+         	       { id: 10, name: 'CLIMB', city: 'Trento', rating: 4, userId : 52, consigliati : false, timestamp : 1454672409, tags : 'tag1,tagN' }],	
+    	Rovereto: [{ id: 1, name: 'Viaggia Rovereto', city: 'Rovereto', rating: 5, userId : 52, consigliati : true, timestamp : 1454672400, tags : 'tag1,tagN' },
+    	           { id: 4, name: 'iPosto', city: 'Rovereto', rating: 3.5, userId : 52, consigliati : true, timestamp : 1454672410, tags : 'tag1,tagN' },
+    	           { id: 6, name: '%100 Riciclo Rovereto', city: 'Rovereto', rating: 3.1, userId : 52, consigliati : true, timestamp : 1454672400, tags : 'tag1,tagN' }],
+    	Novisad: [{ id: 2, name: 'FiemmeSKI', city: 'Novisad', rating: 3, userId : 52, consigliati : false, timestamp : 1454672400, tags : 'tag1,tagN' }]           
     	           
     };
     
+	
+	
     utilsService.getAppsByRegion = function(region) {
     	var apps= [];
-    	
-    	region.forEach(function(element){
+		region.forEach(function(element){
     		var arr = appMap[element];
     		if (arr) apps = apps.concat(arr);	
     	});
     		
     	return apps;
     }
-    
-    var items = [
-      	       { id: 0, name: 'Viaggia Trento', city: 'Trento', 'rating': 5, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
-      	       { id: 1, name: 'Viaggia Rovereto', city: 'Rovereto', 'rating': 5, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
-      	       { id: 2, name: 'FiemmeSKI', city: 'Cavalese', 'rating': 3, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672400 },
-      	       { id: 3, name: 'Comune nel Tasca', city: 'Trento', 'rating': 4, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672400 },
-      	       { id: 4, name: 'iPosto', city: 'Rovereto', 'rating': 3.5, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672410 },
-      	       { id: 5, name: '%100 Riciclo Trento', city: 'Trento', 'rating': 3.2, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
-      	       { id: 6, name: '%100 Riciclo Rovereto', city: 'Rovereto', 'rating': 3.1, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
-      	       { id: 7, name: 'MetroParco', city: 'Trento', 'rating': 1, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
-      	       { id: 8, name: 'Infanzia Digitale', city: 'Trento', 'rating': 0.9, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672408 },
-      	       { id: 9, name: 'Futura Trento', city: 'Trento', 'rating': 2, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
-      	       { id: 10, name: 'CLIMB', city: 'Trento', 'rating': 4, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672409 }
-      	    ];
-    
+	
     utilsService.getDummyList = function () {
     	return items;
     }
     
-    utilsService.getAppDetails = function (id) {
-    	var app = items[id];
+    utilsService.getAppDetails = function (id, region) {
+    	var app = {};
+		
+		var arr = appMap[region];
+		if (arr) {
+			for (var i=0,len = arr.length; i < len; i++) {
+				if (arr[i].city = region) {
+				app = arr[i];
+				break;
+				}
+			}
+		}
+		
     	return app;
     }
     
@@ -101,6 +100,34 @@ angular.module('weliveplayer.services.utils', [])
     	return apps;
     }
     
+	utilsService.getStars = function (vote) {
+       
+	   if (!vote) {
+            vote = 0;
+        }
+
+        var stars = [];
+
+        var fullStars = Math.floor(vote);
+        for (var i = 0; i < fullStars; i++) {
+            stars.push('full');
+        }
+
+        var halfStars = Math.ceil((vote % 1).toFixed(4));
+        for (var i = 0; i < halfStars; i++) {
+            stars.push('half');
+        }
+
+        var emptyStars = 5 - stars.length;
+        if (emptyStars >= 1) {
+            for (var i = 0; i < emptyStars; i++) {
+                stars.push('empty');
+            }
+        }
+
+        return stars;
+    };
+
     utilsService.getMonthList = function () {
         var monthList = [
             $filter('translate')('month_jan'),
