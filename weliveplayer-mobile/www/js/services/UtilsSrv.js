@@ -6,19 +6,68 @@ angular.module('weliveplayer.services.utils', [])
     
     utilsService.getDummyList = function () {
     	var items = [
-    	       { id: 0, name: 'Viaggia Trento', city: 'Trento', 'rating': 5, 'userId' : 52 },
-    	       { id: 1, name: 'Viaggia Rovereto', city: 'Rovereto', 'rating': 5, 'userId' : 52 },
-    	       { id: 2, name: 'FiemmeSKI', city: 'Cavalese', 'rating': 5, 'userId' : 52 },
-    	       { id: 3, name: 'Comune nel Tasca', city: 'Trento', 'rating': 5, 'userId' : 52 },
-    	       { id: 4, name: 'iPosto', city: 'Rovereto', 'rating': 5, 'userId' : 52 },
-    	       { id: 5, name: '%100 Riciclo Trento', city: 'Trento', 'rating': 5, 'userId' : 52 },
-    	       { id: 6, name: '%100 Riciclo Rovereto', city: 'Rovereto', 'rating': 5, 'userId' : 52 },
-    	       { id: 7, name: 'MetroParco', city: 'Trento', 'rating': 5, 'userId' : 52 },
-    	       { id: 8, name: 'Infanzia Digitale', city: 'Trento', 'rating': 5, 'userId' : 52 },
-    	       { id: 9, name: 'Futura Trento', city: 'Trento', 'rating': 5, 'userId' : 52 },
-    	       { id: 10, name: 'CLIMB', city: 'Trento', 'rating': 5, 'userId' : 52 }
+    	       { id: 0, name: 'Viaggia Trento', city: 'Trento', 'rating': 5, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
+    	       { id: 1, name: 'Viaggia Rovereto', city: 'Rovereto', 'rating': 5, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
+    	       { id: 2, name: 'FiemmeSKI', city: 'Cavalese', 'rating': 3, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672400 },
+    	       { id: 3, name: 'Comune nel Tasca', city: 'Trento', 'rating': 4, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672400 },
+    	       { id: 4, name: 'iPosto', city: 'Rovereto', 'rating': 3.5, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672410 },
+    	       { id: 5, name: '%100 Riciclo Trento', city: 'Trento', 'rating': 3.2, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
+    	       { id: 6, name: '%100 Riciclo Rovereto', city: 'Rovereto', 'rating': 3.1, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
+    	       { id: 7, name: 'MetroParco', city: 'Trento', 'rating': 1, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
+    	       { id: 8, name: 'Infanzia Digitale', city: 'Trento', 'rating': 0.9, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672408 },
+    	       { id: 9, name: 'Futura Trento', city: 'Trento', 'rating': 2, 'userId' : 52, 'consigliati' : true, 'timestamp' : 1454672400 },
+    	       { id: 10, name: 'CLIMB', city: 'Trento', 'rating': 4, 'userId' : 52, 'consigliati' : false, 'timestamp' : 1454672409 }
     	    ];
     	return items;
+    }
+    
+    // a list of sorting functions
+	var sorters = {
+		    byAlphabets : function(a,b) {
+		        return ((a.name < b.name) ? -1 : ((a.name > b.name) ? 1 : 0));
+		    },
+		    byPopularity : function(a,b) {
+		        return (a.rating - b.rating);
+		    },
+		    byHighRatings : function(a,b) {
+		        return ((a.rating < b.rating) ? 1 : ((a.rating > b.rating) ? -1 : 0));
+		    },
+		    byRecenti : function(a,b) {
+		    	return ((a.timestamp < b.timestamp) ? 1 : ((a.timestamp > b.timestamp) ? -1 : 0)) ;
+		    },
+		    byConsigliati : function(a) {
+		    	if (a.consigliati) {
+		    		return -1;
+		    	} else {
+		    		return 1;
+		    	}
+		    }
+		    
+		};
+	
+    utilsService.orderByType = function (type, list) {
+    	
+    	var apps = {};
+    	
+    	if (type == "Alfabetico") {
+    		apps = list.sort(sorters.byAlphabets);
+    	} else if (type == "Popolari") {
+    		apps = list.sort(sorters.byHighRatings);
+    	} else if (type == "Consigliati") {
+    		apps = list.sort(sorters.byConsigliati)
+//    		for(var i=0, j=0, len=list.length; i < len; i++){
+//    			debugger;  
+//    			if (list[i].consigliati) {
+//    				  apps[j] = list[i];
+//    				  j++;
+//    			  }
+//    			}
+    		
+    	} else if (type == "Recenti") {
+    		apps = list.sort(sorters.byRecenti);
+    	}
+    	
+    	return apps;
     }
     
     utilsService.getMonthList = function () {

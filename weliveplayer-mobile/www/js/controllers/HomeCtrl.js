@@ -1,5 +1,8 @@
 angular.module('weliveplayer.controllers.home', [])
 .controller('HomeCtrl',function($scope, $ionicPopup, $timeout, Utils) {
+   
+	$scope.items = Utils.getDummyList();	
+	
    $scope.sort = {};
    $scope.sort.choice = 'Consigliati';
    $scope.showPopup = function() {
@@ -25,7 +28,8 @@ angular.module('weliveplayer.controllers.home', [])
      ]
    });
    myPopup.then(function(res) {
-	 console.log('Tapped!', res);
+	 $scope.items = Utils.orderByType($scope.sort.choice, $scope.items);
+	 
    });
    $timeout(function() {
       myPopup.close(); //close the popup after 3 seconds for some reason
@@ -53,5 +57,5 @@ $scope.onItemDelete = function(item) {
 	$scope.items.splice($scope.items.indexOf(item), 1);
 	};
 	
-	$scope.items = Utils.getDummyList();
+	
 });
