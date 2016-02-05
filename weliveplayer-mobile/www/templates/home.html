@@ -6,6 +6,9 @@
     </ion-nav-buttons>
     
     <ion-content>
+ 	   <div class="padding" ng-if="!!items && items.length == 0">
+            <h4>no apps found</h4>
+     </div>
  	  <ion-list>
         <ion-item ng-repeat="item in items" 
                   class="item-thumbnail-left" ng-class="{'active': item.active}" ng-click="showAppDetails(item.id)">

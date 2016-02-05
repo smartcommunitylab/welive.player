@@ -45,8 +45,6 @@ angular.module('weliveplayer.controllers.home', [])
 
   $scope.selectApps = function (city) {
 	  
-	debugger;
-	
 	var index = $scope.selections.indexOf(city);
 	
 	// remove city from selection
