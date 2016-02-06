@@ -86,6 +86,16 @@ angular.module(
 				controller : 'AppDetailCtrl'
 			}
 		}
+	})
+	
+	.state('app.comments', {
+		url : '/apps/appComments/:appId',
+		views : {
+			'menuContent' : {
+				templateUrl : 'templates/appComments.html',
+				controller : 'AppCommentsCtrl'
+			}
+		}
 	});
 	// if none of the above states are matched, use this as the fallback
 	$urlRouterProvider.otherwise('/app/home');

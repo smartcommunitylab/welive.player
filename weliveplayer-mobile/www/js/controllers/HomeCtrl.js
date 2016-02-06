@@ -65,8 +65,17 @@ angular.module('weliveplayer.controllers.home', [])
 })
 
 .controller('AppDetailCtrl',function($scope, $state, $ionicPopup, $timeout, Utils) {
+	
 	// get app info.
 	var app = Utils.getAppDetails($state.params.appId, $state.params.appRegion);
+
+	// sub controller.
+   $scope.showAppComments = function(id) {
+	   $scope.selection = 'userComment';
+	   $state.go('app.comments',{appId:id});
+   }
+		
+	$scope.selection = 'info';
 	
 	$scope.city = app.city;
 	$scope.name = app.name;
@@ -76,5 +85,32 @@ angular.module('weliveplayer.controllers.home', [])
 	$scope.getStars = function (vote) {
         return Utils.getStars(vote);
     };
+	
+   $scope.download = function(id) {
+	   $scope.selection = 'download';
+	   
+   }
+   
+   $scope.info = function() {
+    $scope.selection = 'info';
+	}
 
+})
+
+.controller('AppCommentsCtrl',function($scope, $state, $ionicPopup, $timeout, Utils) {
+	
+	var app = Utils.getAppDetails($state.params.appId);
+	
+	$scope.name = app.name;
+	// get app info.
+	// var app = Utils.getAppComments($state.params.appId);
+	
+	$scope.download = function(id) {	   
+    }
+
+   
+   $scope.info = function() {
+    $state.go('app.single',{appId:app.id, appRegion:app.city});
+	}
+	
 })
