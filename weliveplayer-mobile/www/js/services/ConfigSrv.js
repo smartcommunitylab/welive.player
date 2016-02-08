@@ -8,7 +8,7 @@ angular.module('weliveplayer.services.config', [])
     var RECURRENCY = true;
 
     var HTTP_CONFIG = {
-        timeout: 5000
+        timeout: 5000,
     };
 
     var ttJsonConfig = null;

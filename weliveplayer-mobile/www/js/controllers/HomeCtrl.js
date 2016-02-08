@@ -116,6 +116,26 @@ angular.module('weliveplayer.controllers.home', [])
    $scope.info = function() {
     $state.go('app.single',{appId:app.id, appRegion:app.city});
 	}
+   
+   debugger;
+//   var appId = "eu.trentorise.smartcampus.viaggiatrento";
+//   cordova.plugins.market.open(appId, {
+//     success: function() {
+//       debugger;
+//     },
+//     failure: function() {
+//    	 debugger;
+//     }
+//   })
+   
+   var opts = {};
+   
+   opts.id = "eu.trentorise.smartcampus.viaggiatrento";
+   opts.sort = "newest";
+   opts.page = 0;
+   opts.lang = "en";
+   
+   var reviews = Utils.reviews(opts);
 	
 })
 

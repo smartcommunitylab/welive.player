@@ -23,11 +23,7 @@
     "ionic-plugin-keyboard",
     "cordova-plugin-inappbrowser",
     "cordova-plugin-x-toast",
-    {
-      "locator": "https://github.com/smartcommunitylab/parse-push-plugin",
-      "id": "com.phonegap.parsepushplugin"
-    },
-    "de.appplant.cordova.plugin.local-notification@0.8.1"
+    "cordova-plugin-market"
   ],
   "cordovaPlatforms": [
     "ios",

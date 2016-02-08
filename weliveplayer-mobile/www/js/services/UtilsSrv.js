@@ -1,9 +1,9 @@
 angular.module('weliveplayer.services.utils', [])
 
-.factory('Utils', function ($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, StorageSrv) {
+.factory('Utils', function ($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, StorageSrv, $http, Config) {
     
 	var utilsService = {};
-
+	
     var appMap = {
     	Trento: [ { id: 0, name: 'Viaggia Trento', city: 'Trento', rating: 5, userId : 52, consigliati : true, timestamp : 1454672400, tags : 'tag1,tagN' },
     	          { id: 3, name: 'Comune nel Tasca', city: 'Trento', rating: 4, userId : 52, consigliati : false, timestamp : 1454672400, tags : 'tag1,tagN' },
@@ -151,6 +151,149 @@ angular.module('weliveplayer.services.utils', [])
     	return foundApps;
     }
 
+    
+    utilsService.reviews = function reviews(opts) {
+
+    	debugger;
+    	
+    	 var deferred = $q.defer();
+
+    	 var sort = convertSort(opts.sort);
+    	 
+    	 var form = {
+    		        'pageNum': 0,
+    		        'id': opts.id,
+    		        'reviewSortOrder': sort,
+    		        'hl': opts.lang,
+    		        'reviewType': 0
+    		    }
+    	 
+    	 
+    	 debugger;
+    	 var http = new XMLHttpRequest();
+    	 var url = "https://play.google.com/store/getreviews?";
+    	 var params = "id=eu.trentorise.smartcampus.viaggiatrento&reviewSortOrder=2&reviewType=1&pageNum=0";
+    	 http.open("POST", url+ params, true);
+
+    	 //Send the proper header information along with the request
+//    	 http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    	 http.setRequestHeader("Access-Control-Allow-Origin", "*");
+    	 
+    	 http.onreadystatechange = function() {//Call a function when the state changes.
+    	     if(http.readyState == 4 && http.status == 200) {
+    	         alert(http.responseText);
+    	         
+    	         
+    	     }
+    	 }
+    	 http.send(params);
+    	
+//    	return new Promise(function(resolve, reject) {
+//
+//    		opts = opts || {};
+////    		validate(opts);
+//
+//    		var sort = convertSort(opts.sort);
+//
+//    		var options = {
+//    			method: 'POST',
+//    			uri: 'https://play.google.com/store/getreviews',
+//    			form: {
+//    				pageNum: opts.page || 0,
+//    				id: opts.appId || opts.id,
+//    				reviewSortOrder: sort,
+//    				hl: opts.lang || 'en',
+//    				reviewType: 0
+//    			},
+//    			json: true
+//    		};
+//
+//    		request(options)
+//    			.then(function(body){
+//    				debugger;
+//    				var response = JSON.parse(body.slice(6));
+//    				return response[0][2];
+//    			})
+//    			.then(cheerio.load, h.requestError)
+//    			.then(parseFields)
+//    			.then(resolve)
+//    			.catch(reject);
+//    	});
+    }
+
+    function parseFields($) {
+    	var result = [];
+
+    	var reviewsContainer = $('div[class=single-review]');
+    	reviewsContainer.each(function(i) {
+    		var info = $(this).find('div[class=review-info]');
+    		var userInfo = info.find('a');
+    		var userId = filterUserId(userInfo.attr('href'));
+    		var userName = userInfo.text().trim();
+
+    		var date = $(this).find('span[class=review-date]').text().trim();
+    		var score = parseInt(filterScore($(this).find('.star-rating-non-editable-container').attr('aria-label').trim()));
+
+    		var reviewContent = $(this).find('div[class=review-body]');
+    		var title = reviewContent.find('span[class=review-title]').text().trim();
+    		var text = filterReviewText(reviewContent.text().trim(), title.length);
+
+    		var allInfo = {
+    			userId: userId,
+    			userName: userName,
+    			date: date,
+    			score: score,
+    			title: title,
+    			text: text
+    		};
+
+    		result[i] = allInfo;
+    	});
+    	return result;
+    }
+
+    function validate(opts) {
+    	if (opts.sort && !(_.includes(c.sort, opts.sort))) {
+    		throw new Error('Invalid sort ' + opts.sort);
+    	}
+    	if (opts.page && opts.page < 0) {
+    		throw new Error('Page cannot be lower than 0');
+    	}
+    }
+
+    function convertSort(sort) {
+    	switch (sort) {
+    		case 'newest':
+    			return 0;
+    		case 'rating':
+    			return 1;
+    		case 'helpfulness':
+    			return 4;
+    		default:
+    			return 0;
+    	}
+    }
+
+    function filterReviewText(text, startIndex) {
+    	var regex = /Full Review/;
+    	var result = text.substring(startIndex).replace(regex, '').trim();
+    	return result;
+    }
+
+    function filterUserId(userId) {
+    	var regex = /id=([0-9]*)/;
+    	var result = userId.match(regex);
+    	return result[1];
+    }
+
+    function filterScore(score) {
+    	var regex = /([0-5]{1})/;
+    	var result = score.match(regex);
+    	return result[1];
+    }
+    
+    
+    
     utilsService.fastCompareObjects = function (obj1, obj2) {
         return JSON.stringify(obj1) === JSON.stringify(obj2);
     };
