@@ -12,6 +12,10 @@ angular.module('weliveplayer.controllers.home', [])
 	   $state.go('app.single',{appId:id, appRegion:region});
    }
 	
+   $scope.showSearchInput = function() {
+	   $state.go('app.search');
+   }
+   
    $scope.showPopup = function() {
      
    var myPopup = $ionicPopup.show({
@@ -113,4 +117,17 @@ angular.module('weliveplayer.controllers.home', [])
     $state.go('app.single',{appId:app.id, appRegion:app.city});
 	}
 	
+})
+
+.controller('AppSearchCtrl',function($scope, $state, $ionicPopup, $timeout, Utils) {
+	
+	$scope.formData = {};
+	$scope.doSearch = function() {
+		$scope.searchApps = Utils.searchApp($scope.formData.searchString);	
+    }
+	
+	// sub controller.
+	$scope.showAppDetails = function(id, region) {
+		   $state.go('app.single',{appId:id, appRegion:region});
+	}
 })

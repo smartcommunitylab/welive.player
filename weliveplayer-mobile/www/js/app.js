@@ -78,6 +78,16 @@ angular.module(
 		}
 	})
 
+	.state('app.search', {
+		url : '/apps/appSearch',
+		views : {
+			'menuContent' : {
+				templateUrl : 'templates/appSearch.html',
+				controller : 'AppSearchCtrl'
+			}
+		}
+	})
+	
 	.state('app.single', {
 		url : '/apps/:appId/:appRegion',
 		views : {

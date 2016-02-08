@@ -132,6 +132,24 @@ angular.module('weliveplayer.services.utils', [])
 		var comments = {};
 		return comments;
 	}
+    
+    
+    utilsService.searchApp = function(searchText) {
+    	var foundApps= [];
+		for (var key in appMap) {
+    		  if (appMap.hasOwnProperty(key)) {
+    		    var apps = appMap[key];
+    		    for (var i=0,len=apps.length; i < len; i++) {
+    		    	if (apps[i].name.toUpperCase().indexOf(searchText.toUpperCase()) > -1) {
+    		    		foundApps.push(apps[i]);
+    		    	}
+    		    }
+    		  }
+    		}
+
+    		
+    	return foundApps;
+    }
 
     utilsService.fastCompareObjects = function (obj1, obj2) {
         return JSON.stringify(obj1) === JSON.stringify(obj2);
