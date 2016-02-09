@@ -77,7 +77,7 @@ angular.module('weliveplayer.controllers.home', [])
 	// sub controller.
    $scope.showAppComments = function() {
 	   $scope.selection = 'userComment';
-	   $state.go('app.comments',{appId:$scope.app.id, appRegion:$scope.app.region});
+	   $state.go('app.comments',{appId:$scope.app.id, appRegion:$scope.app.city});
    }
 
 	$scope.selection = 'info';
