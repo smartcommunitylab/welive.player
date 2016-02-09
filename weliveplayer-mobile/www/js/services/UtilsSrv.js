@@ -154,8 +154,6 @@ angular.module('weliveplayer.services.utils', [])
     
     utilsService.reviews = function reviews(opts) {
 
-    	debugger;
-    	
     	 var deferred = $q.defer();
 
     	 var sort = convertSort(opts.sort);
@@ -169,7 +167,6 @@ angular.module('weliveplayer.services.utils', [])
     		    }
     	 
     	 
-    	 debugger;
     	 var http = new XMLHttpRequest();
     	 var url = "https://play.google.com/store/getreviews?";
     	 var params = "id=eu.trentorise.smartcampus.viaggiatrento&reviewSortOrder=2&reviewType=1&pageNum=0";
@@ -181,7 +178,10 @@ angular.module('weliveplayer.services.utils', [])
     	 
     	 http.onreadystatechange = function() {//Call a function when the state changes.
     	     if(http.readyState == 4 && http.status == 200) {
-    	         alert(http.responseText);
+    	        var response = http.responseText;
+    	        response = JSON.parse(response.slice(6));
+ 				parseFields(response[0][2]);
+    	         
     	         
     	         
     	     }
@@ -221,10 +221,41 @@ angular.module('weliveplayer.services.utils', [])
 //    	});
     }
 
-    function parseFields($) {
+    function parseFields(response) {
     	var result = [];
 
-    	var reviewsContainer = $('div[class=single-review]');
+    	var document = angular.element(response);
+    	
+    	// var reviews = response.getElementsByClassName('single-review');
+    	
+    	//var reviewsContainer = angular.element(angular.element(document).find('#div class="single-review" tabindex="0"');
+    	 
+    	var userReviews = [];
+    	for (var i=0, len = document.length; i < len; i++) {
+    		if (document[i].className == 'single-review') {
+    			
+    			// review header.
+    			var authorNode = document[i].childNodes[3].childNodes[1].childNodes[1].outerText;
+    			var publishDate = document[i].childNodes[3].childNodes[1].childNodes[3].outerText;
+    			var rating = document[i].childNodes[3].childNodes[1].childNodes[9].childNodes[1].attributes[1].nodeValue;
+    			var comment = document[i].childNodes[5].childNodes[1].innerText;
+    			
+    			var user;
+    			user.authorNode = authorNode;
+    			user.publishDate = publishDate;
+    			user.rating = rating; 
+    			user.comment = comment;
+    			
+    			userReviews.push(user);
+    			
+    		}
+		}
+    	
+    	angular.forEach(reviewsContainer, function(doc, key) {
+    		
+    		 
+    	}, log);
+
     	reviewsContainer.each(function(i) {
     		var info = $(this).find('div[class=review-info]');
     		var userInfo = info.find('a');

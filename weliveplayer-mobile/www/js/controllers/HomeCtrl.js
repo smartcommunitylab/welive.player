@@ -117,7 +117,6 @@ angular.module('weliveplayer.controllers.home', [])
     $state.go('app.single',{appId:app.id, appRegion:app.city});
 	}
    
-   debugger;
 //   var appId = "eu.trentorise.smartcampus.viaggiatrento";
 //   cordova.plugins.market.open(appId, {
 //     success: function() {
