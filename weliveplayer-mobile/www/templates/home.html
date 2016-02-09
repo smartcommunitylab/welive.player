@@ -2,16 +2,16 @@
 	
 	<ion-nav-buttons side="right">
         <a href="#" class="button button-icon ion-android-search padding-left" ng-click="showSearchInput()"></a>
-        <button class="button button-icon ion-settings" ng-click="showPopup()"></button>
+        <button class="button button-icon ion-android-funnel" ng-click="showPopup()"></button>
     </ion-nav-buttons>
     
-    <ion-content>
- 	   <div class="padding" ng-if="!!items && items.length == 0">
-            <h4>no apps found</h4>
+    <ion-content class="padding has-footer">
+ 	   <div class="text-center" ng-if="!!items && items.length == 0">
+            <h4>{{'no_apps' | translate}}</h4>
      </div>
  	  <ion-list>
         <ion-item ng-repeat="item in items" 
-                  class="item-thumbnail-left" ng-class="{'active': item.active}" ng-click="showAppDetails(item.id, item.city)">
+                  class="app-item item-thumbnail-left" ng-class="{'recomm': item.active}" ng-click="showAppDetails(item.id, item.city)">
           <img ng-src="img/ionic.png">
           <h4>{{ item.city }}</h4>
           <h2>{{ item.name }}</h2>
@@ -20,17 +20,17 @@
                    <i ng-repeat="starType in getStars(item.rating) track by $index" class="icon icon-rating" ng-class="{'ion-android-star': starType == 'full', 'ion-android-star-half': starType == 'half', 'ion-android-star-outline': starType == 'empty'}"></i>
                 </span>
            </div>
-		   <i class="button button-icon ion-person" ng-click=""></i>
+		   <i ng-if ="item.active" class="icon-recomm icon ion-person" ng-click=""></i>
         </ion-item>
       </ion-list>
   </ion-content>
 
   <div class="bar bar-footer">
   		<div class="button-bar">
-			<button class="button button-clear" ng-class="{'active' : selections.indexOf('Trento') >= 0}" ng-click="selectApps('Trento')">TRENTO</button>
-			<button class="button button-clear" ng-class="{'active' : selections.indexOf('Rovereto') >= 0}" ng-click="selectApps('Rovereto')">ROVERETO</button>
-			<button class="button button-clear" ng-class="{'active' : selections.indexOf('Novisad') >= 0}" ng-click="selectApps('Novisad')">NOVISAD</button>
-			<button class="button button-clear" ng-class="{'active' : selections.indexOf('Helsinki') >= 0}" ng-click="selectApps('Helsinki')">HELSINKI REGION</button>
+			<button class="button button-clear" ng-class="{'pressed' : selections.indexOf('Trento') >= 0}" ng-click="selectApps('Trento')">TRENTO</button>
+			<button class="button button-clear" ng-class="{'pressed' : selections.indexOf('Rovereto') >= 0}" ng-click="selectApps('Rovereto')">ROVERETO</button>
+			<button class="button button-clear" ng-class="{'pressed' : selections.indexOf('Novisad') >= 0}" ng-click="selectApps('Novisad')">NOVISAD</button>
+			<button class="button button-clear" ng-class="{'pressed' : selections.indexOf('Helsinki') >= 0}" ng-click="selectApps('Helsinki')">HELSINKI REGION</button>
 		<div>
   </div>
   

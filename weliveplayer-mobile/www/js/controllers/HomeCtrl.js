@@ -23,10 +23,13 @@ angular.module('weliveplayer.controllers.home', [])
      title: "Scegli Una Ordinamento",
      scope: $scope,
      buttons: [
-       { text: 'ANNULLA' },
        {
-         text: '<b>ORDINA</b>',
-         type: 'button-positive',
+         text: 'ANNULLA',
+         type: 'button-small welive-popup-button',
+       },
+       {
+         text: 'ORDINA',
+         type: 'button-small welive-popup-button',
          onTap: function(e) {
         	 if (!$scope.sort.choice) {
              //don't allow the user to close unless he enters wifi password
@@ -42,9 +45,6 @@ angular.module('weliveplayer.controllers.home', [])
 	 $scope.items = Utils.orderByType($scope.sort.choice, $scope.items);
 	 
    });
-   $timeout(function() {
-      myPopup.close(); //close the popup after 10 seconds for some reason
-   }, 10000);
   };
 
   $scope.selectApps = function (city) {
@@ -71,7 +71,8 @@ angular.module('weliveplayer.controllers.home', [])
 .controller('AppDetailCtrl',function($scope, $state, $ionicPopup, $timeout, Utils) {
 	
 	// get app info.
-	var app = Utils.getAppDetails($state.params.appId, $state.params.appRegion);
+	$scope.app = Utils.getAppDetails($state.params.appId, $state.params.appRegion);
+    $scope.stars = Utils.getStars($scope.app.rating);
 
 	// sub controller.
    $scope.showAppComments = function(id) {
@@ -80,16 +81,7 @@ angular.module('weliveplayer.controllers.home', [])
    }
 		
 	$scope.selection = 'info';
-	
-	$scope.city = app.city;
-	$scope.name = app.name;
-	$scope.rating = app.rating;
-	$scope.tags = app.tags;
-	
-	$scope.getStars = function (vote) {
-        return Utils.getStars(vote);
-    };
-	
+
    $scope.download = function(id) {
 	   $scope.selection = 'download';
 	   

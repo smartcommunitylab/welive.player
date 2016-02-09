@@ -111,7 +111,9 @@ angular.module(
 	$urlRouterProvider.otherwise('/app/home');
 })
 	
-.config(function ($translateProvider) {
+.config(function ($translateProvider,$ionicConfigProvider) {
+    $ionicConfigProvider.backButton.text('');
+    $ionicConfigProvider.backButton.previousTitleText(false);
     $translateProvider.translations('it', {
         app_name: 'WeLivePlayer',
         menu_home: 'Home',
@@ -193,13 +195,14 @@ angular.module(
         popup_datepicker_title: 'Selezionare il giorno',
         popup_datepicker_today: 'Oggi',
         toast_error_generic: 'OPS! Problema...',
+        no_apps: 'Nessun app trovato.'
     });
     
     $translateProvider.translations('en', {
         app_name: 'WeLivePlayer',
         menu_home: 'Home',
         menu_info: 'Information',
-        menu_termine: 'End of Service',
+        menu_termine: 'Terms of Service',
         menu_logout: 'Login/Logout',
         cancel: 'Annulla',
         yes: 'Yes',
@@ -207,7 +210,7 @@ angular.module(
         ok: 'OK',
     });
 
-    $translateProvider.preferredLanguage('en');
+    $translateProvider.preferredLanguage('it');
     $translateProvider.useSanitizeValueStrategy('escape');
 });
 

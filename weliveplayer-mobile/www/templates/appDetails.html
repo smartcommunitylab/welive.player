@@ -1,21 +1,28 @@
-<ion-view title={{name}}>
-	<ion-content>
-		<img ng-src="img/ionic.png">  {{city}}</img>
-		<div class="rating-avg-star">
-            <span>
-                <i ng-repeat="starType in getStars(rating) track by $index" class="icon icon-rating" ng-class="{'ion-android-star': starType == 'full', 'ion-android-star-half': starType == 'half', 'ion-android-star-outline': starType == 'empty'}"></i>
-            </span>
-         </div>
-		 <i class="button button-icon ion-pricetags" ng-click=""> {{tags}}</i>
+<ion-view>
+    <ion-nav-title>{{app.name}}</ion-nav-title>
+	<ion-content class="padding">
+      <div class="padding">
+        <div class="row">
+		  <img ng-src="img/ionic.png" width="80" height="80">
+          <div class="col col-center app-header">
+            <div>{{ app.city }}</div>
+            <div class="rating-avg-star">
+                <span>
+                    <i ng-repeat="starType in stars track by $index" class="icon icon-rating" ng-class="{'ion-android-star': starType == 'full', 'ion-android-star-half': starType == 'half', 'ion-android-star-outline': starType == 'empty'}"></i>
+                </span>
+             </div>
+          </div>
+        </div>
+		 <i class="button button-icon ion-pricetags" ng-click=""> {{app.tags}}</i>
 		<h4>Descrizione</h4>
 		<p>La applicazione che promuove la mobilita urbana sostenibile a Trento. Pianifica i tuoi viaggio con il mezzo che preferisci, mezzi pubblici, bicicletta, auto o a piedi e monitora i tuoi itinerari per essere sempre aggiornato su eventuali ritardi. Gli orari degli autobus e la disponibilita dei parcheggi sono a portata di mano con aggiornamenti in tempo reale e segnalazioni su eventuali ritardi fatte dagli utenti stessi.</p>
-		</ion-content>
-		<div class="bar bar-footer">
-			<div class="button-bar">
-				<button class="button button-icon ion-ios-information" ng-class = "{'active' : selection =='info'}" ng-click="info()"></button>
-				<button class="button button-icon ion-archive" ng-class = "{'active' : selection == 'download'}" ng-click="download()"></button>
-				<button class="button button-icon ion-ios-chatboxes" ng-class = "{'active' : selection == 'userComment'}" ng-click="showAppComments()"></button>
-			</div>
-		</div>
-
-	</ion-view>
+      </div>
+    </ion-content>
+    <div class="bar bar-footer">
+        <div class="button-bar">
+            <button class="button button-icon ion-ios-information" ng-class = "{'active' : selection =='info'}" ng-click="info()"></button>
+            <button class="button button-icon ion-archive" ng-class = "{'active' : selection == 'download'}" ng-click="download()"></button>
+            <button class="button button-icon ion-ios-chatboxes" ng-class = "{'active' : selection == 'userComment'}" ng-click="showAppComments()"></button>
+        </div>
+    </div>
+</ion-view>
