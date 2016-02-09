@@ -1,6 +1,6 @@
 angular.module('weliveplayer.services.utils', [])
 
-.factory('Utils', function ($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, StorageSrv, $http, Config) {
+.factory('Utils', function ($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, $http) {
 
 	var utilsService = {};
 
@@ -225,8 +225,16 @@ angular.module('weliveplayer.services.utils', [])
     			var user = {};
     			user.authorNode = authorNode;
     			user.publishDate = publishDate;
-    			user.rating = rating; 
     			user.comment = comment;
+    			// regex.
+    			var r = /\d+/;
+    			var matching = rating.match(r)
+    			if (matching != null) {
+    				user.rating = matching[0];	
+    			}
+    			
+    			
+    			
 
     			userReviews.push(user);
 
