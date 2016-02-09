@@ -13,17 +13,11 @@ angular.module(
 		  'ionic-datepicker',
 		  'ngIOS9UIWebViewPatch',
 		  'pascalprecht.translate',
-		  'weliveplayer.services.config',
-		  'weliveplayer.services.login',
-		  'weliveplayer.services.user',
-		  'weliveplayer.services.map',
-		  'weliveplayer.services.geo',
-		  'weliveplayer.services.storage',
 		  'weliveplayer.services.utils',
-		  'weliveplayer.services.cache',
 		  'weliveplayer.directives',
 		  'weliveplayer.controllers.app',
 		  'weliveplayer.controllers.home',
+		  'weliveplayer.controllers.login',
 		 'leaflet-directive' ])
 
 .run(function($ionicPlatform) {
@@ -52,6 +46,16 @@ angular.module(
 		controller : 'AppCtrl'
 	})
 
+	.state('app.home', {
+		url : '/home',
+		views : {
+			'menuContent' : {
+				templateUrl : 'templates/home.html',
+				controller : 'HomeCtrl'
+			}
+		}
+	})
+
 	.state('app.info', {
 		url : '/info',
 		views : {
@@ -68,15 +72,18 @@ angular.module(
 				templateUrl : 'templates/termine.html'
 			}
 		}
-	}).state('app.home', {
-		url : '/home',
+	})
+
+	.state('app.login', {
+		url : '/login',
 		views : {
 			'menuContent' : {
-				templateUrl : 'templates/home.html',
-				controller : 'HomeCtrl'
+				templateUrl : 'templates/login.html',
+				controller : 'LoginCtrl'
 			}
 		}
 	})
+
 
 	.state('app.search', {
 		url : '/apps/appSearch',
@@ -99,7 +106,7 @@ angular.module(
 	})
 	
 	.state('app.comments', {
-		url : '/apps/appComments/:appId',
+		url : '/apps/:appId/:appRegion',
 		views : {
 			'menuContent' : {
 				templateUrl : 'templates/appComments.html',

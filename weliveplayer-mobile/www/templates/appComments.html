@@ -1,12 +1,22 @@
 <ion-view title={{name}}>
 	<ion-content>
 		<h4>Comments from GooglePlay</h4>
-	</ion-content>
-	<div class="bar bar-footer">
+		<ion-list>
+			<ion-item ng-repeat="userReview in userReviews"
+                  class="item-thumbnail-left" ng-click="">
+				<img ng-src="img/ionic.png">
+					<h4>{{ userReview.authorNode }}</h4>
+					<h2>{{ userReview.publishDate }}</h2>
+					<h2>{{ userReview.rating }}</h2>
+					<h2>{{ userReview.comment }}</h2>
+				</ion-item>
+			</ion-list>
+		</ion-content>
+		<div class="bar bar-footer">
 			<div class="button-bar">
-				<button class="button button-icon ion-ios-information" ng-click="info()"></button>
-				<button class="button button-icon ion-archive" ng-click="download()"></button>
-				<button class="button button-icon ion-ios-chatboxes" ng-class = "'active'" ng-click="showAppComments()"></button>
+				<button class="button button-icon ion-ios-information" ng-click="info()"/>
+				<button class="button button-icon ion-archive" ng-click="download()"/>
+				<button class="button button-icon ion-ios-chatboxes" ng-class = "'active'" ng-click="showAppComments(id, city)"/>
 			</div>
-	</div>
-</ion-view>
+		</div>
+	</ion-view>
