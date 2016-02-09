@@ -1,23 +1,23 @@
 angular.module('weliveplayer.controllers.home', [])
 .controller('HomeCtrl',function($scope, $state, $ionicPopup, $timeout, Utils) {
-   
+
    $scope.selections = ['Trento'];	
    $scope.items = Utils.getAppsByRegion($scope.selections);	
-	
+
    $scope.sort = {};
    $scope.sort.choice = 'Consigliati';
-   
+
    // sub controller.
    $scope.showAppDetails = function(id, region) {
 	   $state.go('app.single',{appId:id, appRegion:region});
    }
-	
+
    $scope.showSearchInput = function() {
 	   $state.go('app.search');
    }
-   
+
    $scope.showPopup = function() {
-     
+
    var myPopup = $ionicPopup.show({
 	 templateUrl: "templates/sort.html",
      title: "Scegli Una Ordinamento",
@@ -40,7 +40,7 @@ angular.module('weliveplayer.controllers.home', [])
    });
    myPopup.then(function(res) {
 	 $scope.items = Utils.orderByType($scope.sort.choice, $scope.items);
-	 
+
    });
    $timeout(function() {
       myPopup.close(); //close the popup after 10 seconds for some reason
@@ -48,9 +48,9 @@ angular.module('weliveplayer.controllers.home', [])
   };
 
   $scope.selectApps = function (city) {
-	  
+
 	var index = $scope.selections.indexOf(city);
-	
+
 	// remove city from selection
 	var index = $scope.selections.indexOf(city);
 	if (index > -1) {
@@ -58,10 +58,10 @@ angular.module('weliveplayer.controllers.home', [])
 	} else {
 		$scope.selections.push(city);
 	}
-	
+
 	$scope.items = Utils.getAppsByRegion($scope.selections);	
   }
-    
+
 	$scope.getStars = function (vote) {
         return Utils.getStars(vote);
     };
@@ -69,54 +69,57 @@ angular.module('weliveplayer.controllers.home', [])
 })
 
 .controller('AppDetailCtrl',function($scope, $state, $ionicPopup, $timeout, Utils) {
-	
+
 	// get app info.
 	var app = Utils.getAppDetails($state.params.appId, $state.params.appRegion);
 
-	// sub controller.
-   $scope.showAppComments = function(id) {
-	   $scope.selection = 'userComment';
-	   $state.go('app.comments',{appId:id});
-   }
-		
-	$scope.selection = 'info';
+	$scope.id = app.id;
+	$scope.region = app.city;
 	
+	// sub controller.
+   $scope.showAppComments = function(id, region) {
+	   $scope.selection = 'userComment';
+	   $state.go('app.comments',{appId:id, appRegion:region});
+   }
+
+	$scope.selection = 'info';
+
 	$scope.city = app.city;
 	$scope.name = app.name;
 	$scope.rating = app.rating;
 	$scope.tags = app.tags;
-	
+
 	$scope.getStars = function (vote) {
         return Utils.getStars(vote);
     };
-	
+
    $scope.download = function(id) {
 	   $scope.selection = 'download';
-	   
+
    }
-   
+
    $scope.info = function() {
     $scope.selection = 'info';
 	}
 
 })
 
-.controller('AppCommentsCtrl',function($scope, $state, $ionicPopup, $timeout, Utils) {
-	
-	var app = Utils.getAppDetails($state.params.appId);
-	
+.controller('AppCommentsCtrl',function($scope, $state, $ionicPopup, $timeout, Utils, $q) {
+
+	var app = Utils.getAppDetails($state.params.appId, $state.params.appRegion);
+
 	$scope.name = app.name;
-	// get app info.
-	// var app = Utils.getAppComments($state.params.appId);
-	
+	$scope.id = app.id;
+	$scope.region = app.city;
+
 	$scope.download = function(id) {	   
     }
 
-   
+
    $scope.info = function() {
     $state.go('app.single',{appId:app.id, appRegion:app.city});
 	}
-   
+
 //   var appId = "eu.trentorise.smartcampus.viaggiatrento";
 //   cordova.plugins.market.open(appId, {
 //     success: function() {
@@ -126,25 +129,44 @@ angular.module('weliveplayer.controllers.home', [])
 //    	 debugger;
 //     }
 //   })
-   
+
    var opts = {};
-   
-   opts.id = "eu.trentorise.smartcampus.viaggiatrento";
+
+   opts.id = app.storeId;
    opts.sort = "newest";
    opts.page = 0;
    opts.lang = "en";
+   opts.reviewType = 0;
+
+   var deferred = $q.defer();
+   var sort = Utils.convertSort(opts.sort);
    
-   var reviews = Utils.reviews(opts);
-	
+   var http = new XMLHttpRequest();
+   var url = "https://play.google.com/store/getreviews?";
+   var params = "id=" + opts.id + "&reviewSortOrder=" + sort + "&reviewType=" + opts.reviewType + "&pageNum=" + opts.page + "&hl=" + opts.lang;
+   http.open("POST", url+ params, true);
+
+	//Send the proper header information along with the request
+	http.setRequestHeader("Access-Control-Allow-Origin", "*");
+
+	http.onreadystatechange = function() {//Call a function when the state changes.
+	    if(http.readyState == 4 && http.status == 200) {
+	       var response = http.responseText;
+	       response = JSON.parse(response.slice(6));
+	       $scope.userReviews = Utils.parseFields(response[0][2]);
+	    }
+	}
+	http.send(params);
+
 })
 
 .controller('AppSearchCtrl',function($scope, $state, $ionicPopup, $timeout, Utils) {
-	
+
 	$scope.formData = {};
 	$scope.doSearch = function() {
 		$scope.searchApps = Utils.searchApp($scope.formData.searchString);	
     }
-	
+
 	// sub controller.
 	$scope.showAppDetails = function(id, region) {
 		   $state.go('app.single',{appId:id, appRegion:region});

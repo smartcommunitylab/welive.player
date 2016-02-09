@@ -1,25 +1,25 @@
 <ion-view>
 	<ion-content>
-	 <form>
-	 <label class="item item-input">
-	   <i class="icon ion-search placeholder-icon" onsubmit=""></i>
-	   <input type="search" placeholder="Search" ng-model="formData.searchString">
-	 </label>
-	 </form>
-	 <a href="#" class="button button-icon ion-android-search" ng-click="doSearch()"></a>
-	 <ion-list>
-        <ion-item ng-repeat="searchApp in searchApps" 
+		<form>
+			<label class="item item-input">
+				<i class="icon ion-search placeholder-icon" onsubmit=""/>
+				<input type="search" placeholder="Search" ng-model="formData.searchString">
+				</label>
+			</form>
+			<a href="#" class="button button-icon ion-android-search" ng-click="doSearch()"/>
+			<ion-list>
+				<ion-item ng-repeat="searchApp in searchApps" 
                   class="item-thumbnail-left" ng-class="{'active': searchApp.active}" ng-click="showAppDetails(searchApp.id, searchApp.city)">
-          <img ng-src="img/ionic.png">
-          <h4>{{ searchApp.city }}</h4>
-          <h2>{{ searchApp.name }}</h2>
-		  <div class="rating-avg-star">
-               <span>
-                   <i ng-repeat="starType in getStars(searchApp.rating) track by $index" class="icon icon-rating" ng-class="{'ion-android-star': starType == 'full', 'ion-android-star-half': starType == 'half', 'ion-android-star-outline': starType == 'empty'}"></i>
-                </span>
-           </div>
-		   <i class="button button-icon ion-person" ng-click=""></i>
-        </ion-item>
-      </ion-list>
+					<img ng-src="img/ionic.png">
+						<h4>{{ searchApp.city }}</h4>
+						<h2>{{ searchApp.name }}</h2>
+						<div class="rating-avg-star">
+							<span>
+								<i ng-repeat="starType in getStars(searchApp.rating) track by $index" class="icon icon-rating" ng-class="{'ion-android-star': starType == 'full', 'ion-android-star-half': starType == 'half', 'ion-android-star-outline': starType == 'empty'}"/>
+							</span>
+						</div>
+						<i class="button button-icon ion-person" ng-click=""/>
+				</ion-item>
+			</ion-list>
 	</ion-content>
 </ion-view>

@@ -99,7 +99,7 @@ angular.module(
 	})
 	
 	.state('app.comments', {
-		url : '/apps/appComments/:appId',
+		url : '/apps/:appId/:appRegion',
 		views : {
 			'menuContent' : {
 				templateUrl : 'templates/appComments.html',
