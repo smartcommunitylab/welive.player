@@ -1,5 +1,5 @@
 angular.module('weliveplayer.controllers.home', [])
-.controller('HomeCtrl',function($scope, $state, $ionicPopup, $timeout, Utils) {
+.controller('HomeCtrl',function($scope, $state, $ionicPopup, $timeout, Utils, PlayStore) {
 
    $scope.selections = ['Trento'];	
    $scope.items = Utils.getAppsByRegion($scope.selections);	
@@ -62,41 +62,52 @@ angular.module('weliveplayer.controllers.home', [])
 	$scope.items = Utils.getAppsByRegion($scope.selections);	
   }
 
-	$scope.getStars = function (vote) {
-        return Utils.getStars(vote);
-    };
+  $scope.getStars = function (vote) {
+      return Utils.getStars(vote);
+  };
 
 })
 
-.controller('AppDetailCtrl',function($scope, $state, $ionicPopup, $timeout, Utils) {
+.controller('AppDetailCtrl',function($scope, $state, $ionicPopup, $timeout, Utils, PlayStore) {
 
 	// get app info.
 	$scope.app = Utils.getAppDetails($state.params.appId, $state.params.appRegion);
-    $scope.stars = Utils.getStars($scope.app.rating);
-
-	// sub controller.
+    
+ 	// sub controller.
    $scope.showAppComments = function() {
 	   $scope.selection = 'userComment';
 	   $state.go('app.comments',{appId:$scope.app.id, appRegion:$scope.app.city});
    }
 
-	$scope.selection = 'info';
+   $scope.selection = 'info';
 
    $scope.download = function(id) {
 	   $scope.selection = 'download';
 
    }
-
+   
    $scope.info = function() {
     $scope.selection = 'info';
 	}
+   
+   var creationSuccess = function (agreegate) {
+	   $scope.stars = Utils.getStars(agreegate[0]);
+   };
+
+   var creationError = function (error) {
+       
+   };
+
+   PlayStore.getAgreegateReview($scope.app.storeId).then(creationSuccess, creationError);
 
 })
 
-.controller('AppCommentsCtrl',function($scope, $state, $ionicPopup, $timeout, Utils, $q) {
+.controller('AppCommentsCtrl',function($scope, $state, $ionicPopup, $timeout, Utils, $q, PlayStore) {
 
 	var app = Utils.getAppDetails($state.params.appId, $state.params.appRegion);
 
+	PlayStore.getAgreegateReview(app.storeId);
+	
 	$scope.name = app.name;
 	$scope.id = app.id;
 	$scope.region = app.city;
@@ -126,27 +137,16 @@ angular.module('weliveplayer.controllers.home', [])
    opts.page = 0;
    opts.lang = "en";
    opts.reviewType = 0;
-
-   var deferred = $q.defer();
-   var sort = Utils.convertSort(opts.sort);
    
-   var http = new XMLHttpRequest();
-   var url = "https://play.google.com/store/getreviews?";
-   var params = "id=" + opts.id + "&reviewSortOrder=" + sort + "&reviewType=" + opts.reviewType + "&pageNum=" + opts.page + "&hl=" + opts.lang;
-   http.open("POST", url+ params, true);
+   var creationSuccess = function (reviews) {
+	   $scope.userReviews = reviews;
+   };
 
-	//Send the proper header information along with the request
-	http.setRequestHeader("Access-Control-Allow-Origin", "*");
+   var creationError = function (error) {
+       
+   };
 
-	http.onreadystatechange = function() {//Call a function when the state changes.
-	    if(http.readyState == 4 && http.status == 200) {
-	       var response = http.responseText;
-	       response = JSON.parse(response.slice(6));
-	       $scope.userReviews = Utils.parseFields(response[0][2]);
-	    }
-	}
-	http.send(params);
-
+   PlayStore.getUserReviews(opts).then(creationSuccess, creationError);
 })
 
 .controller('AppSearchCtrl',function($scope, $state, $ionicPopup, $timeout, Utils) {

@@ -14,6 +14,7 @@ angular.module(
 		  'ngIOS9UIWebViewPatch',
 		  'pascalprecht.translate',
 		  'weliveplayer.services.utils',
+		  'weliveplayer.services.playstore',
 		  'weliveplayer.directives',
 		  'weliveplayer.controllers.app',
 		  'weliveplayer.controllers.home',
