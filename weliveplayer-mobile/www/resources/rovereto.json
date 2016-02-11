@@ -1,0 +1,30 @@
+[{
+	"id": 8,
+	"name": "ViaggiaRovereto",
+	"city": "Rovereto",
+	"userId": 52,
+	"consigliati": true,
+	"timestamp": 1454672400,
+	"tags": "tag1,tagN",
+	"storeId": "eu.trentorise.smartcampus.viaggiarovereto"
+},
+{
+	"id": 9,
+	"name": "iPosto",
+	"city": "Rovereto",
+	"userId": 52,
+	"consigliati": true,
+	"timestamp": 1454672410,
+	"tags": "tag1,tagN",
+	"storeId": "eu.trentorise.smartcampus.viaggiatrento"
+},
+{
+	"id": 10,
+	"name": "%100RicicloRovereto",
+	"city": "Rovereto",
+	"userId": 52,
+	"consigliati": true,
+	"timestamp": 1454672400,
+	"tags": "tag1,tagN",
+	"storeId": "it.smartcommunitylab.rifiuti.rovereto"
+}]

@@ -1,8 +1,21 @@
 angular.module('weliveplayer.controllers.home', [])
 .controller('HomeCtrl',function($scope, $state, $ionicPopup, $timeout, Utils, PlayStore) {
 
-   $scope.selections = ['Trento'];	
-   $scope.items = Utils.getAppsByRegion($scope.selections);	
+   $scope.selections = ['Novisad'];	
+//   $scope.items = Utils.getAppsByRegion($scope.selections);	
+   
+   var creationSuccess = function (apps) {
+	   $scope.items = apps;
+	   Utils.loaded();
+   };
+
+   var creationError = function (error) {
+	   Utils.loaded();
+       Utils.toast();
+   };
+
+   Utils.loading();
+   Utils.getAppsByRegion($scope.selections).then(creationSuccess, creationError);
 
    $scope.sort = {};
    $scope.sort.choice = 'Consigliati';
@@ -59,7 +72,8 @@ angular.module('weliveplayer.controllers.home', [])
 		$scope.selections.push(city);
 	}
 
-	$scope.items = Utils.getAppsByRegion($scope.selections);	
+	Utils.loading();
+	Utils.getAppsByRegion($scope.selections).then(creationSuccess, creationError);	
   }
 
   $scope.getStars = function (vote) {
@@ -90,6 +104,10 @@ angular.module('weliveplayer.controllers.home', [])
     $scope.selection = 'info';
 	}
    
+   // read it from cache.
+   $scope.stars = Utils.getStars(Utils.getAgreegateRating($scope.app));
+   
+   /**
    var creationSuccess = function (agreegate) {
 	   $scope.stars = Utils.getStars(agreegate[0]);
    };
@@ -98,7 +116,7 @@ angular.module('weliveplayer.controllers.home', [])
        
    };
 
-   PlayStore.getAgreegateReview($scope.app.storeId).then(creationSuccess, creationError);
+   PlayStore.getAgreegateReview($scope.app.storeId).then(creationSuccess, creationError);*/
 
 })
 
@@ -106,8 +124,6 @@ angular.module('weliveplayer.controllers.home', [])
 
 	var app = Utils.getAppDetails($state.params.appId, $state.params.appRegion);
 
-	PlayStore.getAgreegateReview(app.storeId);
-	
 	$scope.name = app.name;
 	$scope.id = app.id;
 	$scope.region = app.city;
@@ -140,12 +156,15 @@ angular.module('weliveplayer.controllers.home', [])
    
    var creationSuccess = function (reviews) {
 	   $scope.userReviews = reviews;
+	   Utils.loaded();
    };
 
    var creationError = function (error) {
-       
+	   Utils.loaded();
+       Utils.toast();
    };
 
+   Utils.loading();
    PlayStore.getUserReviews(opts).then(creationSuccess, creationError);
 })
 

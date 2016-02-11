@@ -1,9 +1,107 @@
 angular.module('weliveplayer.services.utils', [])
 
-.factory('Utils', function ($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, $http) {
+.factory('Utils', function ($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, $http, PlayStore) {
 
 	var utilsService = {};
 
+	//app cache.
+    var appMap = new Object();
+
+    utilsService.getAppsByRegion = function(region) {
+    	
+    	
+    	var deferred = $q.defer();
+    	
+    	var apps = [];
+    	
+    	var promises = [];
+    	
+ 	   // fetch region apps using service.
+       region.forEach(function(element){
+        	
+    	 	   var creationSuccess = function (apps) {
+     		      appMap[element] = apps
+    		   	};
+
+    		   var creationError = function (error) {
+       		    deferred.resolve(null);
+       	        };
+       	   
+       	        var singlePromise = utilsService.fetchApps(element).then(creationSuccess, creationError);
+                promises.push(singlePromise);   
+    	   
+        })
+        
+       $q.all(promises).then (function (){
+        	 
+        	region.forEach(function(element){
+        		var arr = appMap[element];
+        		if (arr) apps = apps.concat(arr);	
+        	});
+        	deferred.resolve(apps);
+		});
+       
+       return deferred.promise;
+
+    }
+
+
+    utilsService.fetchApps = function fetchApps(region) {
+
+    	var deferred = $q.defer();
+
+    	var apps = [];
+    	
+    	if (appMap[region] != null) {
+  		   var arr = appMap[region];
+     		   if (arr) {
+     			   apps = apps.concat(arr);
+     			   deferred.resolve(apps);
+      }} else {
+  		 $http.get("resources/" + region.toLowerCase() + '.json')
+
+ 		.then(function (response) {
+ 			
+ 			var apps = response.data;
+ 			var len = apps.length;
+ 			
+ 			var cachedApps = [];
+ 			
+ 			var promises = [];
+ 			
+ 			// run for each app.
+ 			apps.forEach(function(app){
+ 				var creationSuccess = function (review) { 
+                  	if (review.length > 0) {
+                  	  app.rating = review[0];
+                       app.totalReviews = review[1];
+                     }
+ 					cachedApps.push(app);
+                  };
+                  var creationError = function (error) {
+                  	deferred.resolve(null);
+                  };
+
+              	var singlePromise = PlayStore.getAgreegateReview(app.storeId).then(creationSuccess, creationError);
+              	promises.push(singlePromise); 
+                  
+ 			})
+ 			$q.all(promises).then (function (){
+ 				deferred.resolve(cachedApps);
+ 			});
+
+            },
+            function (responseError) {
+            	deferred.resolve(null);
+            }
+           ); 
+  	   }
+		
+	  return deferred.promise;
+
+ }
+
+    /**
     var appMap = {
 
     	Trento: [
@@ -41,10 +139,25 @@ angular.module('weliveplayer.services.utils', [])
     	});
 
     	return apps;
-    }
+    }*/
 
-    utilsService.getDummyList = function () {
-    	return items;
+    utilsService.getAgreegateRating = function (app) {
+    	
+    	var stars = 0;
+    	
+    	if (appMap[app.city] != null) {
+    		
+    		var arr = appMap[app.city];
+    		
+    		arr.forEach(function(elem) {
+    			if (parseInt(elem.id) === parseInt(app.id)) {
+    				stars = elem.rating;	
+    			}
+    		});
+    		
+    	}
+    	
+    	return stars;
     }
 
     utilsService.getAppDetails = function (id, region) {
@@ -172,6 +285,37 @@ angular.module('weliveplayer.services.utils', [])
         return JSON.stringify(obj1) === JSON.stringify(obj2);
     };
 
+    utilsService.toast = function (message, duration, position) {
+        message = message || $filter('translate')('toast_error_generic');
+        duration = duration || 'short';
+        position = position || 'bottom';
+
+        if (!!window.cordova) {
+            // Use the Cordova Toast plugin
+            //$cordovaToast.show(message, duration, position);
+            window.plugins.toast.show(message, duration, position);
+        } else {
+            if (duration == 'short') {
+                duration = 2000;
+            } else {
+                duration = 5000;
+            }
+
+            var myPopup = $ionicPopup.show({
+                template: '<div class="toast">' + message + '</div>',
+                scope: $rootScope,
+                buttons: []
+            });
+
+            $timeout(
+                function () {
+                    myPopup.close();
+                },
+                duration
+            );
+        }
+    };
+    
     utilsService.loading = function () {
         $ionicLoading.show();
     };
@@ -182,3 +326,4 @@ angular.module('weliveplayer.services.utils', [])
 
     return utilsService;
 });
+													

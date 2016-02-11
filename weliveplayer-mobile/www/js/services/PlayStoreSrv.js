@@ -29,12 +29,17 @@ angular.module('weliveplayer.services.playstore', [])
 
            .then(
                    function (response) {
-                	   var reviews = playStoreService.parseFields(response.data[0][2]);
-                	   deferred.resolve(reviews);
+                	   if (response.data[0][2]) {
+                		   var reviews = playStoreService.parseFields(response.data[0][2]);
+                    	   deferred.resolve(reviews);   
+                	   } else {
+                		   deferred.resolve(null);
+                	   }
+                	   
                        
                    },
                    function (responseError) {
-                       deferred.reject(responseError.data.error);
+                	   deferred.resolve(null);
                    }
              );
 		   
@@ -78,7 +83,7 @@ angular.module('weliveplayer.services.playstore', [])
                        
                    },
                    function (responseError) {
-                       deferred.reject(responseError.data.error);
+                	   deferred.resolve(null);
                    }
              );
 		   
