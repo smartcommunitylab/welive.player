@@ -148,10 +148,12 @@ angular.module('weliveplayer.controllers.home', [])
 
    var opts = {};
 
-   opts.id = app.storeId;
+   opts.id = app.id;
+   opts.storeId = app.storeId;
+   opts.city = app.city;
    opts.sort = "newest";
    opts.page = 0;
-   opts.lang = "en";
+   opts.lang = "it";
    opts.reviewType = 0;
    
    var creationSuccess = function (reviews) {

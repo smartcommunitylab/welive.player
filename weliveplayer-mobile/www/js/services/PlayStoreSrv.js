@@ -4,6 +4,8 @@ angular.module('weliveplayer.services.playstore', [])
 
 	var playStoreService = {};
 	
+	var playStoreUserReviews = new Object();
+	
 	playStoreService.convertSort = function convertSort(sort) {
     	switch (sort) {
     		case 'newest':
@@ -20,28 +22,37 @@ angular.module('weliveplayer.services.playstore', [])
 	playStoreService.getUserReviews = function getUserReviews(opts) {
 
 		   var deferred = $q.defer();
-		   var sort = playStoreService.convertSort(opts.sort);
 		   
-		   var url = "https://play.google.com/store/getreviews?";
-		   var params = "id=" + opts.id + "&reviewSortOrder=" + sort + "&reviewType=" + opts.reviewType + "&pageNum=" + opts.page + "&hl=" + opts.lang;
+		   var userReviews = playStoreUserReviews[opts.city + "_" + opts.id];
 		   
-		   $http.post(url+ params)
+		   if (userReviews) {
+			   deferred.resolve(userReviews);
+		   } else {
+			   var sort = playStoreService.convertSort(opts.sort);
+			   
+			   var url = "https://play.google.com/store/getreviews?";
+			   var params = "id=" + opts.storeId + "&reviewSortOrder=" + sort + "&reviewType=" + opts.reviewType + "&pageNum=" + opts.page + "&hl=" + opts.lang;
+			   
+			   $http.post(url+ params)
 
-           .then(
-                   function (response) {
-                	   if (response.data[0][2]) {
-                		   var reviews = playStoreService.parseFields(response.data[0][2]);
-                    	   deferred.resolve(reviews);   
-                	   } else {
-                		   deferred.resolve(null);
-                	   }
-                	   
-                       
-                   },
-                   function (responseError) {
-                	   deferred.resolve(null);
-                   }
-             );
+	           .then(
+	                   function (response) {
+	                	   if (response.data[0][2]) {
+	                		   var reviews = playStoreService.parseFields(response.data[0][2]);
+	                		   // update reviews to map[key->city_id] = reviews;
+	                		   playStoreUserReviews[opts.city + "_" + opts.id] = reviews;
+	                    	   deferred.resolve(reviews);   
+	                	   } else {
+	                		   deferred.resolve(null);
+	                	   }
+	                	   
+	                       
+	                   },
+	                   function (responseError) {
+	                	   deferred.resolve(null);
+	                   }
+	             );   
+		   }
 		   
 		   return deferred.promise;
 

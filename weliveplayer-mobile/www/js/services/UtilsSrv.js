@@ -183,7 +183,7 @@ angular.module('weliveplayer.services.utils', [])
     // a list of sorting functions
 	var sorters = {
 		    byAlphabets : function(a,b) {
-		        return ((a.name < b.name) ? -1 : ((a.name > b.name) ? 1 : 0));
+		        return ((a.name.toLowerCase() < b.name.toLowerCase()) ? -1 : ((a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : 0));
 		    },
 		    byPopularity : function(a,b) {
 		        return (a.rating - b.rating);
