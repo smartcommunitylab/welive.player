@@ -7,3 +7,4 @@ weliveplayer-mobile/.editorconfig
 *.project
 weliveplayer-mobile/.settings/.jsdtscope
 weliveplayer-mobile/.tern-project
+*.ts
