@@ -69,7 +69,6 @@ angular.module(
 
         $ionicPlatform.ready(function () {
 
-            debugger;
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
             if (window.cordova && window.cordova.plugins.Keyboard) {
@@ -85,7 +84,18 @@ angular.module(
             //alert("Path app " + JSON.stringify(window.location));
 
             if (LoginSrv.userIsLogged()) {
-                $rootScope.pushRegistration(StorageSrv.getUserId());
+                
+                // LoginSrv.accessToken().then( 
+                //     function (token) { 
+                //         alert(token)
+                //     },
+                //     function (error) {
+                //          alert(error);
+                //     });
+                
+                $state.go('app.home', {}, {
+                        reload: true
+                    });
             } else {
                 $rootScope.login();
             }

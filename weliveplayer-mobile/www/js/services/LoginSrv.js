@@ -1,3 +1,4 @@
+/* global ; */
 angular.module('weliveplayer.services.login', [])
 
     .factory('LoginSrv', function ($rootScope, $q, $http, $window, StorageSrv, Config) {
@@ -50,8 +51,14 @@ angular.module('weliveplayer.services.login', [])
                             loginService.makeTokenPost(str).then(function (tokenInfo) {
                                 // append token info to data.
                                 tokenInfo.token = str;
+                                
                                 loginService.makeProfileCall(tokenInfo).then(function (profile) {
                                     profile.token = tokenInfo;
+                                    // set expiry (after removing 1 hr).
+                                    var t = new Date();
+                                    t.setSeconds(t.getSeconds() + (profile.token.expires_in - 3600));
+                                    profile.token.validUntil = t;
+                                    
                                     deferred.resolve(profile);
                                 },
                                     function (error) {
@@ -180,10 +187,54 @@ angular.module('weliveplayer.services.login', [])
 	                   }
                     );
 
-
             return deferred.promise;
 
         }
+        
+        loginService.accessToken = function() {
+           
+            var user = StorageSrv.getUser();
+            
+            var deferred = $q.defer();
+            
+            // check for expiry.
+            var now = new Date();
+            var saved = new Date(user.token.validUntil);
+            if (saved > now) {
+                deferred.resolve(user.token.access_token);
+            } else {
+                var url = Config.getServerTokenURL();
+                var params = "?client_id=" + Config.getClientId() + "&client_secret=" + Config.getClientSecKey()
+                    + "&code=" + user.token.code + "&refresh_token=" + user.token.refresh_token + "&grant_type=refresh_token";
 
+                $http.post(url + params)
+
+                    .then(
+                        function (response) {
+                            if (response.data.access_token) {
+                                var access_token = response.data.access_token; 
+                                user.token.access_token = response.data.access_token;
+                                user.token.refresh_token = response.data.refresh_token;
+                                user.token.expires_in = response.data.expires_in;
+                                // calculate expiry (after removing 1 hr).
+                                var t = new Date();
+                                t.setSeconds(t.getSeconds() + (response.data.expires_in - 3600));
+                                user.token.validUntil = t;
+                                deferred.resolve(access_token);
+                            } else {
+                                deferred.resolve(null);
+                            }
+                        },
+                        function (responseError) {
+                            deferred.reject(responseError);
+                        }
+                        );
+                
+            }
+        
+            return deferred.promise;
+        
+        }
+     
         return loginService;
     });
