@@ -60,8 +60,6 @@ angular.module('weliveplayer.services.playstore', [])
 
         playStoreService.getAgreegateReview = function getAgreegateReview(storeId) {
 
-            var opts = {};
-
             var deferred = $q.defer();
 		   
             //		   var http = new XMLHttpRequest();

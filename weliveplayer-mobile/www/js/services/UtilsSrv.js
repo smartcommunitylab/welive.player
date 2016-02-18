@@ -63,7 +63,6 @@ angular.module('weliveplayer.services.utils', [])
  		.then(function (response) {
  			
  			var apps = response.data;
- 			var len = apps.length;
  			
  			var cachedApps = [];
  			
@@ -169,9 +168,9 @@ angular.module('weliveplayer.services.utils', [])
 
 		var arr = tempMap[region];
 		if (arr) {
-			for (var i=0,len = arr.length; i < len; i++) {
-				if (parseInt(arr[i].id) === parseInt(id)) {
-				app = arr[i];
+			for (var j=0,len = arr.length; j < len; j++) {
+				if (parseInt(arr[j].id) === parseInt(id)) {
+				app = arr[j];
 				break;
 				}
 			}
@@ -242,7 +241,10 @@ angular.module('weliveplayer.services.utils', [])
             stars.push('full');
         }
 
-        var halfStars = Math.ceil((vote % 1).toFixed(4));
+        // var halfStars = Math.ceil((vote % 1).toFixed(4));
+        var voteHS = Number((vote % 1)).toFixed(4);
+        var halfStars = Math.ceil(Number(voteHS));
+        
         for (var i = 0; i < halfStars; i++) {
             stars.push('half');
         }

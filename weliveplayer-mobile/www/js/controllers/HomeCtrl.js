@@ -62,10 +62,9 @@ angular.module('weliveplayer.controllers.home', [])
 
         $scope.selectApps = function (city) {
 
-            var index = $scope.selections.indexOf(city);
-
             // remove city from selection
             var index = $scope.selections.indexOf(city);
+            
             if (index > -1) {
                 $scope.selections.splice(index, 1);
             } else {
