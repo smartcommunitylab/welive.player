@@ -73,10 +73,10 @@ angular.module('weliveplayer.services.playstore', [])
 
                         var agreegate = [];
 
-                        var agreegateScore = document[71].childNodes[97].childNodes[5].childNodes[1].childNodes[0].childNodes[0].childNodes[2]
+                        var agreegateScore = document[72].childNodes[97].childNodes[5].childNodes[1].childNodes[0].childNodes[0].childNodes[2]
                             .childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[5].innerText;
 
-                        var totalReviews = document[71].childNodes[97].childNodes[5].childNodes[1].childNodes[0].childNodes[0].childNodes[2]
+                        var totalReviews = document[72].childNodes[97].childNodes[5].childNodes[1].childNodes[0].childNodes[0].childNodes[2]
                             .childNodes[3].childNodes[1].childNodes[3].childNodes[1].childNodes[1].childNodes[1].childNodes[1].childNodes[9].innerText;
 
                         var r = /^[0-9]+([,.][0-9]+)?$/g;
