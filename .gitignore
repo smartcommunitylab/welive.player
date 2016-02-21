@@ -4,7 +4,12 @@
 /weliveplayer-mobile/.brackets.json
 weliveplayer-mobile/.bowerrc
 weliveplayer-mobile/.editorconfig
-*.project
 weliveplayer-mobile/.settings/.jsdtscope
 weliveplayer-mobile/.tern-project
+weliveplayer-web/.classpath
+weliveplayer-web/.project
+weliveplayer-web/.settings/*
+weliveplayer-web/target/*
+
+
 *.ts
