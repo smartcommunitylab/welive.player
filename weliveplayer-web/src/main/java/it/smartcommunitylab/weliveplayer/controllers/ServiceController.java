@@ -19,6 +19,7 @@ package it.smartcommunitylab.weliveplayer.controllers;
 import it.smartcommunitylab.weliveplayer.exception.WeLivePlayerCustomException;
 import it.smartcommunitylab.weliveplayer.managers.WeLivePlayerManager;
 import it.smartcommunitylab.weliveplayer.model.Artifact;
+import it.smartcommunitylab.weliveplayer.model.Artifact.Comment;
 import it.smartcommunitylab.weliveplayer.model.Response;
 
 import java.util.List;
@@ -48,21 +49,30 @@ public class ServiceController {
 	private WeLivePlayerManager weLivePlayerManager;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/api/apps/{pilotId}/{appType}")
-	public @ResponseBody
-	Response<List<Artifact>> readDriverTrips(@PathVariable String pilotId, @PathVariable String appType,
+	public @ResponseBody Response<List<Artifact>> readDriverTrips(@PathVariable String pilotId,
+			@PathVariable String appType, @RequestParam(required = false) Integer start,
+			@RequestParam(required = false) Integer count) throws WeLivePlayerCustomException {
+
+		return new Response<List<Artifact>>(weLivePlayerManager.getArtifacts(getUserId(), pilotId, appType,
+				(start == null ? 0 : start), (count == null ? 20 : count)));
+
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/api/appComments/{artifactId}")
+	public @ResponseBody Response<List<Comment>> readDriverTrips(@PathVariable String artifactId,
 			@RequestParam(required = false) Integer start, @RequestParam(required = false) Integer count)
 			throws WeLivePlayerCustomException {
-		
-		return new Response<List<Artifact>>(weLivePlayerManager.getArtifacts(getUserId(), (start == null ? 0 : start),
-				(count == null ? 20 : count)));
-		
+
+		return new Response<List<Comment>>(weLivePlayerManager.getArtifactComments(getUserId(), artifactId,
+				(start == null ? 0 : start), (count == null ? 20 : count)));
+
 	}
 
 	@ExceptionHandler(Exception.class)
-	public @ResponseBody
-	Response<Void> handleExceptions(Exception exception, HttpServletResponse response) {
-		Response<Void> res = exception instanceof WeLivePlayerCustomException ? ((WeLivePlayerCustomException) exception)
-				.getBody() : new Response<Void>(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, exception.getMessage());
+	public @ResponseBody Response<Void> handleExceptions(Exception exception, HttpServletResponse response) {
+		Response<Void> res = exception instanceof WeLivePlayerCustomException
+				? ((WeLivePlayerCustomException) exception).getBody()
+				: new Response<Void>(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, exception.getMessage());
 		response.setStatus(res.getErrorCode());
 		return res;
 	}

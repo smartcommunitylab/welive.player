@@ -13,3 +13,4 @@ weliveplayer-web/target/*
 
 
 *.ts
+*.project

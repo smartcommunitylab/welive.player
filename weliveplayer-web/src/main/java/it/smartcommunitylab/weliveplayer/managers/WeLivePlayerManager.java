@@ -17,11 +17,20 @@
 package it.smartcommunitylab.weliveplayer.managers;
 
 import it.smartcommunitylab.weliveplayer.model.Artifact;
+import it.smartcommunitylab.weliveplayer.model.Artifact.Comment;
+import it.smartcommunitylab.weliveplayer.utils.WeLivePlayerUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 /**
@@ -34,10 +43,112 @@ public class WeLivePlayerManager {
 
 	private static final transient Log logger = LogFactory.getLog(WeLivePlayerManager.class);
 
-	public List<Artifact> getArtifacts(String userId, int i, int j) {
-		// TODO Auto-generated method stub
-		return null;
+	@Autowired
+	private WeLivePlayerUtils weLivePlayerUtils;
+	@Autowired
+	private Environment env;
+	/** Authorization. **/
+	public static String authHeader = "Basic d2VsaXZlQHdlbGl2ZS5ldTp3M2wxdjN0MDBscw==";
+	
+	public List<Artifact> getArtifacts(String userId, String pilotId, String appType, int page, int count) {
+
+		List<Artifact> artifacts = new ArrayList<Artifact>();
+
+		String url = env.getProperty("welive.mkp.uri");
+		url = url.replace("{pilotId}", pilotId);
+		url = url.replace("{appType}", appType);
+		
+		
+		try {
+			String response = weLivePlayerUtils.sendGET(url, "application/json", null, authHeader, -1);
+			if (response != null && !response.isEmpty()) {
+				JSONObject root = new JSONObject(response);
+				if (root.has("artefacts")) {
+					JSONArray artifactsArray = root.getJSONArray("artefacts");
+					for (int i = 0; i < artifactsArray.length(); i++) {
+						JSONObject artifact = artifactsArray.getJSONObject(i);
+						Artifact temp = new Artifact();
+						temp.setId(artifact.getString("artefactId"));
+						temp.setCity(pilotId);
+						temp.setName(artifact.getString("name"));
+						temp.setDescription(artifact.getString("description"));
+						temp.seteId(artifact.getString("eId"));
+						temp.setInterfaceOperation(artifact.getString("interfaceOperation"));
+						temp.setRating(artifact.getInt("rating"));
+						temp.setType(artifact.getString("type"));
+						temp.setTypeId(artifact.getInt("typeId"));
+						JSONArray comments = artifact.getJSONArray("comments");
+						for (int c = 0; c < comments.length(); c++) {
+							Artifact.Comment comment = new Artifact.Comment();
+							JSONObject commentResponse = comments.getJSONObject(c);
+							if (commentResponse.has("text")) {
+								comment.setText(commentResponse.getString("text"));
+							}
+							if (commentResponse.has("creation_date")) {
+								comment.setDate(commentResponse.getString("creation_date"));
+							}
+							if (commentResponse.has("author_ccUid")) {
+								comment.setUserId(commentResponse.getString("author_ccUid"));
+
+							}
+							temp.getComments().add(comment);
+						}
+
+						artifacts.add(temp);
+
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		return artifacts;
 	}
 
+	public List<Comment> getArtifactComments(String userId, String artifactId, int i, int j) {
+		
+		List<Comment> commentsList = new ArrayList<Comment>();
+		
+		String url = env.getProperty("welive.mkp.singleApp.uri");
+		url = url.replace("{artefact-id}", artifactId);
+		
+		
+		try {
+			String response = weLivePlayerUtils.sendGET(url, "application/json", null, authHeader, -1);
+			if (response != null && !response.isEmpty()) {
+				JSONObject root = new JSONObject(response);
+				if (root.has("name")) {
+					JSONArray comments = root.getJSONArray("comments");
+					for (int c = 0; c < comments.length(); c++) {
+						Artifact.Comment comment = new Artifact.Comment();
+						JSONObject commentResponse = comments.getJSONObject(c);
+						if (commentResponse.has("text")) {
+							comment.setText(commentResponse.getString("text"));
+						}
+						if (commentResponse.has("creation_date")) {
+							comment.setDate(commentResponse.getString("creation_date"));
+						}
+						if (commentResponse.has("author_ccUid")) {
+							comment.setUserId(commentResponse.getString("author_ccUid"));
+
+						}
+						commentsList.add(comment);
+					}
+				}
+
+			}
+
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		return commentsList;
+		
+	}
 
 }

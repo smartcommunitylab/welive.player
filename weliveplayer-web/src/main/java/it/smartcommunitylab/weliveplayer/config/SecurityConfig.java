@@ -16,106 +16,68 @@
 
 package it.smartcommunitylab.weliveplayer.config;
 
-import it.smartcommunitylab.weliveplayer.security.OAuthFilter;
-import it.smartcommunitylab.weliveplayer.security.WeLivePlayerUserDetails;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.RememberMeAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter;
-import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
+import eu.trentorise.smartcampus.aac.conf.OAuthAuthenticationProvider;
+import eu.trentorise.smartcampus.aac.conf.OAuthTokenFilter;
 
 @Configuration
 @EnableWebMvcSecurity
-//@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private UserDetailsService userDetailsServiceImpl;
-	
-//	@Autowired
-//	private AuthenticationProvider consoleAuthenticationProvider;
-	
 	@Autowired
 	private Environment env;
 
-//	@Autowired
-//	@Value("${rememberme.key}")
-//	private String rememberMeKey;
-		
-//	@Autowired
-//	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//	    auth
-//	    .authenticationProvider(consoleAuthenticationProvider)
-//	    .authenticationProvider(rememberMeAuthenticationProvider());
-//	}
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-	        http
-        	.csrf()
-        		.disable();
-	        
-//	        http
-//	        .rememberMe();
-	        
-//	        http
-//	        .authorizeRequests()
-//	        	.antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
-//	        	.antMatchers("/api/**")
-//	        		.hasAnyAuthority(WeLivePlayerUserDetails.WELIVEPLAYER).and()
-//	        .addFilterBefore(rememberMeAuthenticationFilter(), BasicAuthenticationFilter.class)
-//	        .addFilterBefore(oauthAuthenticationFilter(), BasicAuthenticationFilter.class);
-
-//	        http
-//            .authorizeRequests()
-//                .anyRequest()
-//                	.permitAll();
-//	        http
-//            .formLogin()
-//                .loginPage("/login")
-//                	.permitAll()
-//                	.and()
-//                .logout()
-//                	.permitAll().deleteCookies("rememberme","JSESSIONID");
-	 }
-
-	@Bean 
-	public OAuthFilter oauthAuthenticationFilter() throws Exception{
-		 return new OAuthFilter();
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.authenticationProvider(preauthAuthProvider());
 	}
 
-//	@Bean 
-//	public RememberMeAuthenticationFilter rememberMeAuthenticationFilter() throws Exception{
-//		 return new RememberMeAuthenticationFilter(authenticationManager(), tokenBasedRememberMeService());
-//	}
-//	@Bean 
-//	public RememberMeAuthenticationProvider rememberMeAuthenticationProvider(){
-//		 return new RememberMeAuthenticationProvider(tokenBasedRememberMeService().getKey());
-//	}
-//	@Bean 
-//	public TokenBasedRememberMeServices tokenBasedRememberMeService(){
-//		 TokenBasedRememberMeServices service = new TokenBasedRememberMeServices(env.getProperty("rememberme.key"), userDetailsServiceImpl);
-//		 service.setAlwaysRemember(true);
-//		 service.setCookieName("rememberme");
-//		 service.setTokenValiditySeconds(3600*24*365*1);
-//		 return service;
-//	}
-//	@Bean
-//	@Override
-//	public AuthenticationManager authenticationManagerBean() throws Exception {
-//		return super.authenticationManagerBean();
-//	}
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.csrf().disable();
+
+		http.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll().antMatchers("/api/**")
+				.fullyAuthenticated().and()
+				.addFilterBefore(oauthAuthenticationFilter(), BasicAuthenticationFilter.class).httpBasic()
+				.authenticationEntryPoint(forbEntryPoint());
+
+	}
+
+	@Bean
+	public AuthenticationEntryPoint forbEntryPoint() {
+		Http403ForbiddenEntryPoint authenticationEntryPoint = new Http403ForbiddenEntryPoint();
+		return authenticationEntryPoint;
+	}
+
+	@Bean
+	public OAuthTokenFilter oauthAuthenticationFilter() throws Exception {
+		OAuthTokenFilter oAuthTokenFilter = new OAuthTokenFilter();
+		oAuthTokenFilter.setAuthenticationManager(authenticationManager());
+		return oAuthTokenFilter;
+	}
+
+	@Bean
+	public OAuthAuthenticationProvider preauthAuthProvider() throws Exception {
+		OAuthAuthenticationProvider oAuthAuthenticationProvider = new OAuthAuthenticationProvider();
+		oAuthAuthenticationProvider.setAacURL(env.getProperty("ext.aacURL"));
+		oAuthAuthenticationProvider.setScope("profile.basicprofile.me");
+		return oAuthAuthenticationProvider;
+	}
+
+	public AuthenticationManager authenticationManager() throws Exception {
+		return super.authenticationManager();
+	}
+
 }
