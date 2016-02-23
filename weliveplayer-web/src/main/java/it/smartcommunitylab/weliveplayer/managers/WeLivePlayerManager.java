@@ -55,8 +55,8 @@ public class WeLivePlayerManager {
 		List<Artifact> artifacts = new ArrayList<Artifact>();
 
 		String url = env.getProperty("welive.mkp.uri");
-		url = url.replace("{pilotId}", pilotId);
-		url = url.replace("{appType}", appType);
+		url = url.replace("{pilotId}", "All");//pilotId
+		url = url.replace("{appType}", "All");//appType
 		
 		
 		try {
@@ -70,6 +70,14 @@ public class WeLivePlayerManager {
 						Artifact temp = new Artifact();
 						temp.setId(artifact.getString("artefactId"));
 						temp.setCity(pilotId);
+						String imageLink = artifact.getString("linkImage");
+						if (!imageLink.isEmpty()) {
+							if (!imageLink.startsWith("http")) {
+								imageLink = env.getProperty("welive.server") + imageLink;
+							}
+							temp.setLinkImage(imageLink);
+						}
+						
 						temp.setName(artifact.getString("name"));
 						temp.setDescription(artifact.getString("description"));
 						temp.seteId(artifact.getString("eId"));
@@ -82,15 +90,16 @@ public class WeLivePlayerManager {
 							Artifact.Comment comment = new Artifact.Comment();
 							JSONObject commentResponse = comments.getJSONObject(c);
 							if (commentResponse.has("text")) {
-								comment.setText(commentResponse.getString("text"));
+								comment.setComment(commentResponse.getString("text"));
 							}
 							if (commentResponse.has("creation_date")) {
-								comment.setDate(commentResponse.getString("creation_date"));
+								comment.setPublishDate(commentResponse.getString("creation_date"));
 							}
 							if (commentResponse.has("author_ccUid")) {
-								comment.setUserId(commentResponse.getString("author_ccUid"));
+								comment.setAuthorNode(commentResponse.getString("author_ccUid"));
 
 							}
+						
 							temp.getComments().add(comment);
 						}
 
@@ -127,15 +136,16 @@ public class WeLivePlayerManager {
 						Artifact.Comment comment = new Artifact.Comment();
 						JSONObject commentResponse = comments.getJSONObject(c);
 						if (commentResponse.has("text")) {
-							comment.setText(commentResponse.getString("text"));
+							comment.setComment(commentResponse.getString("text"));
 						}
 						if (commentResponse.has("creation_date")) {
-							comment.setDate(commentResponse.getString("creation_date"));
+							comment.setPublishDate(commentResponse.getString("creation_date"));
 						}
 						if (commentResponse.has("author_ccUid")) {
-							comment.setUserId(commentResponse.getString("author_ccUid"));
+							comment.setAuthorNode(commentResponse.getString("author_ccUid"));
 
 						}
+						
 						commentsList.add(comment);
 					}
 				}

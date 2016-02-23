@@ -34,6 +34,7 @@ public class Artifact {
 	private int typeId;
 	private List<Comment> comments = new ArrayList<Comment>();
 	private String recommendation;
+	private String tags;
 
 	public Artifact(String id, String description, String linkImage, String eId, String name, String city,
 			String interfaceOperation, int rating, String type, int typeId, List<Comment> comments,
@@ -154,39 +155,55 @@ public class Artifact {
 		this.typeId = typeId;
 	}
 
+	public String getTags() {
+		return tags;
+	}
+
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
+
 	public static class Comment {
 
-		private String text;
-
-		public String getText() {
-			return text;
-		}
-
-		public void setText(String text) {
-			this.text = text;
-		}
-
-		public String getUserId() {
-			return userId;
-		}
-
-		public void setUserId(String userId) {
-			this.userId = userId;
-		}
-
-		public String getDate() {
-			return date;
-		}
-
-		public void setDate(String date) {
-			this.date = date;
-		}
-
-		private String userId;
-		private String date;
+		private String comment;
+		private String authorNode;
+		private String publishDate;
+		private int rating;
 
 		public Comment() {
 			// TODO Auto-generated constructor stub
+		}
+
+		public String getComment() {
+			return comment;
+		}
+
+		public void setComment(String comment) {
+			this.comment = comment;
+		}
+
+		public String getAuthorNode() {
+			return authorNode;
+		}
+
+		public void setAuthorNode(String authorNode) {
+			this.authorNode = authorNode;
+		}
+
+		public String getPublishDate() {
+			return publishDate;
+		}
+
+		public void setPublishDate(String publishDate) {
+			this.publishDate = publishDate;
+		}
+
+		public int getRating() {
+			return rating;
+		}
+
+		public void setRating(int rating) {
+			this.rating = rating;
 		}
 
 	}
