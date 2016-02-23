@@ -120,10 +120,23 @@ public class WeLivePlayerManager {
 			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 
-		return artifacts;
+		List<Artifact> paginatedList = new ArrayList<>();
+		// pagination.
+		if (!artifacts.isEmpty() && (page * count) <= artifacts.size()) {
+			if ( ((page + 1) * count) <= artifacts.size()) {
+				paginatedList = artifacts.subList(page * count, (page + 1) * count);	
+			} else {
+				paginatedList = artifacts.subList(page * count, artifacts.size());
+			}
+			
+		} 
+		
+		return paginatedList;
+		
+		
 	}
 
-	public List<Comment> getArtifactComments(String userId, String artifactId, int i, int j)
+	public List<Comment> getArtifactComments(String userId, String artifactId, int page, int count)
 			throws WeLivePlayerCustomException {
 
 		List<Comment> commentsList = new ArrayList<Comment>();
@@ -162,8 +175,18 @@ public class WeLivePlayerManager {
 			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 
-		return commentsList;
-
+		List<Comment> paginatedList = new ArrayList<>();
+		// pagination.
+		if (!commentsList.isEmpty() && (page * count) <= commentsList.size()) {
+			if ( ((page + 1) * count) <= commentsList.size()) {
+				paginatedList = commentsList.subList(page * count, (page + 1) * count);	
+			} else {
+				paginatedList = commentsList.subList(page * count, commentsList.size());
+			}
+			
+		} 
+		
+		return paginatedList;
 	}
 
 	public Profile getUserProfile(String authorizationHeader) throws WeLivePlayerCustomException {
