@@ -16,22 +16,26 @@
 
 package it.smartcommunitylab.weliveplayer.managers;
 
-import it.smartcommunitylab.weliveplayer.model.Artifact;
-import it.smartcommunitylab.weliveplayer.model.Artifact.Comment;
-import it.smartcommunitylab.weliveplayer.utils.WeLivePlayerUtils;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+
+import it.smartcommunitylab.weliveplayer.exception.WeLivePlayerCustomException;
+import it.smartcommunitylab.weliveplayer.model.Artifact;
+import it.smartcommunitylab.weliveplayer.model.Artifact.Comment;
+import it.smartcommunitylab.weliveplayer.model.Profile;
+import it.smartcommunitylab.weliveplayer.utils.WeLivePlayerUtils;
 
 /**
  *
@@ -49,16 +53,18 @@ public class WeLivePlayerManager {
 	private Environment env;
 	/** Authorization. **/
 	public static String authHeader = "Basic d2VsaXZlQHdlbGl2ZS5ldTp3M2wxdjN0MDBscw==";
-	
-	public List<Artifact> getArtifacts(String userId, String pilotId, String appType, int page, int count) {
+	/** objectmapper. **/
+	private static ObjectMapper mapper = new ObjectMapper();
+
+	public List<Artifact> getArtifacts(String userId, String pilotId, String appType, int page, int count)
+			throws WeLivePlayerCustomException {
 
 		List<Artifact> artifacts = new ArrayList<Artifact>();
 
 		String url = env.getProperty("welive.mkp.uri");
-		url = url.replace("{pilotId}", "All");//pilotId
-		url = url.replace("{appType}", "All");//appType
-		
-		
+		url = url.replace("{pilotId}", "All");// pilotId
+		url = url.replace("{appType}", "All");// appType
+
 		try {
 			String response = weLivePlayerUtils.sendGET(url, "application/json", null, authHeader, -1);
 			if (response != null && !response.isEmpty()) {
@@ -77,7 +83,7 @@ public class WeLivePlayerManager {
 							}
 							temp.setLinkImage(imageLink);
 						}
-						
+
 						temp.setName(artifact.getString("name"));
 						temp.setDescription(artifact.getString("description"));
 						temp.seteId(artifact.getString("eId"));
@@ -99,7 +105,7 @@ public class WeLivePlayerManager {
 								comment.setAuthorNode(commentResponse.getString("author_ccUid"));
 
 							}
-						
+
 							temp.getComments().add(comment);
 						}
 
@@ -110,22 +116,21 @@ public class WeLivePlayerManager {
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 
-		
 		return artifacts;
 	}
 
-	public List<Comment> getArtifactComments(String userId, String artifactId, int i, int j) {
-		
+	public List<Comment> getArtifactComments(String userId, String artifactId, int i, int j)
+			throws WeLivePlayerCustomException {
+
 		List<Comment> commentsList = new ArrayList<Comment>();
-		
+
 		String url = env.getProperty("welive.mkp.singleApp.uri");
 		url = url.replace("{artefact-id}", artifactId);
-		
-		
+
 		try {
 			String response = weLivePlayerUtils.sendGET(url, "application/json", null, authHeader, -1);
 			if (response != null && !response.isEmpty()) {
@@ -145,7 +150,7 @@ public class WeLivePlayerManager {
 							comment.setAuthorNode(commentResponse.getString("author_ccUid"));
 
 						}
-						
+
 						commentsList.add(comment);
 					}
 				}
@@ -153,12 +158,79 @@ public class WeLivePlayerManager {
 			}
 
 		} catch (Exception e) {
-			
-			e.printStackTrace();
+
+			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
-		
+
 		return commentsList;
-		
+
+	}
+
+	public Profile getUserProfile(String authorizationHeader) throws WeLivePlayerCustomException {
+
+		Profile profile = null;
+
+		String aacUri = env.getProperty("ext.aacURL") + "/basicprofile/me";
+
+		try {
+			String response = weLivePlayerUtils.sendGET(aacUri, "application/json", "application/json",
+					authorizationHeader, -1);
+
+			if (response != null && !response.isEmpty()) {
+
+				JSONObject root = new JSONObject(response.toString());
+
+				if (root.has("userId")) {
+					// read userId.
+					String userId = "0"; // root.getString("userId");
+					// invoke cdv profile api.
+					String url = env.getProperty("welive.cdv.profile.uri");
+					url = url.replace("{id}", userId);
+
+					String profileAPIResponse = weLivePlayerUtils.sendGET(url, "application/json", "application/json",
+							authHeader, -1);
+
+					if (profileAPIResponse != null && !profileAPIResponse.isEmpty()) {
+						JSONObject profileJson = new JSONObject(profileAPIResponse);
+						if (profileJson.has("name")) {
+							profile = new Profile();
+							profile.setAddress(profileJson.getString("address"));
+							profile.setBirthdate(profileJson.getString("birthdate"));
+							profile.setCcUserID(profileJson.getString("ccUserID"));
+							profile.setCity(profileJson.getString("city"));
+							profile.setCountry(profileJson.getString("country"));
+							profile.setDeveloper(profileJson.getBoolean("isDeveloper"));
+							profile.setEmail(profileJson.getString("email"));
+							profile.setGender(profileJson.getString("gender"));
+							profile.setLanguages(mapper.readValue(profileJson.get("languages").toString(), List.class));
+							profile.setLastKnownLocation(
+									mapper.readValue(profileJson.get("lastKnownLocation").toString(), HashMap.class));
+							profile.setName(profileJson.getString("name"));
+							profile.setProfileData(
+									mapper.readValue(profileJson.get("profileData").toString(), HashMap.class));
+							profile.setSkills(mapper.readValue(profileJson.get("skills").toString(), List.class));
+							profile.setSurname(profileJson.getString("surname"));
+							profile.setThirdParties(
+									mapper.readValue(profileJson.get("thirdParties").toString(), List.class));
+							profile.setUsedApps(mapper.readValue(profileJson.get("usedApps").toString(), List.class));
+							profile.setZipCode(profileJson.getString("zipCode"));
+
+						}
+
+					}
+
+				} else {
+					throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+							"user not found");
+				}
+			}
+
+		} catch (Exception e) {
+
+			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+		}
+
+		return profile;
 	}
 
 }

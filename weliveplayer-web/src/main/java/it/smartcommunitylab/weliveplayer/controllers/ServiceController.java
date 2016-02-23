@@ -16,16 +16,12 @@
 
 package it.smartcommunitylab.weliveplayer.controllers;
 
-import it.smartcommunitylab.weliveplayer.exception.WeLivePlayerCustomException;
-import it.smartcommunitylab.weliveplayer.managers.WeLivePlayerManager;
-import it.smartcommunitylab.weliveplayer.model.Artifact;
-import it.smartcommunitylab.weliveplayer.model.Artifact.Comment;
-import it.smartcommunitylab.weliveplayer.model.Response;
-
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,6 +33,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import it.smartcommunitylab.weliveplayer.exception.WeLivePlayerCustomException;
+import it.smartcommunitylab.weliveplayer.managers.WeLivePlayerManager;
+import it.smartcommunitylab.weliveplayer.model.Artifact;
+import it.smartcommunitylab.weliveplayer.model.Artifact.Comment;
+import it.smartcommunitylab.weliveplayer.model.Profile;
+import it.smartcommunitylab.weliveplayer.model.Response;
+
 /**
  *
  * @author nawazk
@@ -47,6 +50,8 @@ public class ServiceController {
 
 	@Autowired
 	private WeLivePlayerManager weLivePlayerManager;
+	
+	private static ObjectMapper mapper = new ObjectMapper();
 
 	@RequestMapping(method = RequestMethod.GET, value = "/api/apps/{pilotId}/{appType}")
 	public @ResponseBody Response<List<Artifact>> readDriverTrips(@PathVariable String pilotId,
@@ -55,6 +60,16 @@ public class ServiceController {
 
 		return new Response<List<Artifact>>(weLivePlayerManager.getArtifacts(getUserId(), pilotId, appType,
 				(start == null ? 0 : start), (count == null ? 20 : count)));
+
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/api/userProfile")
+	public @ResponseBody Response<Profile> readDriverTrips(HttpServletRequest httpRequest)
+			throws WeLivePlayerCustomException {
+
+		String authHeader = httpRequest.getHeader("Authorization");
+
+		return new Response<Profile>(weLivePlayerManager.getUserProfile(authHeader));
 
 	}
 
