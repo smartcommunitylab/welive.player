@@ -19,7 +19,10 @@ package it.smartcommunitylab.weliveplayer.managers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
@@ -30,6 +33,10 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 
 import it.smartcommunitylab.weliveplayer.exception.WeLivePlayerCustomException;
 import it.smartcommunitylab.weliveplayer.model.Artifact;
@@ -55,10 +62,81 @@ public class WeLivePlayerManager {
 	public static String authHeader = "Basic d2VsaXZlQHdlbGl2ZS5ldTp3M2wxdjN0MDBscw==";
 	/** objectmapper. **/
 	private static ObjectMapper mapper = new ObjectMapper();
+	/** application cache. **/
+	private LoadingCache<String, List<Artifact>> appsCache;
+	/** application comments cache. **/
+	private LoadingCache<String, List<Comment>> appCommentsCache;
 
-	public List<Artifact> getArtifacts(String userId, String pilotId, String appType, int page, int count)
-			throws WeLivePlayerCustomException {
+	/**
+	 * Apps Cache Generator.
+	 * 
+	 * @throws ExecutionException
+	 */
+	@PostConstruct
+	public void init() throws ExecutionException {
+		// create a cache for List<Artifact> based on city.
+		appsCache = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES)
+				.build(new CacheLoader<String, List<Artifact>>() {
+					@Override
+					public List<Artifact> load(String city) throws Exception {
+						List<Artifact> artifacts = getArtifacts(city, "ALL");
+						return artifacts;
+					}
+				});
 
+		appCommentsCache = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES)
+				.build(new CacheLoader<String, List<Comment>>() {
+
+					@Override
+					public List<Comment> load(String appId) throws Exception {
+						List<Comment> comments = getComments(appId);
+						return comments;
+					}
+
+				});
+
+	}
+
+	protected List<Comment> getComments(String artifactId) throws WeLivePlayerCustomException {
+		List<Comment> commentsList = new ArrayList<Comment>();
+
+		String url = env.getProperty("welive.mkp.singleApp.uri");
+		url = url.replace("{artefact-id}", artifactId);
+
+		try {
+			String response = weLivePlayerUtils.sendGET(url, "application/json", null, authHeader, -1);
+			if (response != null && !response.isEmpty()) {
+				JSONObject root = new JSONObject(response);
+				if (root.has("name")) {
+					JSONArray comments = root.getJSONArray("comments");
+					for (int c = 0; c < comments.length(); c++) {
+						Artifact.Comment comment = new Artifact.Comment();
+						JSONObject commentResponse = comments.getJSONObject(c);
+						if (commentResponse.has("text")) {
+							comment.setComment(commentResponse.getString("text"));
+						}
+						if (commentResponse.has("creation_date")) {
+							comment.setPublishDate(commentResponse.getString("creation_date"));
+						}
+						if (commentResponse.has("author_ccUid")) {
+							comment.setAuthorNode(commentResponse.getString("author_ccUid"));
+
+						}
+
+						commentsList.add(comment);
+					}
+				}
+
+			}
+		} catch (Exception e) {
+
+			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+		}
+		
+		return commentsList;
+	}
+
+	private List<Artifact> getArtifacts(String pilotId, String appType) throws WeLivePlayerCustomException {
 		List<Artifact> artifacts = new ArrayList<Artifact>();
 
 		String url = env.getProperty("welive.mkp.uri");
@@ -119,21 +197,33 @@ public class WeLivePlayerManager {
 
 			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
+		
+		return artifacts;
+	}
+
+	public List<Artifact> getArtifacts(String userId, String pilotId, String appType, int page, int count)
+			throws WeLivePlayerCustomException {
+
+		List<Artifact> artifacts = new ArrayList<>();
+		try {
+			artifacts = appsCache.get(pilotId);
+		} catch (ExecutionException e) {
+			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+		}
 
 		List<Artifact> paginatedList = new ArrayList<>();
 		// pagination.
-		if (!artifacts.isEmpty() && (page * count) <= artifacts.size()) {
-			if ( ((page + 1) * count) <= artifacts.size()) {
-				paginatedList = artifacts.subList(page * count, (page + 1) * count);	
+		if (artifacts != null && !artifacts.isEmpty() && (page * count) <= artifacts.size()) {
+			if (((page + 1) * count) <= artifacts.size()) {
+				paginatedList = artifacts.subList(page * count, (page + 1) * count);
 			} else {
 				paginatedList = artifacts.subList(page * count, artifacts.size());
 			}
-			
-		} 
-		
+
+		}
+
 		return paginatedList;
-		
-		
+
 	}
 
 	public List<Comment> getArtifactComments(String userId, String artifactId, int page, int count)
@@ -141,51 +231,23 @@ public class WeLivePlayerManager {
 
 		List<Comment> commentsList = new ArrayList<Comment>();
 
-		String url = env.getProperty("welive.mkp.singleApp.uri");
-		url = url.replace("{artefact-id}", artifactId);
-
 		try {
-			String response = weLivePlayerUtils.sendGET(url, "application/json", null, authHeader, -1);
-			if (response != null && !response.isEmpty()) {
-				JSONObject root = new JSONObject(response);
-				if (root.has("name")) {
-					JSONArray comments = root.getJSONArray("comments");
-					for (int c = 0; c < comments.length(); c++) {
-						Artifact.Comment comment = new Artifact.Comment();
-						JSONObject commentResponse = comments.getJSONObject(c);
-						if (commentResponse.has("text")) {
-							comment.setComment(commentResponse.getString("text"));
-						}
-						if (commentResponse.has("creation_date")) {
-							comment.setPublishDate(commentResponse.getString("creation_date"));
-						}
-						if (commentResponse.has("author_ccUid")) {
-							comment.setAuthorNode(commentResponse.getString("author_ccUid"));
-
-						}
-
-						commentsList.add(comment);
-					}
-				}
-
-			}
-
-		} catch (Exception e) {
-
+			commentsList = appCommentsCache.get(artifactId);
+		} catch (ExecutionException e) {
 			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 
 		List<Comment> paginatedList = new ArrayList<>();
 		// pagination.
 		if (!commentsList.isEmpty() && (page * count) <= commentsList.size()) {
-			if ( ((page + 1) * count) <= commentsList.size()) {
-				paginatedList = commentsList.subList(page * count, (page + 1) * count);	
+			if (((page + 1) * count) <= commentsList.size()) {
+				paginatedList = commentsList.subList(page * count, (page + 1) * count);
 			} else {
 				paginatedList = commentsList.subList(page * count, commentsList.size());
 			}
-			
-		} 
-		
+
+		}
+
 		return paginatedList;
 	}
 

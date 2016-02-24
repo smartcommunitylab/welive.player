@@ -21,7 +21,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -51,8 +50,6 @@ public class ServiceController {
 	@Autowired
 	private WeLivePlayerManager weLivePlayerManager;
 	
-	private static ObjectMapper mapper = new ObjectMapper();
-
 	@RequestMapping(method = RequestMethod.GET, value = "/api/apps/{pilotId}/{appType}")
 	public @ResponseBody Response<List<Artifact>> readDriverTrips(@PathVariable String pilotId,
 			@PathVariable String appType, @RequestParam(required = false) Integer start,
