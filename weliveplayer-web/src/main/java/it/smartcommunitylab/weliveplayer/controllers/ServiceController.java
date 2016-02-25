@@ -51,7 +51,7 @@ public class ServiceController {
 	private WeLivePlayerManager weLivePlayerManager;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/api/apps/{pilotId}/{appType}")
-	public @ResponseBody Response<List<Artifact>> readDriverTrips(@PathVariable String pilotId,
+	public @ResponseBody Response<List<Artifact>> getArtifacts(@PathVariable String pilotId,
 			@PathVariable String appType, @RequestParam(required = false) Integer start,
 			@RequestParam(required = false) Integer count) throws WeLivePlayerCustomException {
 
@@ -61,7 +61,7 @@ public class ServiceController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/api/userProfile")
-	public @ResponseBody Response<Profile> readDriverTrips(HttpServletRequest httpRequest)
+	public @ResponseBody Response<Profile> getUserProfile(HttpServletRequest httpRequest)
 			throws WeLivePlayerCustomException {
 
 		String authHeader = httpRequest.getHeader("Authorization");
@@ -71,7 +71,7 @@ public class ServiceController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/api/appComments/{artifactId}")
-	public @ResponseBody Response<List<Comment>> readDriverTrips(@PathVariable String artifactId,
+	public @ResponseBody Response<List<Comment>> getAppComments(@PathVariable String artifactId,
 			@RequestParam(required = false) Integer start, @RequestParam(required = false) Integer count)
 			throws WeLivePlayerCustomException {
 

@@ -81,8 +81,11 @@ angular.module(
                 StatusBar.styleDefault();
             }
 
-            //alert("Path app " + JSON.stringify(window.location));
-
+            //disable login fix.
+            /*$state.go('app.home', {}, {
+                        reload: true
+                    });*/
+                    
             if (LoginSrv.userIsLogged()) {
                 
                 // LoginSrv.accessToken().then( 

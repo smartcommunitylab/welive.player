@@ -6,7 +6,8 @@ angular.module('weliveplayer.services.config', [])
         var SERVER_PROFILE_URL = "https://dev.welive.eu/aac/basicprofile/me";
         var CLIENT_ID = "1cc2f5f2-05a8-4153-b1ab-868096d629c0";
         var CLIENT_SEC_KEY = "df9a1151-34ab-4c5a-904d-a03de42e2881";
-        var REDIRECT_URI = "http://localhost"
+        var REDIRECT_URI = "http://localhost";
+        var WELIVE_PROXY = "https://dev.welive.eu/weliveplayer/api/";
 
         var HTTP_CONFIG = {
             timeout: 5000
@@ -45,6 +46,9 @@ angular.module('weliveplayer.services.config', [])
             },
             getHTTPConfig: function () {
                 return HTTP_CONFIG;
+            },
+            getWeLiveProxyUri: function () {
+                return WELIVE_PROXY;
             },
             LOGIN_EXPIRED: LOGIN_EXPIRED,
             init: function () {

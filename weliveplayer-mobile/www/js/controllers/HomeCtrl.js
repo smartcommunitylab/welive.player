@@ -2,7 +2,7 @@ angular.module('weliveplayer.controllers.home', [])
     .controller('HomeCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, PlayStore) {
 
         $scope.selections = ['Novisad'];	
-        //   $scope.items = Utils.getAppsByRegion($scope.selections);	
+        //$scope.items = Utils.getAppsByRegion($scope.selections);	
    
         var creationSuccess = function (apps) {
             $scope.items = apps;
@@ -85,22 +85,57 @@ angular.module('weliveplayer.controllers.home', [])
 
         // get app info.
         $scope.app = Utils.getAppDetails($state.params.appId, $state.params.appRegion);
+        
+        $scope.selection = 'info';
+        
+        var appStoreId = "eu.trentorise.smartcampus.viaggiarovereto"; //com.twitter.android
+        
+        // check if app is installed.
+        navigator.startApp.check(appStoreId, function (message) { /* success */
+            console.log("app exists.");
+            // console.log(message.versionName);
+            // console.log(message.packageName);
+            // console.log(message.versionCode);
+            // console.log(message.applicationInfo);
+            $scope.appInstallStatus = "forward";
+        },
+            function (error) { /* error */
+                console.log("app does not exist.");
+                $scope.appInstallStatus = "download";
+            });
+    
     
         // sub controller.
         $scope.showAppComments = function () {
-            $scope.selection = 'userComment';
+            // $scope.selection = 'userComment';
             $state.go('app.comments', { appId: $scope.app.id, appRegion: $scope.app.city });
         }
 
-        $scope.selection = 'info';
-
         $scope.download = function (id) {
-            $scope.selection = 'download';
-
+            if ($scope.appInstallStatus == 'download') {
+                // alert("download");
+                var appId = appStoreId;
+                cordova.plugins.market.open(appId, {
+                    success: function () {
+                    },
+                    failure: function () {
+                    }
+                });
+                
+            } else if ($scope.appInstallStatus == 'forward') {
+                // alert("forward");
+                navigator.startApp.start(appStoreId, function (message) {  /* success */
+                    console.log(message); // => OK
+                },function (error) { /* error */
+                        console.log(error);
+                });
+            }
+            
         }
 
         $scope.info = function () {
             $scope.selection = 'info';
+            $state.go('app.single', { appId: $scope.app.id, appRegion: $scope.app.city });
         }
    
         // read it from cache.
@@ -122,33 +157,51 @@ angular.module('weliveplayer.controllers.home', [])
     .controller('AppCommentsCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, $q, PlayStore) {
 
         var app = Utils.getAppDetails($state.params.appId, $state.params.appRegion);
+        
+        navigator.startApp.check("com.twitter.android", function (message) { /* success */
+            console.log("app exists.");
+            $scope.appInstallStatus = "forward";
+        }, function (error) { /* error */
+            console.log("app does not exist.");
+            $scope.appInstallStatus = "download";
+        });
 
         $scope.name = app.name;
         $scope.id = app.id;
         $scope.region = app.city;
 
         $scope.download = function (id) {
+            var appId = "eu.trentorise.smartcampus.viaggiatrento";
+            if ($scope.appInstallStatus == 'download') {
+                // alert("download");
+                var appId = "eu.trentorise.smartcampus.viaggiatrento";
+                cordova.plugins.market.open(appId, {
+                    success: function () {
+                    },
+                    failure: function () {
+                    }
+                });
+            } else if ($scope.appInstallStatus == 'forward') {
+                // alert("forward");
+                navigator.startApp.start(appId, function (message) {
+                    console.log(message);
+                }, function (error) {
+                    console.log(error);
+                });
+            }
         }
-
+        
+        $scope.selection = 'userComment';
 
         $scope.info = function () {
+            $scope.selection = 'info';
             $state.go('app.single', { appId: app.id, appRegion: app.city });
         }
-
-        //   var appId = "eu.trentorise.smartcampus.viaggiatrento";
-        //   cordova.plugins.market.open(appId, {
-        //     success: function() {
-        //       debugger;
-        //     },
-        //     failure: function() {
-        //    	 debugger;
-        //     }
-        //   })
 
         var opts = {};
 
         opts.id = app.id;
-        opts.storeId = app.storeId;
+        opts.storeId = app.eId;
         opts.city = app.city;
         opts.sort = "newest";
         opts.page = 0;

@@ -1,10 +1,48 @@
 angular.module('weliveplayer.services.playstore', [])
 
-    .factory('PlayStore', function ($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, $http) {
+    .factory('PlayStore', function ($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, $http, Config, LoginSrv) {
 
         var playStoreService = {};
 
-        var playStoreUserReviews = new Object();
+        playStoreService.getUserReviews = function getUserReviews(opts) {
+
+            var deferred = $q.defer();
+
+            // var token = "4155f2a3-e1ab-44b3-a7f0-7f292faa7a57";
+            // var url = Config.getWeLiveProxyUri() + "appComments/" + opts.id;
+            // $http.get(url, { headers: { "Authorization": "Bearer " + token } })
+            //     .then(function (response) {
+            //         var reviews = response.data.data;
+            //         deferred.resolve(reviews);
+            //     }, function (error) {
+            //         deferred.resolve(null);
+            //     })
+                
+             LoginSrv.accessToken().then(
+                function (token) {
+                    var url = Config.getWeLiveProxyUri() + "appComments/" + opts.id;
+                    $http.get(url, { headers: { "Authorization": "Bearer " + token } })
+                        .then(function (response) {
+                            var reviews = response.data.data;
+                            deferred.resolve(reviews);
+
+                        }, function (error) {
+                            deferred.resolve(null);
+                        })
+
+                },
+                function (responseError) {
+                    deferred.resolve(null);
+                }
+
+                );    
+
+
+            return deferred.promise;
+
+        }
+   
+/*      var playStoreUserReviews = new Object();
 
         playStoreService.convertSort = function convertSort(sort) {
             switch (sort) {
@@ -17,8 +55,9 @@ angular.module('weliveplayer.services.playstore', [])
                 default:
                     return 0;
             }
-        }
-
+        }*/
+        
+        /*
         playStoreService.getUserReviews = function getUserReviews(opts) {
 
             var deferred = $q.defer();
@@ -57,7 +96,7 @@ angular.module('weliveplayer.services.playstore', [])
             return deferred.promise;
 
         }
-
+        
         playStoreService.getAgreegateReview = function getAgreegateReview(storeId) {
 
             var deferred = $q.defer();
@@ -127,9 +166,9 @@ angular.module('weliveplayer.services.playstore', [])
             //			}
             //			http.send();
 
-        }
+        }*/
 
-        playStoreService.parseFields = function parseFields(response) {
+        /*playStoreService.parseFields = function parseFields(response) {
 
             var document = angular.element(response);
 
@@ -162,7 +201,7 @@ angular.module('weliveplayer.services.playstore', [])
 
 
             return userReviews;
-        }
+        }*/
 
         return playStoreService;
     });

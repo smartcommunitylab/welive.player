@@ -99,6 +99,7 @@ angular.module('weliveplayer.services.login', [])
 
             authapi.authorize().then(
                 function (profile) {
+                    // debugger;
                     console.log('success: ' + profile.userId);
                     StorageSrv.saveUser(profile).then(function () {
                         deferred.resolve(profile);

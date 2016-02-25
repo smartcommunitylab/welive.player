@@ -11,7 +11,7 @@
         </div>
         <ion-list>
             <ion-item ng-repeat="item in items" class="app-item item-thumbnail-left" ng-class="{'recomm': item.active}" ng-click="showAppDetails(item.id, item.city)">
-                <img ng-src="img/ionic.png">
+                <img ng-src="{{ item.linkImage}}">
                 <h4>{{ item.city }}</h4>
                 <h2>{{ item.name }}</h2>
                 <div class="rating-avg-star">

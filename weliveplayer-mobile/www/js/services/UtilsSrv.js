@@ -1,6 +1,6 @@
 angular.module('weliveplayer.services.utils', [])
 
-.factory('Utils', function ($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, $http, PlayStore) {
+.factory('Utils', function ($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, $http, PlayStore, Config, LoginSrv) {
 
 	var utilsService = {};
 
@@ -44,8 +44,47 @@ angular.module('weliveplayer.services.utils', [])
        return deferred.promise;
 
     }
+    
+    
+    utilsService.fetchApps = function fetchApps(region) {
 
+        var deferred = $q.defer();
 
+        var apps = [];
+
+        if (appMap[region] != null) {
+            var arr = appMap[region];
+            if (arr) {
+                apps = apps.concat(arr);
+                deferred.resolve(apps);
+            }
+        } else {
+            LoginSrv.accessToken().then(
+                function (token) {
+                    // var token = "4155f2a3-e1ab-44b3-a7f0-7f292faa7a57";
+                    var url = Config.getWeLiveProxyUri() + "apps/" + region + "/All";
+                    $http.get(url, { headers: { "Authorization": "Bearer " + token } })
+
+                        .then(function (response) {
+                            var apps = response.data.data;
+                            deferred.resolve(apps);
+
+                        }, function (error) {
+                            deferred.resolve(null);
+                        })
+
+                },
+                function (responseError) {
+                    deferred.resolve(null);
+                }
+
+                );
+
+        } 
+         return deferred.promise;
+ }
+
+/**
     utilsService.fetchApps = function fetchApps(region) {
 
     	var deferred = $q.defer();
@@ -100,7 +139,7 @@ angular.module('weliveplayer.services.utils', [])
 
  }
 
-    /**
+    
     var appMap = {
 
     	Trento: [
@@ -318,6 +357,13 @@ angular.module('weliveplayer.services.utils', [])
         }
     };
     
+    utilsService.toCamelCase = function (str) {
+        return str
+            .replace(/\s(.)/g, function ($1) { return $1.toUpperCase(); })
+            .replace(/\s/g, '')
+            .replace(/^(.)/, function ($1) { return $1.toLowerCase(); });
+    };
+
     utilsService.loading = function () {
         $ionicLoading.show();
     };
