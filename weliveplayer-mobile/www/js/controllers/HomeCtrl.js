@@ -1,9 +1,9 @@
 angular.module('weliveplayer.controllers.home', [])
     .controller('HomeCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, PlayStore) {
 
-        $scope.selections = ['Novisad'];	
-        //$scope.items = Utils.getAppsByRegion($scope.selections);	
-   
+        $scope.selections = ['Trento'];
+        // read it from user profile (pilotId).	
+        
         var creationSuccess = function (apps) {
             $scope.items = apps;
             Utils.loaded();
