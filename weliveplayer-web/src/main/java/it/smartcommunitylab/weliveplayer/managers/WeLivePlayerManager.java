@@ -105,6 +105,8 @@ public class WeLivePlayerManager {
 
 		try {
 			String response = weLivePlayerUtils.sendGET(url, "application/json", null, authHeader, -1);
+			
+//			weLivePlayerUtils.log(artifactId);
 			if (response != null && !response.isEmpty()) {
 				JSONObject root = new JSONObject(response);
 				if (root.has("name")) {
@@ -204,6 +206,9 @@ public class WeLivePlayerManager {
 	public List<Artifact> getArtifacts(String userId, String pilotId, String appType, int page, int count)
 			throws WeLivePlayerCustomException {
 
+		// log here.
+		weLivePlayerUtils.logEvent(userId, pilotId, null);
+		
 		List<Artifact> artifacts = new ArrayList<>();
 		try {
 			artifacts = appsCache.get(pilotId);
@@ -258,6 +263,7 @@ public class WeLivePlayerManager {
 		String aacUri = env.getProperty("ext.aacURL") + "/basicprofile/me";
 
 		try {
+			
 			String response = weLivePlayerUtils.sendGET(aacUri, "application/json", "application/json",
 					authorizationHeader, -1);
 
@@ -316,6 +322,39 @@ public class WeLivePlayerManager {
 		}
 
 		return profile;
+	}
+	
+	public String getUserId(String authorizationHeader) throws WeLivePlayerCustomException {
+
+		String userId = null;
+
+		String aacUri = env.getProperty("ext.aacURL") + "/basicprofile/me";
+
+		try {
+						
+			String response = weLivePlayerUtils.sendGET(aacUri, "application/json", "application/json",
+					authorizationHeader, -1);
+
+			if (response != null && !response.isEmpty()) {
+
+				JSONObject root = new JSONObject(response.toString());
+
+				if (root.has("userId")) {
+
+					userId = root.getString("userId");
+
+				} else {
+					throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+							"user not found");
+				}
+			}
+
+		} catch (Exception e) {
+
+			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+		}
+
+		return userId;
 	}
 
 }
