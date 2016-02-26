@@ -4,10 +4,11 @@ angular.module('weliveplayer.services.config', [])
         var SERVER_URL = "https://dev.welive.eu/aac/eauth/authorize";
         var SERVER_TOKEN_URL = "https://dev.welive.eu/aac/oauth/token";
         var SERVER_PROFILE_URL = "https://dev.welive.eu/aac/basicprofile/me";
-        var CLIENT_ID = "1cc2f5f2-05a8-4153-b1ab-868096d629c0";
-        var CLIENT_SEC_KEY = "df9a1151-34ab-4c5a-904d-a03de42e2881";
+        var CLIENT_ID = "e4cd499e-81ac-4240-bd5c-1d4680f2f99f";
+        var CLIENT_SEC_KEY = "6b934176-4513-43dd-a713-b926bfd979e2";
         var REDIRECT_URI = "http://localhost";
         var WELIVE_PROXY = "https://dev.welive.eu/weliveplayer/api/";
+        var WELIVE_API_URI = "https://dev.welive.eu/dev/api";
 
         var HTTP_CONFIG = {
             timeout: 5000
@@ -20,6 +21,9 @@ angular.module('weliveplayer.services.config', [])
         var LOGIN_EXPIRED = 'LOGIN_EXPIRED';
 
         return {
+            getWeLiveAPIUri: function () {
+              return WELIVE_API_URI;  
+            },
             getServerURL: function () {
                 return SERVER_URL;
             },

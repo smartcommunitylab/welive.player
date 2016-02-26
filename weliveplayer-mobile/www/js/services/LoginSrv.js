@@ -201,7 +201,7 @@ angular.module('weliveplayer.services.login', [])
             // check for expiry.
             var now = new Date();
             var saved = new Date(user.token.validUntil);
-            if (saved > now) {
+            if (saved.getTime() >= now.getTime()) {
                 deferred.resolve(user.token.access_token);
             } else {
                 var url = Config.getServerTokenURL();
@@ -223,7 +223,7 @@ angular.module('weliveplayer.services.login', [])
                                 user.token.validUntil = t;
                                 deferred.resolve(access_token);
                             } else {
-                                deferred.resolve(null);
+                                deferred.reject(null);
                             }
                         },
                         function (responseError) {

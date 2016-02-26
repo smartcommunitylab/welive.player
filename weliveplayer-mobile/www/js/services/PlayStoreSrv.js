@@ -1,6 +1,6 @@
 angular.module('weliveplayer.services.playstore', [])
 
-    .factory('PlayStore', function ($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, $http, Config, LoginSrv) {
+    .factory('PlayStore', function ($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, $http, Config, LoginSrv, Utils) {
 
         var playStoreService = {};
 
@@ -20,6 +20,7 @@ angular.module('weliveplayer.services.playstore', [])
                 
              LoginSrv.accessToken().then(
                 function (token) {
+                    // Utils.log("GET - Proxy(/api/apps/{pilotId}/{appType})", "All"). then (function () {}, function () {});
                     var url = Config.getWeLiveProxyUri() + "appComments/" + opts.id;
                     $http.get(url, { headers: { "Authorization": "Bearer " + token } })
                         .then(function (response) {
