@@ -49,13 +49,16 @@ public class ServiceController {
 
 	@Autowired
 	private WeLivePlayerManager weLivePlayerManager;
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/api/apps/{pilotId}/{appType}")
 	public @ResponseBody Response<List<Artifact>> getArtifacts(@PathVariable String pilotId,
 			@PathVariable String appType, @RequestParam(required = false) Integer start,
-			@RequestParam(required = false) Integer count) throws WeLivePlayerCustomException {
+			@RequestParam(required = false) Integer count, HttpServletRequest httpRequest)
+			throws WeLivePlayerCustomException {
 
-		return new Response<List<Artifact>>(weLivePlayerManager.getArtifacts(getUserId(), pilotId, appType,
+		String authHeader = httpRequest.getHeader("Authorization");
+
+		return new Response<List<Artifact>>(weLivePlayerManager.getArtifacts(getUserId(authHeader), pilotId, appType,
 				(start == null ? 0 : start), (count == null ? 20 : count)));
 
 	}
@@ -72,10 +75,12 @@ public class ServiceController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/api/appComments/{artifactId}")
 	public @ResponseBody Response<List<Comment>> getAppComments(@PathVariable String artifactId,
-			@RequestParam(required = false) Integer start, @RequestParam(required = false) Integer count)
-			throws WeLivePlayerCustomException {
+			@RequestParam(required = false) Integer start, @RequestParam(required = false) Integer count,
+			HttpServletRequest httpRequest) throws WeLivePlayerCustomException {
 
-		return new Response<List<Comment>>(weLivePlayerManager.getArtifactComments(getUserId(), artifactId,
+		String authHeader = httpRequest.getHeader("Authorization");
+
+		return new Response<List<Comment>>(weLivePlayerManager.getArtifactComments(getUserId(authHeader), artifactId,
 				(start == null ? 0 : start), (count == null ? 20 : count)));
 
 	}
@@ -89,9 +94,9 @@ public class ServiceController {
 		return res;
 	}
 
-	private String getUserId() {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return (principal instanceof UserDetails) ? ((UserDetails) principal).getUsername() : principal.toString();
+	private String getUserId(String authHeader) throws WeLivePlayerCustomException {
+		
+		return weLivePlayerManager.getUserId(authHeader);
 	}
 
 }
