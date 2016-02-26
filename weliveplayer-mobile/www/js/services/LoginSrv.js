@@ -51,14 +51,14 @@ angular.module('weliveplayer.services.login', [])
                             loginService.makeTokenPost(str).then(function (tokenInfo) {
                                 // append token info to data.
                                 tokenInfo.token = str;
-                                
+
                                 loginService.makeProfileCall(tokenInfo).then(function (profile) {
                                     profile.token = tokenInfo;
                                     // set expiry (after removing 1 hr).
                                     var t = new Date();
                                     t.setSeconds(t.getSeconds() + (profile.token.expires_in - 3600));
                                     profile.token.validUntil = t;
-                                    
+
                                     deferred.resolve(profile);
                                 },
                                     function (error) {
@@ -191,11 +191,11 @@ angular.module('weliveplayer.services.login', [])
             return deferred.promise;
 
         }
-        
-        loginService.accessToken = function() {
-           
+
+        loginService.accessToken = function () {
+
             var user = StorageSrv.getUser();
-            
+
             var deferred = $q.defer();
             
             // check for expiry.
@@ -213,7 +213,7 @@ angular.module('weliveplayer.services.login', [])
                     .then(
                         function (response) {
                             if (response.data.access_token) {
-                                var access_token = response.data.access_token; 
+                                var access_token = response.data.access_token;
                                 user.token.access_token = response.data.access_token;
                                 user.token.refresh_token = response.data.refresh_token;
                                 user.token.expires_in = response.data.expires_in;
@@ -230,12 +230,12 @@ angular.module('weliveplayer.services.login', [])
                             deferred.reject(responseError);
                         }
                         );
-                
+
             }
-        
+
             return deferred.promise;
-        
+
         }
-     
+
         return loginService;
     });

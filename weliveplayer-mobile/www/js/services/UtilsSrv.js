@@ -1,6 +1,6 @@
 angular.module('weliveplayer.services.utils', [])
 
-    .factory('Utils', function ($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, $http, Config, LoginSrv) {
+    .factory('Utils', function ($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, $http, Config, LoginSrv, StorageSrv) {
 
         var utilsService = {};
 
@@ -364,14 +364,35 @@ angular.module('weliveplayer.services.utils', [])
                 .replace(/\s/g, '')
                 .replace(/^(.)/, function ($1) { return $1.toLowerCase(); });
         };
-        
-        utilsService.log = function (msg, appId) {
+
+        utilsService.logAppDownload = function (appStoreId, pilotId) {
+            var userId = StorageSrv.getLoggedInUserId();
+            var appDownloadJson = Config.getAppDownloadJson();
+            appDownloadJson.custom_attr.UserId = userId;
+            appDownloadJson.custom_attr.AppId = appStoreId;
+            appDownloadJson.custom_attr.PilotID = pilotId;
+
+            utilsService.log(appDownloadJson);
+        };
+
+        utilsService.logAppOpen = function (appStoreId, pilotId) {
+            var userId = StorageSrv.getLoggedInUserId();
+            var appOpenJson = Config.getAppOpenJson();
+            appOpenJson.custom_attr.UserId = userId;
+            appOpenJson.custom_attr.AppId = appStoreId;
+            appOpenJson.custom_attr.PilotID = pilotId;
+
+            utilsService.log(appOpenJson);
+
+        };
+
+        utilsService.log = function (body) {
 
             var deferred = $q.defer();
 
-            var url = Config.getWeLiveAPIUri() + "/log/" + appId;
+            var url = Config.getLogUri();
 
-            $http.post(url, { headers: { "Accept": "application/json", "Content-Type": "application/json" } })
+            $http.post(url, body, { headers: { "Accept": "application/json", "Content-Type": "application/json" } })
 
                 .then(function (response) {
                     deferred.resolve(null);
@@ -381,8 +402,8 @@ angular.module('weliveplayer.services.utils', [])
                 })
 
             return deferred.promise;
-        } 
-        
+        }
+
 
         utilsService.loading = function () {
             $ionicLoading.show();

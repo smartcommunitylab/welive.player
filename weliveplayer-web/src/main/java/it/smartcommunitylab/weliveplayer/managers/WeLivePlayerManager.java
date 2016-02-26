@@ -105,8 +105,8 @@ public class WeLivePlayerManager {
 
 		try {
 			String response = weLivePlayerUtils.sendGET(url, "application/json", null, authHeader, -1);
-			
-//			weLivePlayerUtils.log(artifactId);
+
+			// weLivePlayerUtils.log(artifactId);
 			if (response != null && !response.isEmpty()) {
 				JSONObject root = new JSONObject(response);
 				if (root.has("name")) {
@@ -134,7 +134,7 @@ public class WeLivePlayerManager {
 
 			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
-		
+
 		return commentsList;
 	}
 
@@ -199,7 +199,7 @@ public class WeLivePlayerManager {
 
 			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
-		
+
 		return artifacts;
 	}
 
@@ -208,7 +208,7 @@ public class WeLivePlayerManager {
 
 		// log here.
 		weLivePlayerUtils.logEvent(userId, pilotId, null);
-		
+
 		List<Artifact> artifacts = new ArrayList<>();
 		try {
 			artifacts = appsCache.get(pilotId);
@@ -263,7 +263,7 @@ public class WeLivePlayerManager {
 		String aacUri = env.getProperty("ext.aacURL") + "/basicprofile/me";
 
 		try {
-			
+
 			String response = weLivePlayerUtils.sendGET(aacUri, "application/json", "application/json",
 					authorizationHeader, -1);
 
@@ -323,7 +323,7 @@ public class WeLivePlayerManager {
 
 		return profile;
 	}
-	
+
 	public String getUserId(String authorizationHeader) throws WeLivePlayerCustomException {
 
 		String userId = null;
@@ -331,7 +331,7 @@ public class WeLivePlayerManager {
 		String aacUri = env.getProperty("ext.aacURL") + "/basicprofile/me";
 
 		try {
-						
+
 			String response = weLivePlayerUtils.sendGET(aacUri, "application/json", "application/json",
 					authorizationHeader, -1);
 

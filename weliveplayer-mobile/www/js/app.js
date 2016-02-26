@@ -36,15 +36,10 @@ angular.module(
             LoginSrv.login().then(
                 function (profile) {
                     $rootScope.loginStarted = false;
+
                     $state.go('app.home', {}, {
                         reload: true
                     });
-                    // UserSrv.getUser(data.userId).then(function () {
-                    //     $rootScope.pushRegistration(data.userId);
-                    //     $state.go('app.home', {}, {
-                    //         reload: true
-                    //     });
-                    // });
                 },
                 function (error) {
                     $rootScope.loginStarted = false;
@@ -80,12 +75,12 @@ angular.module(
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
-
+            
             //disable login fix.
             /*$state.go('app.home', {}, {
                         reload: true
                     });*/
-                    
+
             if (LoginSrv.userIsLogged()) {
                 
                 // LoginSrv.accessToken().then( 
@@ -97,11 +92,20 @@ angular.module(
                 //     });
                 
                 $state.go('app.home', {}, {
-                        reload: true
-                    });
+                    reload: true
+                });
             } else {
                 $rootScope.login();
             }
+            
+            // LOG EVENT (PlayerAccess)
+            var jsonPlayerAccess = Config.getPlayerAccessJson();
+            var userId = StorageSrv.getLoggedInUserId();
+            jsonPlayerAccess.custom_attr.UserID = userId;
+
+
+            Utils.log(jsonPlayerAccess);
+
         });
 
 

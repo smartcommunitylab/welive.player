@@ -10,6 +10,14 @@ angular.module('weliveplayer.services.storage', [])
             return null;
         };
 
+        storageService.getLoggedInUserId = function () {
+            if (!!localStorage['userId']) {
+                var userInfo = JSON.parse(localStorage['userId']);
+                return userInfo.userId;
+            }
+            return null;
+        };
+
         storageService.saveUserId = function (userId) {
             var deferred = $q.defer();
 

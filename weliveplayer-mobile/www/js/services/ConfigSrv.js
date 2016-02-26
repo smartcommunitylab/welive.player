@@ -8,11 +8,38 @@ angular.module('weliveplayer.services.config', [])
         var CLIENT_SEC_KEY = "6b934176-4513-43dd-a713-b926bfd979e2";
         var REDIRECT_URI = "http://localhost";
         var WELIVE_PROXY = "https://dev.welive.eu/weliveplayer/api/";
-        var WELIVE_API_URI = "https://dev.welive.eu/dev/api";
+        var LOG_URI = "https://dev.welive.eu/welive.logging/log/weliveplayer";
 
         var HTTP_CONFIG = {
             timeout: 5000
         };
+
+        var LOG_PLAYER_ACCESS = {
+            "msg": "PlayerAccess",
+            "appId": "weliveplayer",
+            "type": "PlayerAccess",
+            "custom_attr": { "UserID": "" }
+        }
+        var LOG_APP_OPEN = {
+            "msg": "AppOpen",
+            "appId": "weliveplayer",
+            "type": "AppOpen",
+            "custom_attr": { "UserID": "", "AppID": "", "PilotID": "" }
+        }
+
+        var LOG_APP_DOWNLOAD = {
+            "msg": "AppDownload",
+            "appId": "weliveplayer",
+            "type": "AppDownload",
+            "custom_attr": { "UserID": "", "AppID": "", "PilotID": "" }
+        }
+
+        var LOG_APP_INFO_ACCESS = {
+            "msg": "AppInfoAccess",
+            "appId": "weliveplayer",
+            "type": "AppInfoAccess",
+            "custom_attr": { "UserID": "", "AppID": "", "PilotID": "" }
+        }
 
         var ZOOM = 15;
 
@@ -21,8 +48,8 @@ angular.module('weliveplayer.services.config', [])
         var LOGIN_EXPIRED = 'LOGIN_EXPIRED';
 
         return {
-            getWeLiveAPIUri: function () {
-              return WELIVE_API_URI;  
+            getLogUri: function () {
+                return LOG_URI;
             },
             getServerURL: function () {
                 return SERVER_URL;
@@ -53,6 +80,18 @@ angular.module('weliveplayer.services.config', [])
             },
             getWeLiveProxyUri: function () {
                 return WELIVE_PROXY;
+            },
+            getPlayerAccessJson: function () {
+                return LOG_PLAYER_ACCESS;
+            },
+            getAppDownloadJson: function () {
+                return LOG_APP_DOWNLOAD;
+            },
+            getAppOpenJson: function () {
+                return LOG_APP_OPEN;
+            },
+            getAppInfoAccessJson: function () {
+                return LOG_APP_INFO_ACCESS;
             },
             LOGIN_EXPIRED: LOGIN_EXPIRED,
             init: function () {

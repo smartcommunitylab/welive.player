@@ -64,7 +64,7 @@ angular.module('weliveplayer.controllers.home', [])
 
             // remove city from selection
             var index = $scope.selections.indexOf(city);
-            
+
             if (index > -1) {
                 $scope.selections.splice(index, 1);
             } else {
@@ -85,10 +85,11 @@ angular.module('weliveplayer.controllers.home', [])
 
         // get app info.
         $scope.app = Utils.getAppDetails($state.params.appId, $state.params.appRegion);
-        
+
         $scope.selection = 'info';
-        
+
         var appStoreId = "eu.trentorise.smartcampus.viaggiarovereto"; //com.twitter.android
+        var pilotId = $scope.app.city;
         
         // check if app is installed.
         navigator.startApp.check(appStoreId, function (message) { /* success */
@@ -113,24 +114,25 @@ angular.module('weliveplayer.controllers.home', [])
 
         $scope.download = function (id) {
             if ($scope.appInstallStatus == 'download') {
-                // alert("download");
-                var appId = appStoreId;
-                cordova.plugins.market.open(appId, {
+                cordova.plugins.market.open(appStoreId, {
                     success: function () {
+                        // lOG EVENT (APP DOWNLOAD)
+                        Utils.logAppDownload(appStoreId, pilotId);
                     },
                     failure: function () {
                     }
                 });
-                
+
             } else if ($scope.appInstallStatus == 'forward') {
-                // alert("forward");
-                navigator.startApp.start(appStoreId, function (message) {  /* success */
-                    console.log(message); // => OK
-                },function (error) { /* error */
-                        console.log(error);
+                navigator.startApp.start(appStoreId, function (message) {
+                    console.log(message);
+                    // lOG EVENT (APP OPEN)
+                    Utils.logAppOpen(appStoreId, pilotId);
+                }, function (error) { /* error */
+                    console.log(error);
                 });
             }
-            
+
         }
 
         $scope.info = function () {
@@ -157,7 +159,7 @@ angular.module('weliveplayer.controllers.home', [])
     .controller('AppCommentsCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, $q, PlayStore) {
 
         var app = Utils.getAppDetails($state.params.appId, $state.params.appRegion);
-        
+
         navigator.startApp.check("com.twitter.android", function (message) { /* success */
             console.log("app exists.");
             $scope.appInstallStatus = "forward";
@@ -169,28 +171,30 @@ angular.module('weliveplayer.controllers.home', [])
         $scope.name = app.name;
         $scope.id = app.id;
         $scope.region = app.city;
+        var appStoreId = "eu.trentorise.smartcampus.viaggiatrento";
+        var pilotId = app.city;
 
         $scope.download = function (id) {
-            var appId = "eu.trentorise.smartcampus.viaggiatrento";
             if ($scope.appInstallStatus == 'download') {
-                // alert("download");
-                var appId = "eu.trentorise.smartcampus.viaggiatrento";
-                cordova.plugins.market.open(appId, {
+                cordova.plugins.market.open(appStoreId, {
                     success: function () {
+                        // lOG EVENT (APP DOWNLOAD)
+                        Utils.logAppDownload(appStoreId, pilotId);
                     },
                     failure: function () {
                     }
                 });
             } else if ($scope.appInstallStatus == 'forward') {
-                // alert("forward");
-                navigator.startApp.start(appId, function (message) {
+                navigator.startApp.start(appStoreId, function (message) {
                     console.log(message);
+                    // lOG EVENT (APP OPEN)
+                    Utils.logAppOpen(appStoreId, pilotId);
                 }, function (error) {
                     console.log(error);
                 });
             }
         }
-        
+
         $scope.selection = 'userComment';
 
         $scope.info = function () {
