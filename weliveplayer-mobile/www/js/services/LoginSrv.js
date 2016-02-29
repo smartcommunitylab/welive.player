@@ -221,6 +221,9 @@ angular.module('weliveplayer.services.login', [])
                                 var t = new Date();
                                 t.setSeconds(t.getSeconds() + (response.data.expires_in - 3600));
                                 user.token.validUntil = t;
+                                // update token
+                                StorageSrv.saveUser(user).then(function(success) {}, function(error) {});;
+                                
                                 deferred.resolve(access_token);
                             } else {
                                 deferred.reject(null);

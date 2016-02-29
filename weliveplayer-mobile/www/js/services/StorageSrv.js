@@ -18,6 +18,14 @@ angular.module('weliveplayer.services.storage', [])
             return null;
         };
 
+        storageService.getLoggedInUserPilotId = function () {
+            if (!!localStorage['userId']) {
+                var userInfo = JSON.parse(localStorage['userId']);
+                return userInfo.pilotId;
+            }
+            return null;
+        };
+
         storageService.saveUserId = function (userId) {
             var deferred = $q.defer();
 
@@ -51,8 +59,6 @@ angular.module('weliveplayer.services.storage', [])
             deferred.resolve(profile);
             return deferred.promise;
         };
-
-
 
         storageService.reset = function () {
             var deferred = $q.defer();

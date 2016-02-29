@@ -404,6 +404,21 @@ angular.module('weliveplayer.services.utils', [])
             return deferred.promise;
         }
 
+        utilsService.getUserPilotCity = function () {
+            
+            var pilot = [];
+            var pilotId = StorageSrv.getLoggedInUserPilotId();
+
+            if (pilotId) {
+                pilot.push(pilot);
+            } else {
+                pilot.push(Config.getDefaultPilotId());
+            }
+
+            return pilot;
+            
+        }
+
 
         utilsService.loading = function () {
             $ionicLoading.show();
