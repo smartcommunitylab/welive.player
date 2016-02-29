@@ -26,10 +26,10 @@
 
     <div class="bar bar-footer">
         <div class="button-bar">
-            <button class="button button-clear" ng-class="{'pressed' : selections.indexOf('Trento') >= 0}" ng-click="selectApps('Trento')">TRENTO</button>
-            <button class="button button-clear" ng-class="{'pressed' : selections.indexOf('Rovereto') >= 0}" ng-click="selectApps('Rovereto')">ROVERETO</button>
-            <button class="button button-clear" ng-class="{'pressed' : selections.indexOf('Novisad') >= 0}" ng-click="selectApps('Novisad')">NOVISAD</button>
-            <button class="button button-clear" ng-class="{'pressed' : selections.indexOf('Helsinki') >= 0}" ng-click="selectApps('Helsinki')">HELSINKI REGION</button>
+            <button class="button button-clear" ng-class="{'pressed' : selections.indexOf(pilotIds[0]) >= 0}" ng-click="selectApps(pilotIds[0])">{{pilotIds[0].toUpperCase()}}</button>
+            <button class="button button-clear" ng-class="{'pressed' : selections.indexOf(pilotIds[1]) >= 0}" ng-click="selectApps(pilotIds[1])">{{pilotIds[1].toUpperCase()}}</button>
+            <button class="button button-clear" ng-class="{'pressed' : selections.indexOf(pilotIds[2]) >= 0}" ng-click="selectApps(pilotIds[2])">{{pilotIds[2].toUpperCase()}}</button>
+            <button class="button button-clear" ng-class="{'pressed' : selections.indexOf(pilotIds[3]) >= 0}" ng-click="selectApps(pilotIds[3])">{{pilotIds[3].toUpperCase()}}</button>
             <div>
             </div>
 

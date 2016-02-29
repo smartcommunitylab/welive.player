@@ -58,6 +58,31 @@ angular.module('weliveplayer.services.login', [])
                                     var t = new Date();
                                     t.setSeconds(t.getSeconds() + (profile.token.expires_in - 3600));
                                     profile.token.validUntil = t;
+                                    
+                                    // name: ""
+                                    // socialId: "-29"
+                                    // surname: ""
+                                    // token: Object
+                                    //  access_token: "2411a0a5-c2db-4c1d-bcf4-ba7541a53628"
+                                    //  expires_in: 41249
+                                    //  refresh_token: "7646b9a5-1af2-438c-ba88-bf34168afaf4"
+                                    //  scope: "cdv.profile.me profile.accountprofile.me profile.basicprofile.me"
+                                    //  token: "nZjddc"
+                                    //  token_type: "bearer"
+                                    //  validUntil: Mon Feb 29 2016 20:48:59 GMT+ 0000(GMT)
+                                    // userId: "29"
+                                    
+                                    // make call to cdv profile.
+                                    // loginService.makeCDVProfileCall(profile.userId).then(function (response) {
+                                    //     if (response.data.city) {
+                                    //         alert(response.data.city);
+                                    //     } else {
+                                    //         // open form to create cdv profile.
+                                    //     }
+                                        
+                                    // }, function (error) {
+                                    //     deferred.reject(error[1]);
+                                    // });
 
                                     deferred.resolve(profile);
                                 },

@@ -9,7 +9,8 @@ angular.module('weliveplayer.services.config', [])
         var REDIRECT_URI = "http://localhost";
         var WELIVE_PROXY = "https://dev.welive.eu/weliveplayer/api/";
         var LOG_URI = "https://dev.welive.eu/welive.logging/log/weliveplayer";
-        var DEFAULT_PILOT_ID = "Trento";
+        var CDV_URI = "https://dev.welive.eu/dev/api/cdv";
+        var PILOT_IDS = ["Trento", "BILBAO", "Novisad", "HELSINKI REG-USIMAA"];
 
         var HTTP_CONFIG = {
             timeout: 5000
@@ -94,8 +95,11 @@ angular.module('weliveplayer.services.config', [])
             getAppInfoAccessJson: function () {
                 return LOG_APP_INFO_ACCESS;
             },
-            getDefaultPilotId: function () {
-                return DEFAULT_PILOT_ID;
+            getPilotIds: function () {
+                return PILOT_IDS;
+            },
+            getCDVUri: function () {
+                return CDV_URI;
             },
             LOGIN_EXPIRED: LOGIN_EXPIRED,
             init: function () {
