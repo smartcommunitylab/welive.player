@@ -10,7 +10,7 @@ angular.module('weliveplayer.services.config', [])
         var WELIVE_PROXY = "https://dev.welive.eu/weliveplayer/api/";
         var LOG_URI = "https://dev.welive.eu/welive.logging/log/weliveplayer";
         var CDV_URI = "https://dev.welive.eu/dev/api/cdv";
-        var PILOT_IDS = ["Trento", "BILBAO", "Novisad", "HELSINKI REG-USIMAA"];
+        var PILOT_IDS = ["BILBAO", "HELSINKI-USIMAA", "Novisad", "Trento"];
 
         var HTTP_CONFIG = {
             timeout: 5000

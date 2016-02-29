@@ -412,7 +412,8 @@ angular.module('weliveplayer.services.utils', [])
             if (pilotId) {
                 pilot.push(pilot);
             } else {
-                pilot.push(Config.getPilotIds()[0]);
+                // pilot.push(Config.getPilotIds()[0]);
+                pilot = pilot.concat(Config.getPilotIds());
             }
 
             return pilot;
