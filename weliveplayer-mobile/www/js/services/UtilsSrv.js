@@ -61,8 +61,6 @@ angular.module('weliveplayer.services.utils', [])
             } else {
                 LoginSrv.accessToken().then(
                     function (token) {
-                        // logging.
-                        // utilsService.log("GET - Proxy(/api/apps/{pilotId}/{appType})", "All"). then (function () {}, function () {});
                         var url = Config.getWeLiveProxyUri() + "apps/" + region + "/All";
                         $http.get(url, { headers: { "Authorization": "Bearer " + token } })
 
