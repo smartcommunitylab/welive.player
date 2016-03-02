@@ -366,8 +366,8 @@ angular.module('weliveplayer.services.utils', [])
         utilsService.logAppDownload = function (appStoreId, pilotId) {
             var userId = StorageSrv.getLoggedInUserId();
             var appDownloadJson = Config.getAppDownloadJson();
-            appDownloadJson.custom_attr.UserId = userId;
-            appDownloadJson.custom_attr.AppId = appStoreId;
+            appDownloadJson.custom_attr.UserID = userId;
+            appDownloadJson.custom_attr.AppID = appStoreId;
             appDownloadJson.custom_attr.PilotID = pilotId;
 
             utilsService.log(appDownloadJson);
@@ -376,8 +376,8 @@ angular.module('weliveplayer.services.utils', [])
         utilsService.logAppOpen = function (appStoreId, pilotId) {
             var userId = StorageSrv.getLoggedInUserId();
             var appOpenJson = Config.getAppOpenJson();
-            appOpenJson.custom_attr.UserId = userId;
-            appOpenJson.custom_attr.AppId = appStoreId;
+            appOpenJson.custom_attr.UserID = userId;
+            appOpenJson.custom_attr.AppID = appStoreId;
             appOpenJson.custom_attr.PilotID = pilotId;
 
             utilsService.log(appOpenJson);
