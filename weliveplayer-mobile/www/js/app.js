@@ -197,7 +197,6 @@ angular.module(
     
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise(function ($injector) {
-            debugger;
             var logged = $injector.get('LoginSrv').userIsLogged();
             if (!logged) {
                 return '/';

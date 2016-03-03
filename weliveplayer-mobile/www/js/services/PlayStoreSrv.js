@@ -20,7 +20,7 @@ angular.module('weliveplayer.services.playstore', [])
                 
              LoginSrv.accessToken().then(
                 function (token) {
-                    var url = Config.getWeLiveProxyUri() + "appComments/" + opts.id;
+                    var url = Config.getWeLiveProxyUri() + "appComments/" + opts.id + "?start=" + opts.start + "&count=" + opts.count;
                     $http.get(url, { headers: { "Authorization": "Bearer " + token } })
                         .then(function (response) {
                             var reviews = response.data.data;

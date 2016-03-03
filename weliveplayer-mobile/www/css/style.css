@@ -19,6 +19,8 @@
   font-size: 12px;
   font-weight: 500;
   border-left: 1px solid #6E6E6E;
+  white-space: normal;
+  line-height: 14px;
 }
 .weliveplayer-theme .bar.bar-footer .button.pressed,.weliveplayer-theme .bar.bar-footer .button.active {
   color: red;

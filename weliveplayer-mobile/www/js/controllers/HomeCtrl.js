@@ -206,16 +206,41 @@ angular.module('weliveplayer.controllers.home', [])
             $state.go('app.single', { appId: app.id, appRegion: app.city });
         }
 
+        // var opts = {};
+
+        // opts.id = app.id;
+        // opts.storeId = app.eId;
+        // opts.city = app.city;
+        // opts.sort = "newest";
+        // opts.start = 0;
+        // opts.count = 20;
+        // opts.lang = "it";
+        // opts.reviewType = 0;
+
+        // var creationSuccess = function (reviews) {
+        //     $scope.userReviews = reviews;
+        //     Utils.loaded();
+        // };
+
+        // var creationError = function (error) {
+        //     Utils.loaded();
+        //     Utils.toast();
+        // };
+
+        // Utils.loading();
+        // PlayStore.getUserReviews(opts).then(creationSuccess, creationError);
+        
+         /*
+    * reviews
+    */
         var opts = {};
-
         opts.id = app.id;
-        opts.storeId = app.eId;
-        opts.city = app.city;
-        opts.sort = "newest";
-        opts.page = 0;
-        opts.lang = "it";
-        opts.reviewType = 0;
-
+        opts.start = 0;
+        opts.count = 5;
+        $scope.moreReviewsPossible = false;
+        
+        
+        // default load.
         var creationSuccess = function (reviews) {
             $scope.userReviews = reviews;
             Utils.loaded();
@@ -228,6 +253,52 @@ angular.module('weliveplayer.controllers.home', [])
 
         Utils.loading();
         PlayStore.getUserReviews(opts).then(creationSuccess, creationError);
+        
+        // infinite list reload.
+        $scope.loadMoreReviews = function (reset) {
+            if (opts.start === 0) {
+                Utils.loading();
+            }
+
+            if (reset) {
+                $scope.userReviews = null;
+            }
+
+            PlayStore.getUserReviews(opts).then(
+                function (reviews) {
+
+                    if (opts.start === 0) {
+                        Utils.loaded();
+                    } else {
+                        $scope.$broadcast('scroll.infiniteScrollComplete');
+                    }
+
+                    $scope.userReviews = !!$scope.userReviews ? $scope.userReviews.concat(reviews) : reviews;
+
+                    if (reviews.length === opts.count) {
+                        $scope.moreReviewsPossible = true;
+                        opts.start = reviews.length;
+                        opts.count = opts.count + 5;
+                    } else {
+                        $scope.moreReviewsPossible = false;
+                    }
+                },
+                function (error) {
+                    if (opts.count === 0) {
+                        Utils.loaded();
+                    } else {
+                        $scope.$broadcast('scroll.infiniteScrollComplete');
+                    }
+
+                    Utils.toast();
+
+                    if ($scope.userReviews === null) {
+                        $scope.userReviews = [];
+                    }
+                }
+                );
+        };
+        
     })
 
     .controller('AppSearchCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils) {
@@ -241,4 +312,8 @@ angular.module('weliveplayer.controllers.home', [])
         $scope.showAppDetails = function (id, region) {
             $state.go('app.single', { appId: id, appRegion: region });
         }
+
+        $scope.getStars = function (vote) {
+            return Utils.getStars(vote);
+        };
     })

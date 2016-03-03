@@ -1,4 +1,4 @@
-<ion-view title={{name}}>
+<ion-view title="{{name}}">
     <ion-content>
         <h4>Comments</h4>
         <ion-list>
@@ -8,13 +8,17 @@
                 <h2>{{ userReview.publishDate }}</h2>
                 <h2>{{ userReview.comment }}</h2>
             </ion-item>
+            <ion-infinite-scroll ng-if="moreReviewsPossible" on-infinite="loadMoreReviews()" distance="5%">
+            </ion-infinite-scroll>
         </ion-list>
     </ion-content>
     <div class="bar bar-footer">
         <div class="button-bar">
             <button class="button button-icon ion-ios-information" ng-class="{'active' : selection == 'info'}" ng-click="info()" />
-            <button class="button button-icon" ng-class="{'ion-archive' : appInstallStatus == 'download', 'ion-forward': appInstallStatus == 'forward' }" ng-click="download()"></button>
-            <button class="button button-icon ion-ios-chatboxes" ng-class= "{'active' : selection == 'userComment'}" ng-click="showAppComments(id, city)" />
+            <button class="button button-icon" ng-class="{'ion-archive' : appInstallStatus == 'download', 'ion-forward': appInstallStatus == 'forward' }"
+            ng-click="download()"></button>
+            <button class="button button-icon ion-ios-chatboxes" ng-class="{'active' : selection == 'userComment'}" ng-click="showAppComments(id, city)"
+            />
         </div>
     </div>
 </ion-view>
