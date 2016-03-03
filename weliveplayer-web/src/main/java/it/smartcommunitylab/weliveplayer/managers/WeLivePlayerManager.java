@@ -285,27 +285,52 @@ public class WeLivePlayerManager {
 						JSONObject profileJson = new JSONObject(profileAPIResponse);
 						if (profileJson.has("name")) {
 							profile = new Profile();
-							profile.setAddress(profileJson.getString("address"));
-							profile.setBirthdate(profileJson.getString("birthdate"));
-							profile.setCcUserID(profileJson.getString("ccUserID"));
-							profile.setCity(profileJson.getString("city"));
-							profile.setCountry(profileJson.getString("country"));
-							profile.setDeveloper(profileJson.getBoolean("isDeveloper"));
-							profile.setEmail(profileJson.getString("email"));
-							profile.setGender(profileJson.getString("gender"));
-							profile.setLanguages(mapper.readValue(profileJson.get("languages").toString(), List.class));
-							profile.setLastKnownLocation(
-									mapper.readValue(profileJson.get("lastKnownLocation").toString(), HashMap.class));
 							profile.setName(profileJson.getString("name"));
-							profile.setProfileData(
-									mapper.readValue(profileJson.get("profileData").toString(), HashMap.class));
-							profile.setSkills(mapper.readValue(profileJson.get("skills").toString(), List.class));
-							profile.setSurname(profileJson.getString("surname"));
-							profile.setThirdParties(
-									mapper.readValue(profileJson.get("thirdParties").toString(), List.class));
-							profile.setUsedApps(mapper.readValue(profileJson.get("usedApps").toString(), List.class));
-							profile.setZipCode(profileJson.getString("zipCode"));
-
+							// fields.
+							if (profileJson.has("address"))
+								profile.setAddress(profileJson.getString("address"));
+							if (profileJson.has("birthdate"))
+								profile.setBirthdate(profileJson.getString("birthdate"));
+							if (profileJson.has("ccUserID"))
+								profile.setCcUserID(profileJson.getString("ccUserID"));
+							if (profileJson.has("city"))
+								profile.setCity(profileJson.getString("city"));
+							if (profileJson.has("country"))
+								profile.setCountry(profileJson.getString("country"));
+							if (profileJson.has("isDeveloper"))
+								profile.setDeveloper(profileJson.getBoolean("isDeveloper"));
+							if (profileJson.has("email"))
+								profile.setEmail(profileJson.getString("email"));
+							if (profileJson.has("gender"))
+								profile.setGender(profileJson.getString("gender"));
+							if (profileJson.has("surname"))
+								profile.setSurname(profileJson.getString("surname"));
+							if (profileJson.has("zipCode"))
+								profile.setZipCode(profileJson.getString("zipCode"));
+							// field arrays.
+							if (profileJson.has("usedApps")) {
+								profile.setUsedApps(
+										mapper.readValue(profileJson.get("usedApps").toString(), List.class));
+							}
+							if (profileJson.has("skills")) {
+								profile.setSkills(mapper.readValue(profileJson.get("skills").toString(), List.class));
+							}
+							if (profileJson.has("languages")) {
+								profile.setLanguages(
+										mapper.readValue(profileJson.get("languages").toString(), List.class));
+							}
+							if (profileJson.has("thirdParties")) {
+								profile.setThirdParties(
+										mapper.readValue(profileJson.get("thirdParties").toString(), List.class));
+							}
+							if (profileJson.has("lastKnownLocation")) {
+								profile.setLastKnownLocation(mapper
+										.readValue(profileJson.get("lastKnownLocation").toString(), HashMap.class));
+							}
+							if (profileJson.has("profileData")) {
+								profile.setProfileData(
+										mapper.readValue(profileJson.get("profileData").toString(), HashMap.class));
+							}
 						}
 
 					}
