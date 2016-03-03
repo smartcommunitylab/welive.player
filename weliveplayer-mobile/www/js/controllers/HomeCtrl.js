@@ -163,8 +163,10 @@ angular.module('weliveplayer.controllers.home', [])
     .controller('AppCommentsCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, $q, PlayStore) {
 
         var app = Utils.getAppDetails($state.params.appId, $state.params.appRegion);
+        
+        var appStoreId = "eu.trentorise.smartcampus.viaggiatrento";
 
-        navigator.startApp.check("com.twitter.android", function (message) { /* success */
+        navigator.startApp.check(appStoreId, function (message) { /* success */
             console.log("app exists.");
             $scope.appInstallStatus = "forward";
         }, function (error) { /* error */
@@ -175,7 +177,7 @@ angular.module('weliveplayer.controllers.home', [])
         $scope.name = app.name;
         $scope.id = app.id;
         $scope.region = app.city;
-        var appStoreId = "eu.trentorise.smartcampus.viaggiatrento";
+        
         var pilotId = app.city;
 
         $scope.download = function (id) {

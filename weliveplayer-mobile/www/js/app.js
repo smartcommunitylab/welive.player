@@ -9,8 +9,6 @@ angular.module(
     [
         'ionic',
         'ngCordova',
-        'ionic-timepicker',
-        'ionic-datepicker',
         'ngIOS9UIWebViewPatch',
         'pascalprecht.translate',
         'weliveplayer.services.config',
@@ -18,11 +16,9 @@ angular.module(
         'weliveplayer.services.playstore',
         'weliveplayer.services.storage',
         'weliveplayer.services.utils',
-        'weliveplayer.directives',
         'weliveplayer.controllers.app',
         'weliveplayer.controllers.home',
-        'weliveplayer.controllers.login',
-        'leaflet-directive'])
+        'weliveplayer.controllers.login'])
 
     .run(function ($ionicPlatform, $state, $rootScope, StorageSrv, LoginSrv, Config, Utils) {
 
