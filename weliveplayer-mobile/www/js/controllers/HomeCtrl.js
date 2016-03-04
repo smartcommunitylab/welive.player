@@ -96,7 +96,7 @@ angular.module('weliveplayer.controllers.home', [])
         
         // check if app is installed.
         navigator.startApp.check(appStoreId, function (message) { /* success */
-            console.log("app exists.");
+            // console.log("app exists.");
             // console.log(message.versionName);
             // console.log(message.packageName);
             // console.log(message.versionCode);
@@ -104,7 +104,7 @@ angular.module('weliveplayer.controllers.home', [])
             $scope.appInstallStatus = "forward";
         },
             function (error) { /* error */
-                console.log("app does not exist.");
+                // console.log("app does not exist.");
                 $scope.appInstallStatus = "download";
             });
     
@@ -128,7 +128,7 @@ angular.module('weliveplayer.controllers.home', [])
 
             } else if ($scope.appInstallStatus == 'forward') {
                 navigator.startApp.start(appStoreId, function (message) {
-                    console.log(message);
+                    // console.log(message);
                     // lOG EVENT (APP OPEN)
                     Utils.logAppOpen(appStoreId, pilotId);
                 }, function (error) { /* error */
@@ -166,10 +166,10 @@ angular.module('weliveplayer.controllers.home', [])
         var appStoreId = "eu.trentorise.smartcampus.viaggiatrento";
 
         navigator.startApp.check(appStoreId, function (message) { /* success */
-            console.log("app exists.");
+            // console.log("app exists.");
             $scope.appInstallStatus = "forward";
         }, function (error) { /* error */
-            console.log("app does not exist.");
+            // console.log("app does not exist.");
             $scope.appInstallStatus = "download";
         });
 
@@ -191,7 +191,7 @@ angular.module('weliveplayer.controllers.home', [])
                 });
             } else if ($scope.appInstallStatus == 'forward') {
                 navigator.startApp.start(appStoreId, function (message) {
-                    console.log(message);
+                    // console.log(message);
                     // lOG EVENT (APP OPEN)
                     Utils.logAppOpen(appStoreId, pilotId);
                 }, function (error) {
