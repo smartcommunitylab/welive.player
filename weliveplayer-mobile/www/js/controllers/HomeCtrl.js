@@ -1,5 +1,5 @@
 angular.module('weliveplayer.controllers.home', [])
-    .controller('HomeCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, PlayStore, Config) {
+    .controller('HomeCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, PlayStore, Config, $filter) {
 
         // $scope.selections = ['Trento'];
         
@@ -37,19 +37,18 @@ angular.module('weliveplayer.controllers.home', [])
 
             var myPopup = $ionicPopup.show({
                 templateUrl: "templates/sort.html",
-                title: "Scegli Una Ordinamento",
+                title: $filter('translate')('lbl_popup_title'),
                 scope: $scope,
                 buttons: [
                     {
-                        text: 'ANNULLA',
+                        text: $filter('translate')('lbl_popup_button_cancel'),
                         type: 'button-small welive-popup-button',
                     },
                     {
-                        text: 'ORDINA',
+                        text: $filter('translate')('lbl_popup_button_ok'),
                         type: 'button-small welive-popup-button',
                         onTap: function (e) {
                             if (!$scope.sort.choice) {
-                                //don't allow the user to close unless he enters wifi password
                                 e.preventDefault();
                             } else {
                                 return $scope.sort.choice;

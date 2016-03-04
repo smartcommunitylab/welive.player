@@ -214,7 +214,14 @@ angular.module(
             menu_termine: 'Termini del Servizio',
             menu_logout: 'Logout',
             toast_error_generic: 'OPS! Problema...',
-            no_apps: 'Nessun app trovato.'
+            no_apps: 'Nessun app trovato.',
+            lbl_popup_title: 'Scelgli Una Ordinamento',
+            lbl_popup_recommended: 'Consigliati',
+            lbl_popup_recent: 'Recenti',
+            lbl_popup_popular: 'Popolari',
+            lbl_popup_alphbetical: 'Alfabetico',
+            lbl_popup_button_ok: 'ORDINA',
+            lbl_popup_button_cancel: 'ANNULLA',
         });
 
         $translateProvider.translations('en', {
@@ -227,7 +234,15 @@ angular.module(
             menu_termine: 'Terms of Service',
             menu_logout: 'Logout',
             toast_error_generic: 'OPS! Problem...',
-            no_apps: 'No application found.'
+            no_apps: 'No application found.',
+            lbl_popup_title: 'Select An Order',
+            lbl_popup_recommended: 'Recommended',
+            lbl_popup_recent: 'Recent',
+            lbl_popup_popular: 'Popular',
+            lbl_popup_alphbetical: 'Alphabetical',
+            lbl_popup_button_ok: 'ORDER',
+            lbl_popup_button_cancel: 'CANCEL',
+            
         });
 
         $translateProvider.preferredLanguage('en');
