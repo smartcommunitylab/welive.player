@@ -93,7 +93,7 @@ angular.module('weliveplayer.services.login', [])
                                 function (error) {
                                     deferred.reject(error[1]);
                                 })
-                            loginService.makeTokenPost(str).then();
+
                         } else if (error) {
                             //The user denied access to the app
                             deferred.reject({
