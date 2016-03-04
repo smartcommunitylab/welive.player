@@ -18,7 +18,7 @@ angular.module(
         'weliveplayer.services.utils',
         'weliveplayer.controllers.app',
         'weliveplayer.controllers.home',
-        'weliveplayer.controllers.login'])
+        'weliveplayer.controllers.profile'])
 
     .run(function ($ionicPlatform, $state, $rootScope, StorageSrv, LoginSrv, Config, Utils) {
 
@@ -146,12 +146,12 @@ angular.module(
                 }
             })
 
-            .state('app.login', {
-                url: '/login',
+            .state('app.profile', {
+                url: '/profile',
                 views: {
                     'menuContent': {
-                        templateUrl: 'templates/login.html',
-                        controller: 'LoginCtrl'
+                        templateUrl: 'templates/profile.html',
+                        controller: 'ProfileCtrl'
                     }
                 }
             })
@@ -210,6 +210,7 @@ angular.module(
             lbl_comment: 'Commenti',
             lbl_description: 'Descrizione',
             menu_home: 'Home',
+            menu_profile: 'Profilo',
             menu_info: 'Informazione',
             menu_termine: 'Termini del Servizio',
             menu_logout: 'Logout',
@@ -222,6 +223,22 @@ angular.module(
             lbl_popup_alphbetical: 'Alfabetico',
             lbl_popup_button_ok: 'ORDINA',
             lbl_popup_button_cancel: 'ANNULLA',
+            lbl_name: 'Nome',
+            lbl_surname: 'Gognome',
+            lbl_gender: 'Gender',
+            lbl_dob: 'Data di Nascita',
+            lbl_addr: 'Indrizzo',
+            lbl_pilotId: 'PilotId',
+            lbl_city: 'Citta',
+            lbl_country: 'Paese',
+            lbl_zipcode: 'Zipcode',
+            lbl_email: 'Email',
+            lbl_languages: 'Lingue',
+            lbl_isDeveloper: 'Developer',
+            lbl_skills: 'Skills',
+            lbl_usedApps: 'Used Apps',
+            lbl_profileData: 'Profile Data',
+            lbl_lastLoc: 'Last Known Location'
         });
 
         $translateProvider.translations('en', {
@@ -230,6 +247,7 @@ angular.module(
             lbl_comment: 'Comments',
             lbl_description: 'Description',
             menu_home: 'Home',
+            menu_profile: 'Profile',
             menu_info: 'Information',
             menu_termine: 'Terms of Service',
             menu_logout: 'Logout',
@@ -242,6 +260,22 @@ angular.module(
             lbl_popup_alphbetical: 'Alphabetical',
             lbl_popup_button_ok: 'ORDER',
             lbl_popup_button_cancel: 'CANCEL',
+            lbl_name: 'Name',
+            lbl_surname: 'Surname',
+            lbl_gender: 'Gender',
+            lbl_dob: 'Birthdate',
+            lbl_addr: 'Address',
+            lbl_pilotId: 'PilotId',
+            lbl_city: 'City',
+            lbl_country: 'Country',
+            lbl_zipcode: 'Zipcode',
+            lbl_email: 'Email',
+            lbl_languages: 'Languages',
+            lbl_isDeveloper: 'Developer',
+            lbl_skills: 'Skills',
+            lbl_usedApps: 'Used Apps',
+            lbl_profileData: 'Profile Data',
+            lbl_lastLoc: 'Last Known Location'
             
         });
 

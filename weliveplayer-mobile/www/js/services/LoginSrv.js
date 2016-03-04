@@ -73,18 +73,16 @@ angular.module('weliveplayer.services.login', [])
                                     // userId: "29"
                                     
                                     // make call to cdv profile.
-                                    // loginService.makeCDVProfileCall(profile.userId).then(function (response) {
-                                    //     if (response.data.city) {
-                                    //         alert(response.data.city);
-                                    //     } else {
-                                    //         // open form to create cdv profile.
-                                    //     }
-                                        
-                                    // }, function (error) {
-                                    //     deferred.reject(error[1]);
-                                    // });
-
-                                    deferred.resolve(profile);
+                                    loginService.makeCDVProfileCall(profile.userId).then(function (response) {//profile.userId
+                                        if (response) {
+                                            if (response.data.pilotId) {
+                                               profile.pilotId = response.data.pilotId;    
+                                            }
+                                        } 
+                                        deferred.resolve(profile);
+                                    }, function (error) {
+                                        deferred.resolve(profile);
+                                    });
                                 },
                                     function (error) {
                                         deferred.reject(error[1]);
@@ -217,6 +215,35 @@ angular.module('weliveplayer.services.login', [])
 
         }
 
+        loginService.makeCDVProfileCall = function makeCDVProfileCall(userId) {
+
+            var deferred = $q.defer();
+
+            var url = Config.getCDVUri() + "/getuserprofile/" + userId;
+
+            $http.get(url, {
+                headers: { "Authorization": Config.getBasicAuthToken() }
+            })
+
+                .then(
+	                   function (response) {
+                        if (response.data) {
+                            deferred.resolve(response);
+                        } else {
+                            deferred.resolve(null);
+                        }
+
+
+	                   },
+	                   function (responseError) {
+                        deferred.reject(responseError);
+	                   }
+                    );
+
+            return deferred.promise;
+
+        }
+
         loginService.accessToken = function () {
 
             var user = StorageSrv.getUser();
@@ -247,8 +274,8 @@ angular.module('weliveplayer.services.login', [])
                                 t.setSeconds(t.getSeconds() + (response.data.expires_in - 3600));
                                 user.token.validUntil = t;
                                 // update token
-                                StorageSrv.saveUser(user).then(function(success) {}, function(error) {});;
-                                
+                                StorageSrv.saveUser(user).then(function (success) { }, function (error) { });;
+
                                 deferred.resolve(access_token);
                             } else {
                                 deferred.reject(null);
