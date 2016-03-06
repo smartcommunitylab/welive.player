@@ -1,52 +1,246 @@
 <ion-view title="<b>{{'menu_profile'| translate}}</b>">
-    <ion-content>
-        <div>
-            <h6><b>{{'lbl_name'| translate}}:</b></h6>
-            <h6>{{profile.name}}</h6></div>
-        <div>
-            <h6><b>{{'lbl_surname'| translate}}:</b></h6>
-            <h6>{{profile.surname}}</h6></div>
-        <div>
-            <h6><b>{{'lbl_gender'| translate}}:</b></h6>
-            <h6>{{profile.gender}}</h6></div>
-        <div>
-            <h6><b>{{'lbl_dob'| translate}}:</b></h6>
-            <h6>{{profile.dob}}</h6></div>
-        <div>
-            <h6><b>{{'lbl_addr'| translate}}:</b></h6>
-            <h6>{{profile.addr}}</h6></div>
-        <div>
-            <h6><b>{{'lbl_pilotId'| translate}}:</b></h6>
-            <h6>{{profile.city}}</h6></div>
-        <div>
-            <h6><b>{{'lbl_city'| translate}}:</b></h6>
-            <h6>{{profile.city}}</h6></div>
-        <div>
-            <h6><b>{{'lbl_country'| translate}}:</b></h6>
-            <h6>{{profile.country}}</h6></div>
-        <div>
-            <h6><b>{{'lbl_zipcode'| translate}}:</b></h6>
-            <h6>{{profile.zipcode}}</h6></div>
-        <div>
-            <h6><b>{{'lbl_email'| translate}}:</b></h6>
-            <h6>{{profile.email}}</h6></div>
-        <div>
-            <h6><b>{{'lbl_languages'| translate}}:</b></h6>
-            <h6>{{profile.languages}}</h6></div>
-        <div>
-            <h6><b>{{'lbl_isDeveloper'| translate}}:</b></h6>
-            <h6>{{profile.isDeveloper}}</h6></div>
-        <div>
-            <h6><b>{{'lbl_skills'| translate}}:</b></h6>
-            <h6>{{profile.skills}}</h6></div>
-        <div>
-            <h6><b>{{'lbl_usedApps'| translate}}:</b></h6>
-            <h6>{{profile.userApps}}</h6></div>
-        <div>
-            <h6><b>{{'lbl_profileData'| translate}}:</b></h6>
-            <h6>{{profile.profileData}}</h6></div>
-        <div>
-            <h6><b>{{'lbl_lastLoc'| translate}}:</b></h6>
-            <h6>{{profile.lastloc}}</h6></div>
+
+    <ion-nav-buttons side="right">
+        <a href="#" class="button button-icon ion-edit padding-left" ng-show="cdvProfile == 'exist'" ng-click="editProfile()"></a>
+    </ion-nav-buttons>
+
+    <ion-content class="padding">
+        <div class="padding" ng-show="cdvProfile == 'exist'">
+            <div class="row">
+                <p><b>{{'lbl_name'| translate}}: </b>
+                    <p>
+                        <div class="column">
+                            <p>{{profile.name}}</p>
+                        </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_surname'| translate}}: </b></p>
+                <div class="column">
+                    <p>{{profile.surname}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_gender'| translate}}: </b></p>
+                <div class="column">
+                    <p>{{profile.gender}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_dob'| translate}}: </b></p>
+                <div class="column">
+                    <p>{{profile.dob}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_addr'| translate}}: </b></p>
+                <div class="column">
+                    <p>{{profile.addr}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_pilotId'| translate}}: </b></p>
+                <div class="column">
+                    <p>{{profile.city}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_city'| translate}}: </b></p>
+                <div class="column">
+                    <p>{{profile.city}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_country'| translate}}: </b></p>
+                <div class="column">
+                    <p>{{profile.country}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_zipcode'| translate}}: </b></p>
+                <div class="column">
+                    <p>{{profile.zipcode}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_email'| translate}}: </b></p>
+                <div class="column">
+                    <p>{{profile.email}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_languages'| translate}}: </b></p>
+                <div class="column">
+                    <p>{{profile.languages}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_isDeveloper'| translate}}: </b></p>
+                <div class="column">
+                    <p>{{profile.isDeveloper}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_skills'| translate}}: </b></p>
+                <div class="column">
+                    <p>{{profile.skills}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_usedApps'| translate}}: </b></p>
+                <div class="column">
+                    <p>{{profile.usedApps}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_profileData'| translate}}: </b></p>
+                <div class="column">
+                    <p>{{profile.profileData}}</p>
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_lastLoc'| translate}}: </b></p>
+                <div class="column">
+                    <p>{{profile.lastloc}}</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- EDIT --->
+        <div class="padding" ng-show="cdvProfile == 'edit'">
+            <div class="row">
+                <p><b>{{'lbl_name'| translate}}: </b>
+                    <p>
+                        <div class="column">
+                            <input type="text" placeholder="{{profile.name}}" ng-model="profile.name">
+                        </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_surname'| translate}}: </b></p>
+                <div class="column">
+                    <input type="text" placeholder="{{profile.surname}}" ng-model="profile.surname">
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_gender'| translate}}: </b></p>
+                <div class="column">
+                    <input type="text" placeholder="{{profile.gender}}" ng-model="profile.gender">
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_dob'| translate}}: </b></p>
+                <div class="column">
+                    <input type="text" placeholder="{{profile.dob}}" ng-model="profile.dob">
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_addr'| translate}}: </b></p>
+                <div class="column">
+                    <input type="text" placeholder="{{profile.addr}}" ng-model="profile.addr">
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_pilotId'| translate}}: </b></p>
+                <div class="column">
+                    <input type="text" placeholder="{{profile.city}}" ng-model="profile.city">
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_city'| translate}}: </b></p>
+                <div class="column">
+                    <input type="text" placeholder="{{profile.city}}" ng-model="profile.city">
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_country'| translate}}: </b></p>
+                <div class="column">
+                    <input type="text" placeholder="{{profile.country}}" ng-model="profile.country">
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_zipcode'| translate}}: </b></p>
+                <div class="column">
+                    <input type="text" placeholder="{{profile.zipcode}}">
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_email'| translate}}: </b></p>
+                <div class="column">
+                    <input type="text" placeholder="{{profile.email}}">
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_languages'| translate}}: </b></p>
+                <div class="column">
+                    <input type="text" placeholder="{{profile.languages}}">
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_isDeveloper'| translate}}: </b></p>
+                <div class="column">
+                    <input type="text" placeholder="{{profile.isDeveloper}}">
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_skills'| translate}}: </b></p>
+                <div class="column">
+                    <input type="text" placeholder="{{profile.skills}}">
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_usedApps'| translate}}: </b></p>
+                <div class="column">
+                    <input type="text" placeholder="{{profile.usedApps}}">
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_profileData'| translate}}: </b></p>
+                <div class="column">
+                    <input type="text" placeholder="{{profile.profileData}}">
+                </div>
+            </div>
+            <div class="row">
+                <p><b>{{'lbl_lastLoc'| translate}}: </b></p>
+                <div class="column">
+                    <input type="text" placeholder="{{profile.lastloc}}">
+                </div>
+            </div>
+            <button class="button-small welive-popup-button" ng-click="saveProfile(profile)">
+                {{'lbl_save' | translate}}
+            </button>
+            
+        </div>
+        
+        
+        <!-- FORM -->
+        <div class="padding" ng-show="cdvProfile == 'create'">
+            <div class="row">
+                <b>{{'lbl_name'| translate}}</b>
+                <div class="column">
+                    <input type="text" placeholder="Name">
+                </div>
+            </div>
+            <div class="row">
+                <b>{{'lbl_surname'| translate}}: </b>
+                <div class="column">
+                    <input type="text" placeholder="Surname">
+                </div>
+            </div>
+            <div class="row">
+                <b>{{'lbl_gender'| translate}}: </b>
+                <div class="column">
+                    <input type="text" placeholder="Gender">
+                </div>
+            </div>
+            <div class="row">
+                <b>{{'lbl_dob'| translate}}: </b>
+                <div class="column">
+                    <input type="text" placeholder="Surname">
+                </div>
+            </div>
+            <button class="button-small welive-popup-button" ng-click="saveProfile(profile)">
+                {{'lbl_save' | translate}}
+            </button>
+        </div>
+
     </ion-content>
-</ion-view>
+</ion-view> 

@@ -7,8 +7,25 @@ angular.module('weliveplayer.controllers.profile', [])
         
                 .then(function (response) {
                      if (response) {
-                       $scope.profile = response.data
+                         if (response.data.name) {
+                             $scope.profile = response.data;
+                             $scope.cdvProfile = 'exist';
+                         } else {
+                             $scope.cdvProfile = 'create';       
+                         }
+                       
                      }},
                      function (error) {
+                      $scope.cdvProfile = 'create';
                      });
+                     
+        $scope.editProfile = function () {
+            $scope.cdvProfile = 'edit';
+        }
+        
+        $scope.saveProfile = function (profile) {
+            alert(profile.name);
+            $scope.cdvProfile = 'exist';
+        }
+                     
     })

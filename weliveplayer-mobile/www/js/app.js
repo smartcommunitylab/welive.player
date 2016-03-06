@@ -73,6 +73,9 @@ angular.module(
             }
             
             //disable login fix.
+            // $state.go('app.profile', {}, {
+            //             reload: true
+            //         });
             // $state.go('app.home', {}, {
             //             reload: true
             //         });
@@ -236,9 +239,10 @@ angular.module(
             lbl_languages: 'Lingue',
             lbl_isDeveloper: 'Developer',
             lbl_skills: 'Skills',
-            lbl_usedApps: 'Used Apps',
-            lbl_profileData: 'Profile Data',
-            lbl_lastLoc: 'Last Known Location'
+            lbl_usedApps: 'UsedApps',
+            lbl_profileData: 'ProfileData',
+            lbl_lastLoc: 'LastKnownLocation',
+            lbl_save: 'SALVA'
         });
 
         $translateProvider.translations('en', {
@@ -273,9 +277,10 @@ angular.module(
             lbl_languages: 'Languages',
             lbl_isDeveloper: 'Developer',
             lbl_skills: 'Skills',
-            lbl_usedApps: 'Used Apps',
-            lbl_profileData: 'Profile Data',
-            lbl_lastLoc: 'Last Known Location'
+            lbl_usedApps: 'UsedApps',
+            lbl_profileData: 'ProfileData',
+            lbl_lastLoc: 'LastKnownLocation',
+            lbl_save: 'SAVE'
             
         });
 
