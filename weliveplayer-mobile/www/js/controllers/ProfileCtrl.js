@@ -1,7 +1,7 @@
 angular.module('weliveplayer.controllers.profile', [])
     .controller('ProfileCtrl', function ($scope, $ionicModal, $timeout, LoginSrv) {
         
-        var userId = "0";
+        var userId = "90";
 
         LoginSrv.makeCDVProfileCall(userId)
         
