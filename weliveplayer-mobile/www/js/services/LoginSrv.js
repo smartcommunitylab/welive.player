@@ -75,8 +75,8 @@ angular.module('weliveplayer.services.login', [])
                                     // make call to cdv profile.
                                     loginService.makeCDVProfileCall(profile.userId).then(function (response) {//profile.userId
                                         if (response) {
-                                            if (response.data.pilotId) {
-                                               profile.pilotId = response.data.pilotId;    
+                                            if (response.data.referredPilot) {
+                                               profile.pilotId = response.data.referredPilot;    
                                             }
                                         } 
                                         deferred.resolve(profile);

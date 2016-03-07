@@ -7,13 +7,13 @@
     <ion-content class="padding">
         <div class="padding profile" ng-show="cdvProfile == 'exist'">
             <div class="row">
-                <div class="col">{{'lbl_name'| translate}}:</div>
-                <div class="col">{{profile.name}}</div>
+                <div class="col">{{'lbl_name'| translate}}</div>
+                <div class="col">{{profile.name}} {{profile.surname}}</div>
             </div>
-            <div class="row">
+            <!--<div class="row">
                 <div class="col">{{'lbl_surname'| translate}}:</div>
                 <div class="col">{{profile.surname}}</div>
-            </div>
+            </div>-->
             <div class="row">
                 <div class="col">{{'lbl_gender'| translate}}:</div>
                 <div class="col">{{profile.gender}}</div>
@@ -24,13 +24,13 @@
             </div>
             <div class="row">
                 <div class="col">{{'lbl_addr'| translate}}:</div>
-                <div class="col">{{profile.addr}}</div>
+                <div class="col">{{profile.addr}} {{profile.city}} {{profile.zipcode}} {{profile.country}}</div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_pilotId'| translate}}:</div>
                 <div class="col">{{profile.city}}</div>
             </div>
-            <div class="row">
+            <!--<div class="row">
                 <div class="col">{{'lbl_city'| translate}}:</div>
                 <div class="col">{{profile.city}}</div>
             </div>
@@ -41,20 +41,20 @@
             <div class="row">
                 <div class="col">{{'lbl_zipcode'| translate}}:</div>
                 <div class="col">{{profile.zipcode}}</div>
-            </div>
+            </div>-->
             <div class="row">
                 <div class="col">{{'lbl_email'| translate}}:</div>
                 <div class="col">{{profile.email}}</div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_languages'| translate}}:</div>
-                <div class="col">{{profile.languages.join()}}</div>
+                <div class="col">{{profile.languages.join(" ")}}</div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_isDeveloper'| translate}}:</div>
                 <div class="col">{{profile.isDeveloper}}</div>
             </div>
-            <div class="row">
+            <!--<div class="row">
                 <div class="col">{{'lbl_skills'| translate}}:</div>
                 <div class="col">{{profile.skills.join()}}</div>
             </div>
@@ -65,7 +65,7 @@
             <div class="row">
                 <div class="col">{{'lbl_lastLoc'| translate}}:</div>
                 <div class="col">{{profile.lastloc.join()}}</div>
-            </div>
+            </div>-->
         </div>
 
         <!-- EDIT --->
@@ -121,54 +121,54 @@
             <div class="row">
                 <div class="col">{{'lbl_zipcode'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.zipcode}}">
+                    <input type="text" placeholder="{{profile.zipcode}}" ng-model="profile.zipcode">
                 </div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_email'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.email}}">
+                    <input type="text" placeholder="{{profile.email}}" ng-model="profile.email">
                 </div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_languages'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.languages.join()}}">
+                    <input type="text" placeholder="{{profile.languages.join()}}" ng-model="profile.languages">
                 </div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_isDeveloper'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.isDeveloper}}">
+                    <input type="text" placeholder="{{profile.isDeveloper}}" ng-model="profile.isDeveloper">
                 </div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_skills'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.skills.join()}}">
+                    <input type="text" placeholder="{{profile.skills.join()}}"  ng-model="profile.skills">
                 </div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_usedApps'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.usedApps.join()}}">
+                    <input type="text" placeholder="{{profile.usedApps.join()}}" ng-model="profile.usedApps">
                 </div>
             </div>
-            <div class="row">
+            <!--<div class="row">
                 <div class="col">{{'lbl_profileData'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.profileData.join()}}">
+                    <input type="text" placeholder="{{profile.profileData.join()}}" ng-model="profile.profileData">
                 </div>
-            </div>
+            </div>-->
             <div class="row">
                 <div class="col">{{'lbl_lastLoc'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.lastloc}}">
+                    <input type="text" placeholder="{{profile.lastloc}}" ng-model="profile.lastloc">
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <button class="button-small welive-popup-button" ng-click="saveProfile(profile)">
+                    <button ng-click="saveProfile(profile)">
                         {{'lbl_save' | translate}}
                     </button>
                 </div>
