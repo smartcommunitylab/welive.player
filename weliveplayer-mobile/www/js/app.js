@@ -228,20 +228,20 @@ angular.module(
             lbl_popup_button_cancel: 'ANNULLA',
             lbl_name: 'Nome',
             lbl_surname: 'Gognome',
-            lbl_gender: 'Gender',
+            lbl_gender: 'Genere',
             lbl_dob: 'Data di Nascita',
             lbl_addr: 'Indrizzo',
             lbl_pilotId: 'PilotId',
             lbl_city: 'Citta',
             lbl_country: 'Paese',
-            lbl_zipcode: 'Zipcode',
+            lbl_zipcode: 'Cap',
             lbl_email: 'Email',
             lbl_languages: 'Lingue',
-            lbl_isDeveloper: 'Developer',
-            lbl_skills: 'Skills',
-            lbl_usedApps: 'UsedApps',
-            lbl_profileData: 'ProfileData',
-            lbl_lastLoc: 'LastKnownLocation',
+            lbl_isDeveloper: 'Sviluppatore',
+            lbl_skills: 'Perizia',
+            lbl_usedApps: 'Applicazioni Utilizzate',
+            lbl_profileData: 'Profilo Dati',
+            lbl_lastLoc: 'Ultima Posizione ',
             lbl_save: 'SALVA'
         });
 
@@ -278,13 +278,13 @@ angular.module(
             lbl_isDeveloper: 'Developer',
             lbl_skills: 'Skills',
             lbl_usedApps: 'UsedApps',
-            lbl_profileData: 'ProfileData',
+            lbl_profileData: 'Profile Data',
             lbl_lastLoc: 'LastKnownLocation',
             lbl_save: 'SAVE'
             
         });
 
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage('it');
         $translateProvider.useSanitizeValueStrategy('escape');
     });
 
