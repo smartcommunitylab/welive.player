@@ -284,7 +284,7 @@ angular.module(
             
         });
 
-        $translateProvider.preferredLanguage('it');
+        $translateProvider.preferredLanguage('en');
         $translateProvider.useSanitizeValueStrategy('escape');
     });
 
