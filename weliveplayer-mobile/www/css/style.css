@@ -129,3 +129,20 @@
 .app-header div:first-child{
   margin-bottom: 16px;
 }
+
+.profile .row .col:nth-child(1){
+    font-weight: bold;
+}
+
+/*.profile-edit .row .col:nth-child(2) .input-placeholder
+{
+  border-bottom: 1px solid #000;
+}*/
+
+/*.profile-edit .row .col:nth-child(2) .input[type="text"] {
+     border-bottom: 1px solid #000;
+}*/
+
+.profile-edit .row .col:nth-child(2) {
+     border-bottom: 1px solid #000;
+}

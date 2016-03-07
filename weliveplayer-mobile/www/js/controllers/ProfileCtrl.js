@@ -20,11 +20,11 @@ angular.module('weliveplayer.controllers.profile', [])
                      });
                      
         $scope.editProfile = function () {
-            $scope.cdvProfile = 'edit';
+            // $scope.cdvProfile = 'edit';
         }
         
         $scope.saveProfile = function (profile) {
-            alert(profile.name);
+            // alert(profile.name);
             $scope.cdvProfile = 'exist';
         }
                      
