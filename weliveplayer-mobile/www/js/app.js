@@ -49,11 +49,9 @@ angular.module(
         $rootScope.logout = function () {
             LoginSrv.logout().then(
                 function (data) {
-                    $rootScope.login();
-                    // ionic.Platform.exitApp();
+                    window.location.reload(true);
                 },
                 function (error) {
-                    // Utils.toast();
                 }
                 );
         };

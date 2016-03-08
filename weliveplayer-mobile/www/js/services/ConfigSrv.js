@@ -1,7 +1,7 @@
 angular.module('weliveplayer.services.config', [])
 
     .factory('Config', function ($http, $q, $filter) {
-        var SERVER_URL = "https://dev.welive.eu/aac/eauth/authorize";
+        var SERVER_URL = "https://dev.welive.eu/aac";
         var SERVER_TOKEN_URL = "https://dev.welive.eu/aac/oauth/token";
         var SERVER_PROFILE_URL = "https://dev.welive.eu/aac/basicprofile/me";
         var CLIENT_ID = "e4cd499e-81ac-4240-bd5c-1d4680f2f99f";

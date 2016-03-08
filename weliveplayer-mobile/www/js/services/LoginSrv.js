@@ -22,7 +22,7 @@ angular.module('weliveplayer.services.login', [])
                     var processThat = false;
                
                     //Build the OAuth consent page URL
-                    var authUrl = Config.getServerURL() + '?client_id=' + Config.getClientId() + "&response_type=code&redirect_uri=" + Config.getRedirectUri();
+                    var authUrl = Config.getServerURL() + '/eauth/authorize?client_id=' + Config.getClientId() + "&response_type=code&redirect_uri=" + Config.getRedirectUri();
                 
                     //Open the OAuth consent page in the InAppBrowser
                     if (!authWindow) {
@@ -76,9 +76,9 @@ angular.module('weliveplayer.services.login', [])
                                     loginService.makeCDVProfileCall(profile.userId).then(function (response) {//profile.userId
                                         if (response) {
                                             if (response.data.referredPilot) {
-                                               profile.pilotId = response.data.referredPilot;    
+                                                profile.pilotId = response.data.referredPilot;
                                             }
-                                        } 
+                                        }
                                         deferred.resolve(profile);
                                     }, function (error) {
                                         deferred.resolve(profile);
@@ -140,17 +140,41 @@ angular.module('weliveplayer.services.login', [])
         loginService.logout = function () {
             var deferred = $q.defer();
 
-            StorageSrv.reset().then(
-                function (response) {
-                    StorageSrv.reset().then(function () {
-                        //$rootScope.login();
-                        deferred.resolve(true);
-                    });
-                },
-                function (responseError) {
-                    deferred.reject(responseError.data.error);
-                }
-                );
+            var logoutURL = Config.getServerURL() + "/logout";
+
+            $http.get(logoutURL)
+
+                .then(
+	                   function (response) {
+
+                        StorageSrv.reset().then(
+                            function (response) {
+                                try {
+                                    cookieMaster.clear(
+                                        function () {
+                                            console.log('Cookies have been cleared');
+                                            deferred.resolve(response.data);
+                                        },
+                                        function () {
+                                            console.log('Cookies could not be cleared');
+                                            deferred.resolve(response.data);
+                                        });
+                                } catch (e) {
+                                    deferred.resolve(e);
+                                }
+
+
+                                deferred.resolve(true);
+                            },
+                            function (responseError) {
+                                deferred.reject(responseError.data.error);
+                            }
+                            );
+
+                    }, function (responseError) {
+                        deferred.reject(responseError);
+                    }
+                    );
 
             return deferred.promise;
         };
@@ -166,7 +190,7 @@ angular.module('weliveplayer.services.login', [])
             $http.post(url + params)
 
                 .then(
-	                   function (response) {
+                    function (response) {
                         if (response.data.access_token) {
                             deferred.resolve(response.data);
                         } else {
@@ -174,10 +198,10 @@ angular.module('weliveplayer.services.login', [])
                         }
 
 
-	                   },
-	                   function (responseError) {
+                    },
+                    function (responseError) {
                         deferred.reject(responseError);
-	                   }
+                    }
                     );
 
 
@@ -197,7 +221,7 @@ angular.module('weliveplayer.services.login', [])
             })
 
                 .then(
-	                   function (response) {
+                    function (response) {
                         if (response.data.userId) {
                             deferred.resolve(response.data);
                         } else {
@@ -205,10 +229,10 @@ angular.module('weliveplayer.services.login', [])
                         }
 
 
-	                   },
-	                   function (responseError) {
+                    },
+                    function (responseError) {
                         deferred.reject(responseError);
-	                   }
+                    }
                     );
 
             return deferred.promise;
@@ -226,7 +250,7 @@ angular.module('weliveplayer.services.login', [])
             })
 
                 .then(
-	                   function (response) {
+                    function (response) {
                         if (response.data) {
                             deferred.resolve(response);
                         } else {
@@ -234,10 +258,10 @@ angular.module('weliveplayer.services.login', [])
                         }
 
 
-	                   },
-	                   function (responseError) {
+                    },
+                    function (responseError) {
                         deferred.reject(responseError);
-	                   }
+                    }
                     );
 
             return deferred.promise;
