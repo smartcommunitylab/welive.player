@@ -37,6 +37,7 @@ angular.module('weliveplayer.controllers.home', [])
             var myPopup = $ionicPopup.show({
                 templateUrl: "templates/sort.html",
                 title: $filter('translate')('lbl_popup_title'),
+                cssClass: "popup-title",
                 scope: $scope,
                 buttons: [
                     {
