@@ -408,7 +408,7 @@ angular.module('weliveplayer.services.utils', [])
             var pilotId = StorageSrv.getLoggedInUserPilotId();
 
             if (pilotId) {
-                pilot.push(pilot);
+                pilot.push(pilotId);
             } else {
                 // pilot.push(Config.getPilotIds()[0]);
                 pilot = pilot.concat(Config.getPilotIds());
