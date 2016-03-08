@@ -2,8 +2,6 @@ angular.module('weliveplayer.services.config', [])
 
     .factory('Config', function ($http, $q, $filter) {
         var SERVER_URL = "https://dev.welive.eu/aac";
-        var SERVER_TOKEN_URL = "https://dev.welive.eu/aac/oauth/token";
-        var SERVER_PROFILE_URL = "https://dev.welive.eu/aac/basicprofile/me";
         var CLIENT_ID = "e4cd499e-81ac-4240-bd5c-1d4680f2f99f";
         var CLIENT_SEC_KEY = "6b934176-4513-43dd-a713-b926bfd979e2";
         var REDIRECT_URI = "http://localhost";
@@ -54,12 +52,6 @@ angular.module('weliveplayer.services.config', [])
             },
             getServerURL: function () {
                 return SERVER_URL;
-            },
-            getServerTokenURL: function () {
-                return SERVER_TOKEN_URL;
-            },
-            getServerProfileURL: function () {
-                return SERVER_PROFILE_URL;
             },
             getZoom: function () {
                 return ZOOM;

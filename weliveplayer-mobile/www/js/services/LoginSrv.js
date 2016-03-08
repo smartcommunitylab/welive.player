@@ -183,8 +183,8 @@ angular.module('weliveplayer.services.login', [])
 
             var deferred = $q.defer();
 
-            var url = Config.getServerTokenURL();
-            var params = "?client_id=" + Config.getClientId() + "&client_secret=" + Config.getClientSecKey()
+            var url = Config.getServerURL();
+            var params = "/oauth/token?client_id=" + Config.getClientId() + "&client_secret=" + Config.getClientSecKey()
                 + "&code=" + code + "&redirect_uri=" + Config.getRedirectUri() + "&grant_type=authorization_code";
 
             $http.post(url + params)
@@ -214,7 +214,7 @@ angular.module('weliveplayer.services.login', [])
 
             var deferred = $q.defer();
 
-            var url = Config.getServerProfileURL();
+            var url = Config.getServerURL() + "/basicprofile/me";
 
             $http.get(url, {
                 headers: { "Authorization": "Bearer " + tokenInfo.access_token }
@@ -280,8 +280,8 @@ angular.module('weliveplayer.services.login', [])
             if (saved.getTime() >= now.getTime()) {
                 deferred.resolve(user.token.access_token);
             } else {
-                var url = Config.getServerTokenURL();
-                var params = "?client_id=" + Config.getClientId() + "&client_secret=" + Config.getClientSecKey()
+                var url = Config.getServerURL();
+                var params = "/oauth/token?client_id=" + Config.getClientId() + "&client_secret=" + Config.getClientSecKey()
                     + "&code=" + user.token.code + "&refresh_token=" + user.token.refresh_token + "&grant_type=refresh_token";
 
                 $http.post(url + params)
