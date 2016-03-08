@@ -20,15 +20,15 @@
             </div>
             <div class="row">
                 <div class="col">{{'lbl_dob'| translate}}:</div>
-                <div class="col">{{profile.dob}}</div>
+                <div class="col">{{profile.birthdate}}</div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_addr'| translate}}:</div>
-                <div class="col">{{profile.addr}} {{profile.city}} {{profile.zipcode}} {{profile.country}}</div>
+                <div class="col">{{profile.address}} {{profile.city}} {{profile.zipcode}} {{profile.country}}</div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_pilotId'| translate}}:</div>
-                <div class="col">{{profile.city}}</div>
+                <div class="col">{{profile.referredPilot}}</div>
             </div>
             <!--<div class="row">
                 <div class="col">{{'lbl_city'| translate}}:</div>
@@ -91,19 +91,19 @@
             <div class="row">
                 <div class="col">{{'lbl_dob'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.dob}}" ng-model="profile.dob">
+                    <input type="text" placeholder="{{profile.birthdate}}" ng-model="profile.birthdate">
                 </div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_addr'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.addr}}" ng-model="profile.addr">
+                    <input type="text" placeholder="{{profile.address}}" ng-model="profile.address">
                 </div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_pilotId'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.city}}" ng-model="profile.city">
+                    <input type="text" placeholder="{{profile.referredPilot}}" ng-model="profile.referredPilot">
                 </div>
             </div>
             <div class="row">
@@ -145,7 +145,7 @@
             <div class="row">
                 <div class="col">{{'lbl_skills'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.skills.join()}}"  ng-model="profile.skills">
+                    <input type="text" placeholder="{{profile.skills.join()}}" ng-model="profile.skills">
                 </div>
             </div>
             <div class="row">
