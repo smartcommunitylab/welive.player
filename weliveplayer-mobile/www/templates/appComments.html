@@ -2,11 +2,11 @@
     <ion-content class="padding">
         <h4>{{ 'lbl_comment' | translate }}</h4>
         <ion-list>
-            <ion-item ng-repeat="userReview in userReviews" class="item-thumbnail-left" ng-click="">
+            <ion-item ng-repeat="userReview in userReviews" class="item-thumbnail-left comments" ng-click="">
                 <img ng-src="img/ionic.png">
-                <h4>{{ userReview.authorNode }}</h4>
-                <h2>{{ userReview.publishDate }}</h2>
-                <h2>{{ userReview.comment }}</h2>
+                <div>{{ userReview.authorNode }}</div>
+                <div>{{ userReview.publishDate.slice(0,userReview.publishDate.lastIndexOf(":")) }}</div>
+                <div>{{ userReview.comment }}</div>
             </ion-item>
             <ion-infinite-scroll ng-if="moreReviewsPossible" on-infinite="loadMoreReviews()" distance="5%">
             </ion-infinite-scroll>

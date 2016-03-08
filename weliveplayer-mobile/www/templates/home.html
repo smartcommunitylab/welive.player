@@ -6,7 +6,10 @@
     </ion-nav-buttons>
 
     <ion-content class="padding has-footer">
-        <div class="text-center" ng-if="!!items && items.length == 0">
+        <div class="text-center" ng-if="!!items && items.length == 0 && selections.length == 0">
+            <h4>{{'no_apps_no_selection' | translate}}</h4>
+        </div>
+        <div class="text-center" ng-if="!!items && items.length == 0 && selections.length > 0">
             <h4>{{'no_apps' | translate}}</h4>
         </div>
         <ion-list>

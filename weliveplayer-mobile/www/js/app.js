@@ -69,8 +69,8 @@ angular.module(
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
-            
-             if (typeof navigator.globalization !== "undefined") {
+
+            if (typeof navigator.globalization !== "undefined") {
                 navigator.globalization.getPreferredLanguage(function (language) {
                     $translate.use((language.value).split("-")[0]).then(function (data) {
                         console.log("SUCCESS -> " + data);
@@ -222,12 +222,13 @@ angular.module(
             lbl_description: 'Descrizione',
             menu_home: 'Home',
             menu_profile: 'Profilo',
-            menu_info: 'Informazione',
-            menu_termine: 'Termini del Servizio',
-            menu_logout: 'Logout',
-            toast_error_generic: 'OPS! Problema...',
-            no_apps: 'Nessun app trovato.',
-            lbl_popup_title: 'Scelgli Una Ordinamento',
+            menu_info: 'Informazioni',
+            menu_termine: 'Termini del servizio',
+            menu_logout: 'Esci',
+            toast_error_generic: 'Errore! Riavvia la app.',
+            no_apps: 'Nessuna app trovata. Effettua una nuova ricerca.',
+            no_apps_no_selection: 'Seleziona una città per visualizzare le relative App.',
+            lbl_popup_title: 'Scegli un ordinamento',
             lbl_popup_recommended: 'Consigliati',
             lbl_popup_recent: 'Recenti',
             lbl_popup_popular: 'Popolari',
@@ -235,21 +236,21 @@ angular.module(
             lbl_popup_button_ok: 'ORDINA',
             lbl_popup_button_cancel: 'ANNULLA',
             lbl_name: 'Nome',
-            lbl_surname: 'Gognome',
+            lbl_surname: 'Cognome',
             lbl_gender: 'Genere',
-            lbl_dob: 'Data di Nascita',
+            lbl_dob: 'Data di nascita',
             lbl_addr: 'Indrizzo',
-            lbl_pilotId: 'Pilot',
+            lbl_pilotId: 'Città pilota',
             lbl_city: 'Citta',
-            lbl_country: 'Paese',
+            lbl_country: 'Stato',
             lbl_zipcode: 'Cap',
             lbl_email: 'Email',
             lbl_languages: 'Lingue',
             lbl_isDeveloper: 'Sviluppatore',
-            lbl_skills: 'Perizia',
-            lbl_usedApps: 'Applicazioni Utilizzate',
-            lbl_profileData: 'Profilo Dati',
-            lbl_lastLoc: 'Ultima Posizione ',
+            lbl_skills: 'Capacità',
+            lbl_usedApps: 'Applicazioni utilizzate',
+            lbl_profileData: 'Profilo',
+            lbl_lastLoc: 'Posizione',
             lbl_save: 'SALVA'
         });
 
@@ -263,9 +264,10 @@ angular.module(
             menu_info: 'Information',
             menu_termine: 'Terms of Service',
             menu_logout: 'Logout',
-            toast_error_generic: 'OPS! Problem...',
-            no_apps: 'No application found.',
-            lbl_popup_title: 'Select An Order',
+            toast_error_generic: 'Error! Restart the App',
+            no_apps: 'No application found. Try a new research.',
+            no_apps_no_selection: 'Select a city to display its apps.',
+            lbl_popup_title: 'Select an order',
             lbl_popup_recommended: 'Recommended',
             lbl_popup_recent: 'Recent',
             lbl_popup_popular: 'Popular',
@@ -277,7 +279,7 @@ angular.module(
             lbl_gender: 'Gender',
             lbl_dob: 'Birthdate',
             lbl_addr: 'Address',
-            lbl_pilotId: 'Pilot',
+            lbl_pilotId: 'Pilot city',
             lbl_city: 'City',
             lbl_country: 'Country',
             lbl_zipcode: 'Zipcode',
@@ -285,11 +287,11 @@ angular.module(
             lbl_languages: 'Languages',
             lbl_isDeveloper: 'Developer',
             lbl_skills: 'Skills',
-            lbl_usedApps: 'UsedApps',
-            lbl_profileData: 'Profile Data',
-            lbl_lastLoc: 'LastKnownLocation',
+            lbl_usedApps: 'Used Apps',
+            lbl_profileData: 'Profile',
+            lbl_lastLoc: 'Location',
             lbl_save: 'SAVE'
-            
+
         });
 
         $translateProvider.preferredLanguage('en');
