@@ -10,6 +10,7 @@ angular.module('weliveplayer.services.config', [])
         var CDV_URI = "https://dev.welive.eu/dev/api/cdv";
         var PILOT_IDS = ["BILBAO", "HELSINKI-USIMAA", "Novisad", "Trento"];
         var BASICAUTH_TOKEN = "Basic d2VsaXZlQHdlbGl2ZS5ldTp3M2wxdjN0MDBscw==";
+        var APP_TYPE = "PSA";
 
         var HTTP_CONFIG = {
             timeout: 5000
@@ -92,8 +93,11 @@ angular.module('weliveplayer.services.config', [])
             getCDVUri: function () {
                 return CDV_URI;
             },
-            getBasicAuthToken: function() {
+            getBasicAuthToken: function () {
                 return BASICAUTH_TOKEN;
+            },
+            getDefaultAppType: function () {
+                return APP_TYPE;                
             }
           
         }
