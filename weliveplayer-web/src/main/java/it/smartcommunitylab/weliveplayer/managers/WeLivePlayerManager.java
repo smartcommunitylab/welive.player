@@ -19,6 +19,7 @@ package it.smartcommunitylab.weliveplayer.managers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -66,6 +67,10 @@ public class WeLivePlayerManager {
 	private LoadingCache<String, List<Artifact>> appsCache;
 	/** application comments cache. **/
 	private LoadingCache<String, List<Comment>> appCommentsCache;
+	/** application type. **/
+	private static String appType = "PSA";
+	/** appId-pilot map. **/
+	private static Map<String, String> appPilotMap= new HashMap<String, String>();
 
 	/**
 	 * Apps Cache Generator.
@@ -79,7 +84,7 @@ public class WeLivePlayerManager {
 				.build(new CacheLoader<String, List<Artifact>>() {
 					@Override
 					public List<Artifact> load(String city) throws Exception {
-						List<Artifact> artifacts = getArtifacts(city, "ALL");
+						List<Artifact> artifacts = getArtifacts(city, appType);
 						return artifacts;
 					}
 				});
@@ -106,7 +111,6 @@ public class WeLivePlayerManager {
 		try {
 			String response = weLivePlayerUtils.sendGET(url, "application/json", null, authHeader, -1);
 
-			// weLivePlayerUtils.log(artifactId);
 			if (response != null && !response.isEmpty()) {
 				JSONObject root = new JSONObject(response);
 				if (root.has("name")) {
@@ -142,8 +146,8 @@ public class WeLivePlayerManager {
 		List<Artifact> artifacts = new ArrayList<Artifact>();
 
 		String url = env.getProperty("welive.mkp.uri");
-		url = url.replace("{pilotId}", "All");// pilotId
-		url = url.replace("{appType}", "All");// appType
+		url = url.replace("{pilotId}", pilotId);// pilotId
+		url = url.replace("{appType}", appType);// appType
 
 		try {
 			String response = weLivePlayerUtils.sendGET(url, "application/json", null, authHeader, -1);
@@ -155,6 +159,7 @@ public class WeLivePlayerManager {
 						JSONObject artifact = artifactsArray.getJSONObject(i);
 						Artifact temp = new Artifact();
 						temp.setId(artifact.getString("artefactId"));
+						
 						temp.setCity(pilotId);
 						String imageLink = artifact.getString("linkImage");
 						if (!imageLink.isEmpty()) {
@@ -167,6 +172,12 @@ public class WeLivePlayerManager {
 						temp.setName(artifact.getString("name"));
 						temp.setDescription(artifact.getString("description"));
 						temp.seteId(artifact.getString("eId"));
+						
+						/** to be removed in future.**/
+						temp.setReferredPilotId(pilotId);
+						appPilotMap.put(temp.getId(), pilotId);
+						/** to be removed in future.**/
+						
 						temp.setInterfaceOperation(artifact.getString("interfaceOperation"));
 						temp.setRating(artifact.getInt("rating"));
 						temp.setType(artifact.getString("type"));
@@ -207,7 +218,7 @@ public class WeLivePlayerManager {
 			throws WeLivePlayerCustomException {
 
 		// log here.
-		weLivePlayerUtils.logEvent(userId, pilotId, null);
+		weLivePlayerUtils.logPlayerAppsAccess(userId, pilotId);
 
 		List<Artifact> artifacts = new ArrayList<>();
 		try {
@@ -234,6 +245,11 @@ public class WeLivePlayerManager {
 	public List<Comment> getArtifactComments(String userId, String artifactId, int page, int count)
 			throws WeLivePlayerCustomException {
 
+		// log here.
+		if (appPilotMap.containsKey(artifactId)) {
+			weLivePlayerUtils.logAppInfoAccess(userId, artifactId, appPilotMap.get(artifactId));
+		}
+		
 		List<Comment> commentsList = new ArrayList<Comment>();
 
 		try {
@@ -273,7 +289,7 @@ public class WeLivePlayerManager {
 
 				if (root.has("userId")) {
 					// read userId.
-					String userId = "0"; // root.getString("userId");
+					String userId = root.getString("userId");
 					// invoke cdv profile api.
 					String url = env.getProperty("welive.cdv.profile.uri");
 					url = url.replace("{id}", userId);

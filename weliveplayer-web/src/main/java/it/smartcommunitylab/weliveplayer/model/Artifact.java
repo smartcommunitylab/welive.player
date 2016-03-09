@@ -28,6 +28,7 @@ public class Artifact {
 	private String eId;
 	private String name;
 	private String city;
+	private String referredPilotId;
 	private String interfaceOperation;
 	private int rating;
 	private String type;
@@ -105,6 +106,14 @@ public class Artifact {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	public String getReferredPilotId() {
+		return referredPilotId;
+	}
+
+	public void setReferredPilotId(String referredPilotId) {
+		this.referredPilotId = referredPilotId;
 	}
 
 	public String getInterfaceOperation() {

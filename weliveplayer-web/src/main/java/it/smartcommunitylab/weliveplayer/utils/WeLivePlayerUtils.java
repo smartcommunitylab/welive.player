@@ -173,7 +173,7 @@ public class WeLivePlayerUtils {
 
 	}
 
-	public void logEvent(String userId, String pilotId, Object object) {
+	public void logPlayerAppsAccess(String userId, String pilotId) {
 
 		String logUrl = env.getProperty("log.endpoint");
 
@@ -186,6 +186,21 @@ public class WeLivePlayerUtils {
 			e.printStackTrace();
 		}
 
+	}
+
+	public void logAppInfoAccess(String userId, String artifactId, String pilotId) {
+		
+		String logUrl = env.getProperty("log.endpoint");
+
+		String body = "{\"msg\" : \"AppInfoAccess\",\"type\" : \"AppInfoAccess\", \"appId\": \"weliveplayer\", \"custom_attr\": {\"UserID\": \""
+				+ userId + "\",\"AppID\": \"" + artifactId + "\",\"PilotID\": \"" + pilotId + "\"}}";
+		try {
+			sendPOST(logUrl, "application/json", "application/json", "", body, true);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }
