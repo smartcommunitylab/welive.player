@@ -55,6 +55,12 @@ public class WeLivePlayerManager {
 
 	private static final transient Log logger = LogFactory.getLog(WeLivePlayerManager.class);
 
+	private static final String PSA = "PSA";
+
+	private static final String BB = "BuildingBlock";
+
+	private static final String DS = "Dataset";
+
 	@Autowired
 	private WeLivePlayerUtils weLivePlayerUtils;
 	@Autowired
@@ -64,13 +70,15 @@ public class WeLivePlayerManager {
 	/** objectmapper. **/
 	private static ObjectMapper mapper = new ObjectMapper();
 	/** application cache. **/
-	private LoadingCache<String, List<Artifact>> appsCache;
+	private LoadingCache<String, List<Artifact>> artifactsPSA;
+	private LoadingCache<String, List<Artifact>> artifactsBB;
+	private LoadingCache<String, List<Artifact>> artifactsDataset;
 	/** application comments cache. **/
 	private LoadingCache<String, List<Comment>> appCommentsCache;
 	/** application type. **/
 	private static String appType = "PSA";
 	/** appId-pilot map. **/
-	private static Map<String, String> appPilotMap= new HashMap<String, String>();
+	private static Map<String, String> appPilotMap = new HashMap<String, String>();
 
 	/**
 	 * Apps Cache Generator.
@@ -80,11 +88,29 @@ public class WeLivePlayerManager {
 	@PostConstruct
 	public void init() throws ExecutionException {
 		// create a cache for List<Artifact> based on city.
-		appsCache = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES)
+		artifactsPSA = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<Artifact>>() {
 					@Override
 					public List<Artifact> load(String city) throws Exception {
-						List<Artifact> artifacts = getArtifacts(city, appType);
+						List<Artifact> artifacts = getArtifacts(city, PSA);
+						return artifacts;
+					}
+				});
+
+		artifactsBB = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES)
+				.build(new CacheLoader<String, List<Artifact>>() {
+					@Override
+					public List<Artifact> load(String city) throws Exception {
+						List<Artifact> artifacts = getArtifacts(city, BB);
+						return artifacts;
+					}
+				});
+
+		artifactsDataset = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES)
+				.build(new CacheLoader<String, List<Artifact>>() {
+					@Override
+					public List<Artifact> load(String city) throws Exception {
+						List<Artifact> artifacts = getArtifacts(city, DS);
 						return artifacts;
 					}
 				});
@@ -159,7 +185,7 @@ public class WeLivePlayerManager {
 						JSONObject artifact = artifactsArray.getJSONObject(i);
 						Artifact temp = new Artifact();
 						temp.setId(artifact.getString("artefactId"));
-						
+
 						temp.setCity(pilotId);
 						String imageLink = artifact.getString("linkImage");
 						if (!imageLink.isEmpty()) {
@@ -172,12 +198,12 @@ public class WeLivePlayerManager {
 						temp.setName(artifact.getString("name"));
 						temp.setDescription(artifact.getString("description"));
 						temp.seteId(artifact.getString("eId"));
-						
-						/** to be removed in future.**/
+
+						/** to be removed in future. **/
 						temp.setReferredPilotId(pilotId);
 						appPilotMap.put(temp.getId(), pilotId);
-						/** to be removed in future.**/
-						
+						/** to be removed in future. **/
+
 						temp.setInterfaceOperation(artifact.getString("interfaceOperation"));
 						temp.setRating(artifact.getInt("rating"));
 						temp.setType(artifact.getString("type"));
@@ -222,7 +248,13 @@ public class WeLivePlayerManager {
 
 		List<Artifact> artifacts = new ArrayList<>();
 		try {
-			artifacts = appsCache.get(pilotId);
+			if (appType.equalsIgnoreCase(PSA)) {
+				artifacts = artifactsPSA.get(pilotId);
+			} else if (appType.equalsIgnoreCase(BB)) {
+				artifacts = artifactsBB.get(pilotId);
+			} else if (appType.equalsIgnoreCase(DS)) {
+				artifacts = artifactsDataset.get(pilotId);
+			}
 		} catch (ExecutionException e) {
 			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
@@ -249,7 +281,7 @@ public class WeLivePlayerManager {
 		if (appPilotMap.containsKey(artifactId)) {
 			weLivePlayerUtils.logAppInfoAccess(userId, artifactId, appPilotMap.get(artifactId));
 		}
-		
+
 		List<Comment> commentsList = new ArrayList<Comment>();
 
 		try {
