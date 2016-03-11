@@ -269,6 +269,11 @@ public class WeLivePlayerManager {
 			}
 
 		}
+		
+		// make first application recommended(to remove later).
+		if (!paginatedList.isEmpty()) {
+			paginatedList.get(0).setRecommendation(true);
+		}
 
 		return paginatedList;
 

@@ -34,12 +34,12 @@ public class Artifact {
 	private String type;
 	private int typeId;
 	private List<Comment> comments = new ArrayList<Comment>();
-	private String recommendation;
+	private boolean recommendation;
 	private String tags;
 
 	public Artifact(String id, String description, String linkImage, String eId, String name, String city,
 			String interfaceOperation, int rating, String type, int typeId, List<Comment> comments,
-			String recommendation) {
+			boolean recommendation) {
 		super();
 		this.id = id;
 		this.description = description;
@@ -140,11 +140,11 @@ public class Artifact {
 		this.comments = comments;
 	}
 
-	public String getRecommendation() {
+	public boolean getRecommendation() {
 		return recommendation;
 	}
 
-	public void setRecommendation(String recommendation) {
+	public void setRecommendation(boolean recommendation) {
 		this.recommendation = recommendation;
 	}
 
