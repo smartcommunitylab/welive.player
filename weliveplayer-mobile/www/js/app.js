@@ -251,7 +251,8 @@ angular.module(
             lbl_usedApps: 'Applicazioni utilizzate',
             lbl_profileData: 'Profilo',
             lbl_lastLoc: 'Posizione',
-            lbl_save: 'SALVA'
+            lbl_save: 'SALVA',
+            ver_info: 'Versione 0.0.1'
         });
 
         $translateProvider.translations('en', {
@@ -290,7 +291,8 @@ angular.module(
             lbl_usedApps: 'Used Apps',
             lbl_profileData: 'Profile',
             lbl_lastLoc: 'Location',
-            lbl_save: 'SAVE'
+            lbl_save: 'SAVE',
+            ver_info: 'Version 0.0.1'
 
         });
 
