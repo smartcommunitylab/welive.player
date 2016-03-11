@@ -232,7 +232,7 @@ angular.module('weliveplayer.services.utils', [])
                 return ((a.timestamp < b.timestamp) ? 1 : ((a.timestamp > b.timestamp) ? -1 : 0));
             },
             byConsigliati: function (a) {
-                if (a.consigliati) {
+                if (a.recommendation) {
                     return -1;
                 } else {
                     return 1;

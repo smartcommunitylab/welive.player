@@ -13,7 +13,7 @@
             <h4>{{'no_apps' | translate}}</h4>
         </div>
         <ion-list>
-            <ion-item ng-repeat="item in items" class="app-item item-thumbnail-left" ng-class="{'recomm': item.active}" ng-click="showAppDetails(item.id, item.city)">
+            <ion-item ng-repeat="item in items" class="app-item item-thumbnail-left" ng-class="{'app-item-recomm': item.recommendation}" ng-click="showAppDetails(item.id, item.city)">
                 <img ng-src="{{ item.linkImage}}">
                 <h4>{{ item.city }}</h4>
                 <h2>{{ item.name }}</h2>

@@ -6,7 +6,8 @@ angular.module('weliveplayer.controllers.home', [])
 
         // bottom buttons.
         $scope.pilotIds = Config.getPilotIds();
-        
+
+
         var creationSuccess = function (apps) {
             $scope.items = apps;
             Utils.loaded();
@@ -91,7 +92,14 @@ angular.module('weliveplayer.controllers.home', [])
 
         $scope.selection = 'info';
 
-        var appStoreId = "eu.trentorise.smartcampus.viaggiarovereto"; //com.twitter.android
+        var appStoreId = "";
+        if ($scope.app.url && $scope.app.url.length > 0) {
+            if ($scope.app.url.indexOf("https://play.google.com/store/apps/details?id=") > -1) {
+                var storeUri = $scope.app.url;
+                appStoreId = storeUri.slice(storeUri.lastIndexOf("=") + 1, storeUri.length);
+            }
+        }
+
         var pilotId = $scope.app.city;
         
         // check if app is installed.
@@ -117,23 +125,33 @@ angular.module('weliveplayer.controllers.home', [])
 
         $scope.download = function (id) {
             if ($scope.appInstallStatus == 'download') {
-                cordova.plugins.market.open(appStoreId, {
-                    success: function () {
-                        // lOG EVENT (APP DOWNLOAD)
-                        Utils.logAppDownload(appStoreId, pilotId);
-                    },
-                    failure: function () {
-                    }
-                });
+                if (appStoreId.length === 0) {
+                    console.log("missing playstore id.")
+                } else {
+                    cordova.plugins.market.open(appStoreId, {
+                        success: function () {
+                            // lOG EVENT (APP DOWNLOAD)
+                            Utils.logAppDownload(appStoreId, pilotId);
+                        },
+                        failure: function () {
+                        }
+                    });
+                }
+
 
             } else if ($scope.appInstallStatus == 'forward') {
-                navigator.startApp.start(appStoreId, function (message) {
-                    // console.log(message);
-                    // lOG EVENT (APP OPEN)
-                    Utils.logAppOpen(appStoreId, pilotId);
-                }, function (error) { /* error */
-                    console.log(error);
-                });
+                if (appStoreId.length === 0) {
+                    console.log("missing playstore id.")
+                } else {
+                    navigator.startApp.start(appStoreId, function (message) {
+                        // console.log(message);
+                        // lOG EVENT (APP OPEN)
+                        Utils.logAppOpen(appStoreId, pilotId);
+                    }, function (error) { /* error */
+                        console.log(error);
+                    });
+                }
+
             }
 
         }
@@ -145,25 +163,21 @@ angular.module('weliveplayer.controllers.home', [])
    
         // read it from cache.
         $scope.stars = Utils.getStars(Utils.getAgreegateRating($scope.app));
-   
-        /**
-        var creationSuccess = function (agreegate) {
-            $scope.stars = Utils.getStars(agreegate[0]);
-        };
-     
-        var creationError = function (error) {
-            
-        };
-     
-        PlayStore.getAgreegateReview($scope.app.storeId).then(creationSuccess, creationError);*/
 
     })
 
     .controller('AppCommentsCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, $q, PlayStore) {
 
         var app = Utils.getAppDetails($state.params.appId, $state.params.appRegion);
-        
-        var appStoreId = "eu.trentorise.smartcampus.viaggiatrento";
+
+        var appStoreId = "";
+        if (app.url && app.url.length > 0) {
+            if (app.url.indexOf("https://play.google.com/store/apps/details?id=") > -1) {
+                var storeUri = app.url;
+                appStoreId = storeUri.slice(storeUri.lastIndexOf("=") + 1, storeUri.length);
+            }
+        }
+
 
         navigator.startApp.check(appStoreId, function (message) { /* success */
             // console.log("app exists.");
@@ -176,27 +190,39 @@ angular.module('weliveplayer.controllers.home', [])
         $scope.name = app.name;
         $scope.id = app.id;
         $scope.region = app.city;
-        
+
         var pilotId = app.city;
 
         $scope.download = function (id) {
             if ($scope.appInstallStatus == 'download') {
-                cordova.plugins.market.open(appStoreId, {
-                    success: function () {
-                        // lOG EVENT (APP DOWNLOAD)
-                        Utils.logAppDownload(appStoreId, pilotId);
-                    },
-                    failure: function () {
-                    }
-                });
+
+                if (appStoreId.length === 0) {
+                    console.log("missing playstore id.")
+                } else {
+                    cordova.plugins.market.open(appStoreId, {
+                        success: function () {
+                            // lOG EVENT (APP DOWNLOAD)
+                            Utils.logAppDownload(appStoreId, pilotId);
+                        },
+                        failure: function () {
+                        }
+                    });
+                }
+
             } else if ($scope.appInstallStatus == 'forward') {
-                navigator.startApp.start(appStoreId, function (message) {
-                    // console.log(message);
-                    // lOG EVENT (APP OPEN)
-                    Utils.logAppOpen(appStoreId, pilotId);
-                }, function (error) {
-                    console.log(error);
-                });
+                if (appStoreId.length === 0) {
+                    console.log("missing playstore id.")
+                } else {
+                    navigator.startApp.start(appStoreId, function (message) {
+                        // console.log(message);
+                        // lOG EVENT (APP OPEN)
+                        Utils.logAppOpen(appStoreId, pilotId);
+                    }, function (error) {
+                        console.log(error);
+                    });
+                }
+
+
             }
         }
 
@@ -207,33 +233,7 @@ angular.module('weliveplayer.controllers.home', [])
             $state.go('app.single', { appId: app.id, appRegion: app.city });
         }
 
-        // var opts = {};
-
-        // opts.id = app.id;
-        // opts.storeId = app.eId;
-        // opts.city = app.city;
-        // opts.sort = "newest";
-        // opts.start = 0;
-        // opts.count = 20;
-        // opts.lang = "it";
-        // opts.reviewType = 0;
-
-        // var creationSuccess = function (reviews) {
-        //     $scope.userReviews = reviews;
-        //     Utils.loaded();
-        // };
-
-        // var creationError = function (error) {
-        //     Utils.loaded();
-        //     Utils.toast();
-        // };
-
-        // Utils.loading();
-        // PlayStore.getUserReviews(opts).then(creationSuccess, creationError);
-        
-         /*
-    * reviews
-    */
+        /*reviews*/
         var opts = {};
         opts.id = app.id;
         opts.start = 0;
@@ -299,7 +299,7 @@ angular.module('weliveplayer.controllers.home', [])
                 }
                 );
         };
-        
+
     })
 
     .controller('AppSearchCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils) {
