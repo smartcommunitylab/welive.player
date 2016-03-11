@@ -14,7 +14,7 @@
                 <h4>{{'no_apps' | translate}}</h4>
             </div>
             <ion-list>
-                <ion-item ng-repeat="searchApp in searchApps" class="app-item item-thumbnail-left" ng-class="{'active': searchApp.active}" ng-click="showAppDetails(searchApp.id, searchApp.city)">
+                <ion-item ng-repeat="searchApp in searchApps" class="app-item item-thumbnail-left" ng-class="{'app-item-recomm': searchApp.recommendation}" ng-click="showAppDetails(searchApp.id, searchApp.city)">
                     <img ng-src="{{searchApp.linkImage}}">
                     <h4>{{ searchApp.city }}</h4>
                     <h2>{{ searchApp.name }}</h2>
