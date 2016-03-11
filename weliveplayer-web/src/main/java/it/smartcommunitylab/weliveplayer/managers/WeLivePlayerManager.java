@@ -194,7 +194,6 @@ public class WeLivePlayerManager {
 							}
 							temp.setLinkImage(imageLink);
 						}
-
 						temp.setName(artifact.getString("name"));
 						temp.setDescription(artifact.getString("description"));
 						temp.seteId(artifact.getString("eId"));
@@ -204,6 +203,9 @@ public class WeLivePlayerManager {
 						appPilotMap.put(temp.getId(), pilotId);
 						/** to be removed in future. **/
 
+						if (artifact.has("url")) {
+							temp.setUrl(artifact.getString("url"));
+						}
 						temp.setInterfaceOperation(artifact.getString("interfaceOperation"));
 						temp.setRating(artifact.getInt("rating"));
 						temp.setType(artifact.getString("type"));

@@ -36,6 +36,7 @@ public class Artifact {
 	private List<Comment> comments = new ArrayList<Comment>();
 	private boolean recommendation;
 	private String tags;
+	private String url;
 
 	public Artifact(String id, String description, String linkImage, String eId, String name, String city,
 			String interfaceOperation, int rating, String type, int typeId, List<Comment> comments,
@@ -170,6 +171,14 @@ public class Artifact {
 
 	public void setTags(String tags) {
 		this.tags = tags;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	public static class Comment {
