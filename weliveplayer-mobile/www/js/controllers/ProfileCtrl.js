@@ -7,7 +7,7 @@ angular.module('weliveplayer.controllers.profile', [])
         
                 .then(function (response) {
                      if (response) {
-                         if (response.data.name) {
+                         if (response.data.ccUserID) {
                              $scope.profile = response.data;
                              $scope.cdvProfile = 'exist';
                          } else {
