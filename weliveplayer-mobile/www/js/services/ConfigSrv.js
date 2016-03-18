@@ -11,6 +11,7 @@ angular.module('weliveplayer.services.config', [])
         var PILOT_IDS = ["BILBAO", "HELSINKI-USIMAA", "Novisad", "Trento"];
         var BASICAUTH_TOKEN = "Basic d2VsaXZlQHdlbGl2ZS5ldTp3M2wxdjN0MDBscw==";
         var APP_TYPE = "PSA";
+        var LANGUAGES = ["en", "it"];
 
         var HTTP_CONFIG = {
             timeout: 5000
@@ -98,6 +99,9 @@ angular.module('weliveplayer.services.config', [])
             },
             getDefaultAppType: function () {
                 return APP_TYPE;                
+            },
+            getSupportedLanguages: function () {
+                return LANGUAGES;
             }
           
         }

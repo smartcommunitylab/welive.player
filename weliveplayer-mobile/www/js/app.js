@@ -72,11 +72,21 @@ angular.module(
 
             if (typeof navigator.globalization !== "undefined") {
                 navigator.globalization.getPreferredLanguage(function (language) {
-                    $translate.use((language.value).split("-")[0]).then(function (data) {
-                        console.log("SUCCESS -> " + data);
-                    }, function (error) {
-                        console.log("ERROR -> " + error);
-                    });
+                    var lang = language.value.split("-")[0];
+                    if (Config.getSupportedLanguages().indexOf(lang) > -1) {
+                        $translate.use((language.value).split("-")[0]).then(function (data) {
+                            console.log("SUCCESS -> " + data);
+                        }, function (error) {
+                            console.log("ERROR -> " + error);
+                        });
+                    } else {
+                        $translate.use("en").then(function (data) {
+                            console.log("SUCCESS -> " + data);
+                        }, function (error) {
+                            console.log("ERROR -> " + error);
+                        });
+                    }
+
                 }, null);
             }
             

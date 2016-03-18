@@ -15,7 +15,7 @@
             </div>
             <i class="button button-icon ion-pricetags" ng-click=""> {{app.tags}}</i>
             <h4>{{ 'lbl_description' | translate}}</h4>
-            <p>{{app.description}}</p>
+            <p ng-bind-html="app.description"></p>
         </div>
     </ion-content>
     <div class="bar bar-footer">
