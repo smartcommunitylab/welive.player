@@ -13,7 +13,7 @@
             <h4>{{'no_apps' | translate}}</h4>
         </div>
         <ion-list>
-            <ion-item ng-repeat="item in items" class="app-item item-thumbnail-left" ng-class="{'app-item-recomm': item.recommendation}" ng-click="showAppDetails(item.id, item.city)">
+            <ion-item ng-repeat="item in items" class="app-item item-thumbnail-left" ng-click="showAppDetails(item.id, item.city)">
                 <img ng-src="{{ item.linkImage}}">
                 <h4>{{ item.city }}</h4>
                 <h2>{{ item.name }}</h2>
@@ -22,7 +22,8 @@
                    <i ng-repeat="starType in getStars(item.rating) track by $index" class="icon icon-rating" ng-class="{'ion-android-star': starType == 'full', 'ion-android-star-half': starType == 'half', 'ion-android-star-outline': starType == 'empty'}"></i>
                 </span>
                 </div>
-                <i ng-if="item.active" class="icon-recomm icon ion-person" ng-click=""></i>
+                <i ng-if="item.recommendation" class="icon-recomm icon ion-person" ng-click=""></i>
+                <div ng-if="item.recommendation" class="text-recomm">{{'lbl_home_recommended' | translate}}</div>
             </ion-item>
         </ion-list>
     </ion-content>

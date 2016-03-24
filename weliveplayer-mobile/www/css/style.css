@@ -90,8 +90,16 @@
 .icon-recomm {
   color: #B5C000;
   position: absolute;
-  top: 8px;
+  top: 4px;
   right: 8px;
+}
+
+.text-recomm {
+  color: #B5C000;
+  position: absolute;
+  top: 4px;
+  right: 22px;
+  font-size: 12px;
 }
 
 .item-radio {
