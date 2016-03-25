@@ -263,7 +263,7 @@ angular.module(
             lbl_profileData: 'Profilo',
             lbl_lastLoc: 'Posizione',
             lbl_save: 'SALVA',
-            ver_info: 'Versione 0.0.1'
+            ver_info: 'Versione 0.1.0'
         });
 
         $translateProvider.translations('en', {
@@ -304,7 +304,7 @@ angular.module(
             lbl_profileData: 'Profile',
             lbl_lastLoc: 'Location',
             lbl_save: 'SAVE',
-            ver_info: 'Version 0.0.1'
+            ver_info: 'Version 0.1.0'
 
         });
 
@@ -346,7 +346,7 @@ angular.module(
             lbl_profileData: 'Profiili',
             lbl_lastLoc: 'Sijainti',
             lbl_save: 'TALLENNA',
-            ver_info: 'Version 0.0.1'
+            ver_info: 'Version 0.1.0'
         });
 
         $translateProvider.translations('es', {
@@ -387,7 +387,7 @@ angular.module(
             lbl_profileData: 'Profile',
             lbl_lastLoc: 'Location',
             lbl_save: 'SAVE',
-            ver_info: 'Version 0.0.1'
+            ver_info: 'Version 0.1.0'
         });
 
         $translateProvider.translations('sr', {
@@ -428,48 +428,48 @@ angular.module(
             lbl_profileData: 'Profil',
             lbl_lastLoc: 'Lokacija',
             lbl_save: 'SAČUVAJ',
-            ver_info: 'Version 0.0.1'
+            ver_info: 'Version 0.1.0'
         });
 
         $translateProvider.translations('sr_cyril', {
             app_name: 'WeLivePlayer',
-            lbl_search: 'Traži',
-            lbl_comment: 'Komentari',
-            lbl_description: 'Opis',
-            menu_home: 'Početna strana',
-            menu_profile: 'Profil',
-            menu_info: 'Informacija',
-            menu_termine: 'Uslovi korištenja Servisa',
-            menu_logout: 'Odjava',
-            toast_error_generic: 'Greška! Restartuj aplikaciju',
-            no_apps: 'Nije pronašao aplikacija. Probajte novu pretragu.',
-            no_apps_no_selection: 'Izaberi grad da prikaže svoje aplikacije.',
-            lbl_popup_title: 'Izaberi poredak',
-            lbl_popup_recommended: 'Preporučena',
-            lbl_popup_recent: 'Najnovije',
-            lbl_popup_popular: 'Popularno',
-            lbl_popup_alphbetical: 'Alfabetski',
-            lbl_home_recommended: 'Preporučena',
-            lbl_popup_button_ok: 'NARU',
-            lbl_popup_button_cancel: 'ODUSTANI',
-            lbl_name: 'Ime',
-            lbl_surname: 'Prezime',
-            lbl_gender: 'Pol',
-            lbl_dob: 'Dan rodenja',
-            lbl_addr: 'Adresa',
-            lbl_pilotId: 'Pilot grad',
-            lbl_city: 'Grad',
-            lbl_country: 'Zemlja',
-            lbl_zipcode: 'Zipkod',
-            lbl_email: 'Email',
-            lbl_languages: 'Jezici',
-            lbl_isDeveloper: 'Developer',
-            lbl_skills: 'Veštine',
-            lbl_usedApps: 'Korištene aplikacije',
-            lbl_profileData: 'Profil',
-            lbl_lastLoc: 'Lokacija',
-            lbl_save: 'SAČUVAJ',
-            ver_info: 'Version 0.0.1'
+            lbl_search: 'Тражи',
+            lbl_comment: 'Коментари',
+            lbl_description: 'Опис',
+            menu_home: 'Почетна страна',
+            menu_profile: 'Профил',
+            menu_info: 'Информација',
+            menu_termine: 'Услови коришћења сервиса',
+            menu_logout: 'Одјава',
+            toast_error_generic: 'Грешка! Рестартуј аплиакцију',
+            no_apps: 'Није пронађена апликација. Пробајте нову претрагу.',
+            no_apps_no_selection: 'Изабери грaд да прикаже своје апликације.',
+            lbl_popup_title: 'Изабери поредак',
+            lbl_popup_recommended: 'Препоручено',
+            lbl_popup_recent: 'Недавно',
+            lbl_popup_popular: 'Популарно',
+            lbl_popup_alphbetical: 'Алфабетски',
+            lbl_home_recommended: 'Препоручено',
+            lbl_popup_button_ok: 'НАРУЧИ',
+            lbl_popup_button_cancel: 'ОДУСТАНИ',
+            lbl_name: 'Име',
+            lbl_surname: 'Презиме',
+            lbl_gender: 'Пол',
+            lbl_dob: 'Дан рођења',
+            lbl_addr: 'Адреса',
+            lbl_pilotId: 'Пилот град',
+            lbl_city: 'Град',
+            lbl_country: 'Земља',
+            lbl_zipcode: 'Зипкод',
+            lbl_email: 'Имејл',
+            lbl_languages: 'Језици',
+            lbl_isDeveloper: 'Девелопер',
+            lbl_skills: 'Вештине',
+            lbl_usedApps: 'Коришћене апликације',
+            lbl_profileData: 'Профил',
+            lbl_lastLoc: 'Локација',
+            lbl_save: 'САЧУВАЈ',
+            ver_info: 'Version 0.1.0'
         });
 
         $translateProvider.preferredLanguage('en');
