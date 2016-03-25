@@ -6,6 +6,8 @@
     </ion-nav-buttons>
 
     <ion-content class="padding has-footer">
+        <ion-refresher on-refresh="doRefresh()">
+        </ion-refresher>
         <div class="text-center" ng-if="!!items && items.length == 0 && selections.length == 0">
             <h4>{{'no_apps_no_selection' | translate}}</h4>
         </div>

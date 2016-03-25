@@ -243,26 +243,27 @@ angular.module('weliveplayer.services.login', [])
 
             var deferred = $q.defer();
 
-            var url = Config.getCDVUri() + "/getuserprofile/" + userId;
+            loginService.accessToken().then(
+                function (token) {
+                    var url = Config.getWeLiveProxyUri() + "userProfile";
+                    $http.get(url, { headers: { "Authorization": "Bearer " + token } })
 
-            $http.get(url, {
-                headers: { "Authorization": Config.getBasicAuthToken() }
-            })
+                        .then(function (response) {
+                            if (response.data) {
+                                deferred.resolve(response);
+                            } else {
+                                deferred.resolve(null);
+                            }
+                        }, function (error) {
+                            deferred.reject(error);
+                        })
 
-                .then(
-                    function (response) {
-                        if (response.data) {
-                            deferred.resolve(response);
-                        } else {
-                            deferred.resolve(null);
-                        }
+                },
+                function (responseError) {
+                    deferred.resolve(null);
+                }
 
-
-                    },
-                    function (responseError) {
-                        deferred.reject(responseError);
-                    }
-                    );
+                );
 
             return deferred.promise;
 

@@ -19,7 +19,7 @@ angular.module('weliveplayer.controllers.home', [])
         };
 
         Utils.loading();
-        Utils.getAppsByRegion($scope.selections).then(creationSuccess, creationError);
+        Utils.getAppsByRegion($scope.selections, false).then(creationSuccess, creationError);
 
         $scope.sort = {};
         $scope.sort.choice = 'Consigliati';
@@ -76,12 +76,25 @@ angular.module('weliveplayer.controllers.home', [])
             }
 
             Utils.loading();
-            Utils.getAppsByRegion($scope.selections).then(creationSuccess, creationError);
+            Utils.getAppsByRegion($scope.selections, false).then(creationSuccess, creationError);
         }
 
         $scope.getStars = function (vote) {
             return Utils.getStars(vote);
         };
+
+        $scope.doRefresh = function () {
+            // alert($filter('translate')('lbl_home_refresh'));
+            Utils.getAppsByRegion($scope.selections, true).then(
+                function success(apps) {
+                    $scope.items = apps;
+                    $scope.$broadcast('scroll.refreshComplete');
+                },
+                function error() {
+                    $scope.$broadcast('scroll.refreshComplete');
+                }
+                )
+        }
 
     })
 

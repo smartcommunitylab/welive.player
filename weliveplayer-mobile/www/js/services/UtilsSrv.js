@@ -7,7 +7,7 @@ angular.module('weliveplayer.services.utils', [])
         //app cache.
         var appMap = new Object();
 
-        utilsService.getAppsByRegion = function (region) {
+        utilsService.getAppsByRegion = function (region, forceReset) {
 
 
             var deferred = $q.defer();
@@ -15,6 +15,11 @@ angular.module('weliveplayer.services.utils', [])
             var apps = [];
 
             var promises = [];
+            
+            //force reset cache.
+            if (forceReset) {
+                appMap = {};
+            }
     	
             // fetch region apps using service.
             region.forEach(function (element) {

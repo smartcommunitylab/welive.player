@@ -1,17 +1,17 @@
 angular.module('weliveplayer.services.config', [])
 
     .factory('Config', function ($http, $q, $filter) {
-        var SERVER_URL = "https://dev.welive.eu/aac";
+        var AAC_SERVER_URL = "https://dev.welive.eu/aac";
         var CLIENT_ID = "e4cd499e-81ac-4240-bd5c-1d4680f2f99f";
         var CLIENT_SEC_KEY = "6b934176-4513-43dd-a713-b926bfd979e2";
         var REDIRECT_URI = "http://localhost";
-        var WELIVE_PROXY = "https://dev.welive.eu/weliveplayer/api/";
+        var WELIVEPLAYER_SERVER = "https://dev.welive.eu/weliveplayer/api/";
         var LOG_URI = "https://dev.welive.eu/welive.logging/log/weliveplayer";
         var CDV_URI = "https://dev.welive.eu/dev/api/cdv";
         var PILOT_IDS = ["BILBAO", "HELSINKI-USIMAA", "Novisad", "Trento"];
         var BASICAUTH_TOKEN = "Basic d2VsaXZlQHdlbGl2ZS5ldTp3M2wxdjN0MDBscw==";
         var APP_TYPE = "PSA";
-        var LANGUAGES = ["en", "it"];
+        var LANGUAGES = ["en", "it", "fi", "es", "sr"];
 
         var HTTP_CONFIG = {
             timeout: 5000
@@ -53,7 +53,7 @@ angular.module('weliveplayer.services.config', [])
                 return LOG_URI;
             },
             getServerURL: function () {
-                return SERVER_URL;
+                return AAC_SERVER_URL;
             },
             getZoom: function () {
                 return ZOOM;
@@ -74,7 +74,7 @@ angular.module('weliveplayer.services.config', [])
                 return HTTP_CONFIG;
             },
             getWeLiveProxyUri: function () {
-                return WELIVE_PROXY;
+                return WELIVEPLAYER_SERVER;
             },
             getPlayerAccessJson: function () {
                 return LOG_PLAYER_ACCESS;
