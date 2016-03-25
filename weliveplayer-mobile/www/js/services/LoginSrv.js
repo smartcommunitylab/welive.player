@@ -73,7 +73,7 @@ angular.module('weliveplayer.services.login', [])
                                     // userId: "29"
                                     
                                     // make call to cdv profile.
-                                    loginService.makeCDVProfileCall(profile.userId).then(function (response) {//profile.userId
+                                    loginService.makeCDVProfileCall(profile.userId, profile.token.access_token).then(function (response) {//profile.userId
                                         if (response) {
                                             if (response.data.referredPilot) {
                                                 profile.pilotId = response.data.referredPilot;
@@ -239,31 +239,47 @@ angular.module('weliveplayer.services.login', [])
 
         }
 
-        loginService.makeCDVProfileCall = function makeCDVProfileCall(userId) {
+        loginService.makeCDVProfileCall = function makeCDVProfileCall(userId, access_token) {
 
             var deferred = $q.defer();
 
-            loginService.accessToken().then(
-                function (token) {
-                    var url = Config.getWeLiveProxyUri() + "userProfile";
-                    $http.get(url, { headers: { "Authorization": "Bearer " + token } })
+            if (access_token) {
+                var url = Config.getWeLiveProxyUri() + "userProfile";
+                $http.get(url, { headers: { "Authorization": "Bearer " + access_token } })
 
-                        .then(function (response) {
-                            if (response.data) {
-                                deferred.resolve(response);
-                            } else {
-                                deferred.resolve(null);
-                            }
-                        }, function (error) {
-                            deferred.reject(error);
-                        })
+                    .then(function (response) {
+                        if (response.data) {
+                            deferred.resolve(response);
+                        } else {
+                            deferred.resolve(null);
+                        }
+                    }, function (error) {
+                        deferred.reject(error);
+                    })
 
-                },
-                function (responseError) {
-                    deferred.resolve(null);
-                }
+            } else {
+                loginService.accessToken().then(
+                    function (token) {
+                        var url = Config.getWeLiveProxyUri() + "userProfile";
+                        $http.get(url, { headers: { "Authorization": "Bearer " + token } })
 
-                );
+                            .then(function (response) {
+                                if (response.data) {
+                                    deferred.resolve(response);
+                                } else {
+                                    deferred.resolve(null);
+                                }
+                            }, function (error) {
+                                deferred.reject(error);
+                            })
+
+                    },
+                    function (responseError) {
+                        deferred.resolve(null);
+                    }
+
+                    );
+            }
 
             return deferred.promise;
 
