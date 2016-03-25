@@ -17,6 +17,7 @@ public class Profile {
 	private String country;
 	private String zipCode;
 	private String email;
+	private String referredPilot;
 	private List<String> languages = new ArrayList<String>();
 	private boolean isDeveloper = false;
 	private List<String> skills = new ArrayList<String>();
@@ -24,7 +25,7 @@ public class Profile {
 	private Map<String, Integer> profileData = new HashMap<String, Integer>();
 	private Map<String, Double> lastKnownLocation = new HashMap<String, Double>();
 	private List<String> thirdParties = new ArrayList<String>();
-	
+
 	public Profile() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -166,5 +167,12 @@ public class Profile {
 		this.thirdParties = thirdParties;
 	}
 
+	public String getReferredPilot() {
+		return referredPilot;
+	}
+
+	public void setReferredPilot(String referredPilot) {
+		this.referredPilot = referredPilot;
+	}
 
 }

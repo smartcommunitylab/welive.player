@@ -362,6 +362,8 @@ public class WeLivePlayerManager {
 								profile.setSurname(profileJson.getString("surname"));
 							if (profileJson.has("zipCode"))
 								profile.setZipCode(profileJson.getString("zipCode"));
+							if (profileJson.has("referredPilot"))
+								profile.setReferredPilot(profileJson.getString("referredPilot"));
 							// field arrays.
 							if (profileJson.has("usedApps")) {
 								profile.setUsedApps(
