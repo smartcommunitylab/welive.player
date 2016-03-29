@@ -17,16 +17,16 @@
 package it.smartcommunitylab.weliveplayer.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,6 +38,7 @@ import it.smartcommunitylab.weliveplayer.model.Artifact;
 import it.smartcommunitylab.weliveplayer.model.Artifact.Comment;
 import it.smartcommunitylab.weliveplayer.model.Profile;
 import it.smartcommunitylab.weliveplayer.model.Response;
+import it.smartcommunitylab.weliveplayer.utils.WeLivePlayerUtils;
 
 /**
  *
@@ -73,6 +74,27 @@ public class ServiceController {
 
 	}
 
+	@RequestMapping(method = RequestMethod.POST, value = "/api/update/userProfile")
+	public @ResponseBody Response<String> updateUserProfile(HttpServletRequest httpRequest,
+			@RequestBody Profile profile) throws WeLivePlayerCustomException {
+
+		String authHeader = httpRequest.getHeader("Authorization");
+
+		Response<String> response = new Response<String>();
+
+		Map<String, String> errorMap = weLivePlayerManager.updateUserProfile(authHeader, profile);
+
+		if (errorMap.isEmpty()) {
+			response.setData("user profile updated successfully.");
+		} else if (errorMap.containsKey(WeLivePlayerUtils.ERROR_CODE)) {
+			throw new WeLivePlayerCustomException(Integer.valueOf(errorMap.get(WeLivePlayerUtils.ERROR_CODE)),
+					errorMap.get(WeLivePlayerUtils.ERROR_MSG));
+		}
+
+		return response;
+
+	}
+
 	@RequestMapping(method = RequestMethod.GET, value = "/api/appComments/{artifactId}")
 	public @ResponseBody Response<List<Comment>> getAppComments(@PathVariable String artifactId,
 			@RequestParam(required = false) Integer start, @RequestParam(required = false) Integer count,
@@ -95,7 +117,7 @@ public class ServiceController {
 	}
 
 	private String getUserId(String authHeader) throws WeLivePlayerCustomException {
-		
+
 		return weLivePlayerManager.getUserId(authHeader);
 	}
 

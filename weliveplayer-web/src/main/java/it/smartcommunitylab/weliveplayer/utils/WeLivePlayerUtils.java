@@ -5,6 +5,8 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -19,6 +21,34 @@ public class WeLivePlayerUtils {
 	private String USER_AGENT = "Mozilla/5.0";
 	@Autowired
 	private Environment env;
+
+	/** constants. **/
+	public static final String ERROR_CODE = "errorCode";
+	public static final String ERROR_MSG = "errorMsg";
+
+	public static int getDayOfMonth(Date reqDate) {
+		int day = -1;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(reqDate);
+		day = cal.get(Calendar.DAY_OF_MONTH);
+		return day;
+	}
+
+	public static int getMonthOfYear(Date reqDate) {
+		int month = -1;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(reqDate);
+		month = cal.get(Calendar.MONTH) + 1;
+		return month;
+	}
+
+	public static int getYear(Date reqDate) {
+		int year = -1;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(reqDate);
+		year = cal.get(Calendar.YEAR);
+		return year;
+	}
 
 	/**
 	 * Http GET.
@@ -118,7 +148,7 @@ public class WeLivePlayerUtils {
 				con.setRequestProperty("Content-Type", contentType);
 			}
 			if (auth != null && !(auth.isEmpty())) {
-				con.setRequestProperty("Authentication", auth);
+				con.setRequestProperty("Authorization", auth);
 			}
 
 			// Send post request
@@ -189,7 +219,7 @@ public class WeLivePlayerUtils {
 	}
 
 	public void logAppInfoAccess(String userId, String artifactId, String pilotId) {
-		
+
 		String logUrl = env.getProperty("log.endpoint");
 
 		String body = "{\"msg\" : \"AppInfoAccess\",\"type\" : \"AppInfoAccess\", \"appId\": \"weliveplayer\", \"custom_attr\": {\"UserID\": \""
@@ -200,7 +230,7 @@ public class WeLivePlayerUtils {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }

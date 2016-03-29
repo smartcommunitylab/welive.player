@@ -1,11 +1,25 @@
 package it.smartcommunitylab.weliveplayer.model;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import it.smartcommunitylab.weliveplayer.utils.WeLivePlayerUtils;
+
 public class Profile {
+
+	private ObjectMapper mapper = new ObjectMapper();
+
+	private static String birthdayFormat = "yyyy-MM-dd";
 
 	private String ccUserID;
 	private String name;
@@ -25,6 +39,7 @@ public class Profile {
 	private Map<String, Integer> profileData = new HashMap<String, Integer>();
 	private Map<String, Double> lastKnownLocation = new HashMap<String, Double>();
 	private List<String> thirdParties = new ArrayList<String>();
+	private List<String> userTags = new ArrayList<String>();
 
 	public Profile() {
 		super();
@@ -173,6 +188,35 @@ public class Profile {
 
 	public void setReferredPilot(String referredPilot) {
 		this.referredPilot = referredPilot;
+	}
+
+	public List<String> getUserTags() {
+		return userTags;
+	}
+
+	public void setUserTags(List<String> userTags) {
+		this.userTags = userTags;
+	}
+
+	private static Date parseDate(String date, String format) throws ParseException {
+		SimpleDateFormat formatter = new SimpleDateFormat(format);
+		return formatter.parse(date);
+	}
+
+	public String updateProfileBody()
+			throws JsonGenerationException, JsonMappingException, IOException, ParseException {
+
+		Date bday = this.parseDate(birthdate, birthdayFormat);
+
+		String body = "{" + "\"ccUserID\" : \"" + ccUserID + "\"," + "\"isMale\" : \"" + gender + "\","
+				+ "\"birthdate\" : { \"day\" : " + WeLivePlayerUtils.getDayOfMonth(bday) + ",\"month\" : "
+				+ WeLivePlayerUtils.getMonthOfYear(bday) + ",\"year\" : " + WeLivePlayerUtils.getYear(bday) + "},"
+				+ "\"address\" : \"" + address + "\"," + "\"city\" : \"" + city + "\"," + "\"country\" : \"" + country
+				+ "\"," + "\"zipCode\" : \"" + zipCode + "\"," + "\"referredPilot\" : \"" + referredPilot + "\","
+				+ "\"languages\" : " + mapper.writeValueAsString(languages) + "," + "\"isDeveloper\" : \"" + isDeveloper
+				+ "\"," + "\"userTags\" : " + mapper.writeValueAsString(userTags) + "}";
+
+		return body;
 	}
 
 }

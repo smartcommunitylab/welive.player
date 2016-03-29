@@ -33,6 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import com.google.common.cache.CacheBuilder;
@@ -271,7 +272,7 @@ public class WeLivePlayerManager {
 			}
 
 		}
-		
+
 		// make first application recommended(to remove later).
 		if (!paginatedList.isEmpty()) {
 			paginatedList.get(0).setRecommendation(true);
@@ -311,7 +312,7 @@ public class WeLivePlayerManager {
 		return paginatedList;
 	}
 
-	public Profile getUserProfile(String authorizationHeader) throws WeLivePlayerCustomException {
+	public Profile getUserProfile(String bearerHeader) throws WeLivePlayerCustomException {
 
 		Profile profile = null;
 
@@ -319,8 +320,8 @@ public class WeLivePlayerManager {
 
 		try {
 
-			String response = weLivePlayerUtils.sendGET(aacUri, "application/json", "application/json",
-					authorizationHeader, -1);
+			String response = weLivePlayerUtils.sendGET(aacUri, "application/json", "application/json", bearerHeader,
+					-1);
 
 			if (response != null && !response.isEmpty()) {
 
@@ -330,11 +331,11 @@ public class WeLivePlayerManager {
 					// read userId.
 					String userId = root.getString("userId");
 					// invoke cdv profile api.
-					String url = env.getProperty("welive.cdv.profile.uri");
-					url = url.replace("{id}", userId);
+					String url = env.getProperty("welive.cdv.getUserprofile.uri");
+					// url = url.replace("{id}", userId);
 
 					String profileAPIResponse = weLivePlayerUtils.sendGET(url, "application/json", "application/json",
-							authHeader, -1);
+							bearerHeader, -1);
 
 					if (profileAPIResponse != null && !profileAPIResponse.isEmpty()) {
 						JSONObject profileJson = new JSONObject(profileAPIResponse);
@@ -365,29 +366,52 @@ public class WeLivePlayerManager {
 							if (profileJson.has("referredPilot"))
 								profile.setReferredPilot(profileJson.getString("referredPilot"));
 							// field arrays.
-							if (profileJson.has("usedApps")) {
+							if (profileJson.has("usedApps")
+									&& !profileJson.get("usedApps").toString().equalsIgnoreCase("[]")) {
 								profile.setUsedApps(
 										mapper.readValue(profileJson.get("usedApps").toString(), List.class));
 							}
-							if (profileJson.has("skills")) {
+							if (profileJson.has("skills")
+									&& !profileJson.get("skills").toString().equalsIgnoreCase("[]")) {
 								profile.setSkills(mapper.readValue(profileJson.get("skills").toString(), List.class));
 							}
-							if (profileJson.has("languages")) {
+							if (profileJson.has("languages")
+									&& !profileJson.get("languages").toString().equalsIgnoreCase("[]")) {
 								profile.setLanguages(
 										mapper.readValue(profileJson.get("languages").toString(), List.class));
 							}
-							if (profileJson.has("thirdParties")) {
+							if (profileJson.has("thirdParties")
+									&& !profileJson.get("thirdParties").toString().equalsIgnoreCase("[]")) {
 								profile.setThirdParties(
 										mapper.readValue(profileJson.get("thirdParties").toString(), List.class));
 							}
-							if (profileJson.has("lastKnownLocation")) {
+							if (profileJson.has("lastKnownLocation")
+									&& !profileJson.get("lastKnownLocation").toString().equalsIgnoreCase("{}")) {
 								profile.setLastKnownLocation(mapper
 										.readValue(profileJson.get("lastKnownLocation").toString(), HashMap.class));
 							}
-							if (profileJson.has("profileData")) {
+							if (profileJson.has("profileData")
+									&& !profileJson.get("profileData").toString().equalsIgnoreCase("{}")) {
 								profile.setProfileData(
 										mapper.readValue(profileJson.get("profileData").toString(), HashMap.class));
 							}
+
+							// get user tags.
+							String userTagsUrl = env.getProperty("welive.cdv.getUserTags.uri");
+							userTagsUrl = userTagsUrl.replace("{id}", userId);
+
+							String userTagResponse = weLivePlayerUtils.sendGET(userTagsUrl, null, null, authHeader, -1);
+
+							if (userTagResponse != null && !userTagResponse.isEmpty()) {
+								JSONObject userTagsJson = new JSONObject(userTagResponse);
+
+								if (userTagsJson.has("userTags")
+										&& !userTagsJson.get("userTags").toString().equalsIgnoreCase("[]")) {
+									profile.setUserTags(
+											mapper.readValue(userTagsJson.get("userTags").toString(), List.class));
+								}
+							}
+
 						}
 
 					}
@@ -437,6 +461,47 @@ public class WeLivePlayerManager {
 		}
 
 		return userId;
+	}
+
+	public Map<String, String> updateUserProfile(String bearerHeader, Profile profile) {
+
+		Map<String, String> status = new HashMap<String, String>();
+
+		try {
+
+			if (profile != null) {
+
+				String url = env.getProperty("welive.cdv.updateUserprofile.uri");
+				// url = url.replace("{id}", userId);
+
+				String response = weLivePlayerUtils.sendPOST(url, null, "application/json", authHeader,
+						profile.updateProfileBody(), true);
+
+				if (response != null && !response.isEmpty()) {
+
+					JSONObject root = new JSONObject(response.toString());
+
+					if (root.has("text")) {
+						if (!root.getString("response").equalsIgnoreCase("0")) {
+							status.put(WeLivePlayerUtils.ERROR_CODE,
+									String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+							status.put(WeLivePlayerUtils.ERROR_MSG, root.toString());
+						}
+					}
+
+				}
+
+			} else {
+				status.put(WeLivePlayerUtils.ERROR_CODE, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+				status.put(WeLivePlayerUtils.ERROR_MSG, "null profile sent");
+			}
+
+		} catch (Exception e) {
+			status.put(WeLivePlayerUtils.ERROR_CODE, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+			status.put(WeLivePlayerUtils.ERROR_MSG, e.getMessage());
+		}
+
+		return status;
 	}
 
 }
