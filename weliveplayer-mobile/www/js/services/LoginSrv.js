@@ -31,7 +31,7 @@ angular.module('weliveplayer.services.login', [])
                     }
 
                     var processURL = function (url, deferred, w) {
-                        var success = /\?code=(.+)$/.exec(url);
+                        var success = /http:\/\/localhost(\/)?\?code=(.+)$/.exec(url);
                         var error = /\?error=(.+)$/.exec(url);
                         if (w && (success || error)) {
                             //Always close the browser when match is found
@@ -40,11 +40,14 @@ angular.module('weliveplayer.services.login', [])
                         }
 
                         if (success) {
-                            var str = success[1];
-                            if (str.substring(str.length - 1) == '#') {
-                                str = str.substring(0, str.length - 1);
+                            var str = success[2];
+                            // alert(success);
+                            debugger;
+                            if (str.indexOf('#') > 0) {
+                                // debugger;
+                                str = str.substring(0, str.lastIndexOf('#'));
                             }
-
+                            // alert(str);
                             console.log('success:' + decodeURIComponent(str));
                         
                             // make second http post token.
