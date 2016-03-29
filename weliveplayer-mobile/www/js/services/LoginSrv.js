@@ -299,13 +299,20 @@ angular.module('weliveplayer.services.login', [])
             } else {
                 var url = Config.getServerURL();
                 var params = "/oauth/token?client_id=" + Config.getClientId() + "&client_secret=" + Config.getClientSecKey()
-                    + "&code=" + user.token.code + "&refresh_token=" + user.token.refresh_token + "&grant_type=refresh_token";
+                    + "&refresh_token=" + user.token.refresh_token + "&grant_type=refresh_token";
 
                 $http.post(url + params)
 
                     .then(
                         function (response) {
-                            if (response.data.access_token) {
+                            // alert(response.data);
+                            if (response.data.exception) {
+                                // reforce login again.
+                                loginService.logout().then(function success() {
+                                    loginService.login();
+                                }, function error() { });
+                            }
+                            else if (response.data.access_token) {
                                 var access_token = response.data.access_token;
                                 user.token.access_token = response.data.access_token;
                                 user.token.refresh_token = response.data.refresh_token;
