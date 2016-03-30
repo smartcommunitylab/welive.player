@@ -10,10 +10,6 @@
                 <div class="col">{{'lbl_name'| translate}}</div>
                 <div class="col">{{profile.name}} {{profile.surname}}</div>
             </div>
-            <!--<div class="row">
-                <div class="col">{{'lbl_surname'| translate}}:</div>
-                <div class="col">{{profile.surname}}</div>
-            </div>-->
             <div class="row">
                 <div class="col">{{'lbl_gender'| translate}}:</div>
                 <div class="col">{{profile.gender}}</div>
@@ -24,74 +20,40 @@
             </div>
             <div class="row">
                 <div class="col">{{'lbl_addr'| translate}}:</div>
-                <div class="col">{{profile.address}} {{profile.city}} {{profile.zipcode}} {{profile.country}}</div>
+                <div class="col">{{profile.address}} {{profile.city}} {{profile.zipCode}} {{profile.country}}</div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_pilotId'| translate}}:</div>
                 <div class="col">{{profile.referredPilot}}</div>
             </div>
-            <!--<div class="row">
-                <div class="col">{{'lbl_city'| translate}}:</div>
-                <div class="col">{{profile.city}}</div>
-            </div>
-            <div class="row">
-                <div class="col">{{'lbl_country'| translate}}:</div>
-                <div class="col">{{profile.country}}</div>
-            </div>
-            <div class="row">
-                <div class="col">{{'lbl_zipcode'| translate}}:</div>
-                <div class="col">{{profile.zipcode}}</div>
-            </div>-->
             <div class="row">
                 <div class="col">{{'lbl_email'| translate}}:</div>
                 <div class="col">{{profile.email}}</div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_languages'| translate}}:</div>
-                <div class="col">{{profile.languages.join(" ")}}</div>
+                <div class="col">{{profile.languages.join(", ")}}</div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_isDeveloper'| translate}}:</div>
-                <div class="col">{{profile.isDeveloper}}</div>
+                <div class="col">{{profile.developer}}</div>
             </div>
-            <!--<div class="row">
+            <div class="row">
                 <div class="col">{{'lbl_skills'| translate}}:</div>
-                <div class="col">{{profile.skills.join()}}</div>
+                <div class="col">{{profile.skills.join(", ")}}</div>
             </div>
             <div class="row">
-                <div class="col">{{'lbl_usedApps'| translate}}:</div>
-                <div class="col">{{profile.usedApps.join()}}</div>
+                <div class="col">{{'lbl_userTags'| translate}}:</div>
+                <div class="col">{{profile.userTags.join(", ")}}</div>
             </div>
-            <div class="row">
-                <div class="col">{{'lbl_lastLoc'| translate}}:</div>
-                <div class="col">{{profile.lastloc.join()}}</div>
-            </div>-->
         </div>
 
         <!-- EDIT --->
         <div class="padding profile-edit" ng-show="cdvProfile == 'edit'">
             <div class="row">
-                <div class="col">{{'lbl_name'| translate}}:</div>
-                <div class="col">
-                    <input type="text" placeholder="{{profile.name}}" ng-model="profile.name">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">{{'lbl_surname'| translate}}:</div>
-                <div class="col">
-                    <input type="text" placeholder="{{profile.surname}}" ng-model="profile.surname">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">{{'lbl_gender'| translate}}:</div>
-                <div class="col">
-                    <input type="text" placeholder="{{profile.gender}}" ng-model="profile.gender">
-                </div>
-            </div>
-            <div class="row">
                 <div class="col">{{'lbl_dob'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.birthdate}}" ng-model="profile.birthdate">
+                    <input type="text" placeholder="{{birthdateplaceholder}}" ng-model="profile.birthdate">
                 </div>
             </div>
             <div class="row">
@@ -121,13 +83,7 @@
             <div class="row">
                 <div class="col">{{'lbl_zipcode'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.zipcode}}" ng-model="profile.zipcode">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">{{'lbl_email'| translate}}:</div>
-                <div class="col">
-                    <input type="text" placeholder="{{profile.email}}" ng-model="profile.email">
+                    <input type="text" placeholder="{{profile.zipcode}}" ng-model="profile.zipCode">
                 </div>
             </div>
             <div class="row">
@@ -139,31 +95,19 @@
             <div class="row">
                 <div class="col">{{'lbl_isDeveloper'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.isDeveloper}}" ng-model="profile.isDeveloper">
+                    <input type="text" placeholder="{{profile.developer}}" ng-model="profile.developer">
                 </div>
             </div>
-            <div class="row">
+            <!--<div class="row">
                 <div class="col">{{'lbl_skills'| translate}}:</div>
                 <div class="col">
                     <input type="text" placeholder="{{profile.skills.join()}}" ng-model="profile.skills">
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">{{'lbl_usedApps'| translate}}:</div>
-                <div class="col">
-                    <input type="text" placeholder="{{profile.usedApps.join()}}" ng-model="profile.usedApps">
-                </div>
-            </div>
-            <!--<div class="row">
-                <div class="col">{{'lbl_profileData'| translate}}:</div>
-                <div class="col">
-                    <input type="text" placeholder="{{profile.profileData.join()}}" ng-model="profile.profileData">
-                </div>
             </div>-->
             <div class="row">
-                <div class="col">{{'lbl_lastLoc'| translate}}:</div>
+                <div class="col">{{'lbl_userTags'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.lastloc}}" ng-model="profile.lastloc">
+                    <input type="text" placeholder="{{profile.userTags.join()}}" ng-model="profile.userTags">
                 </div>
             </div>
             <div class="row">
@@ -175,38 +119,6 @@
             </div>
 
         </div>
-
-
-        <!-- FORM -->
-        <!--<div class="padding" ng-show="cdvProfile == 'create'">
-            <div class="row">
-                <div class="col">{{'lbl_name'| translate}}</div>
-                <div class="col">
-                    <input type="text" placeholder="Name">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">{{'lbl_surname'| translate}}:</div>
-                <div class="col">
-                    <input type="text" placeholder="Surname">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">{{'lbl_gender'| translate}}:</div>
-                <div class="col">
-                    <input type="text" placeholder="Gender">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">{{'lbl_dob'| translate}}:</div>
-                <div class="col">
-                    <input type="text" placeholder="Surname">
-                </div>
-            </div>
-            <button class="button-small welive-popup-button" ng-click="saveProfile(profile)">
-                {{'lbl_save' | translate}}
-            </button>
-        </div>-->
 
     </ion-content>
 </ion-view>

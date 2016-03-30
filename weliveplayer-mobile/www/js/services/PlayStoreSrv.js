@@ -1,63 +1,67 @@
 angular.module('weliveplayer.services.playstore', [])
 
-    .factory('PlayStore', function ($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, $http, Config, LoginSrv) {
+.factory('PlayStore', function ($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, $http, Config, LoginSrv) {
 
-        var playStoreService = {};
+    var playStoreService = {};
 
-        playStoreService.getUserReviews = function getUserReviews(opts) {
+    playStoreService.getUserReviews = function getUserReviews(opts) {
 
-            var deferred = $q.defer();
+        var deferred = $q.defer();
 
-            // var token = "4155f2a3-e1ab-44b3-a7f0-7f292faa7a57";
-            // var url = Config.getWeLiveProxyUri() + "appComments/" + opts.id;
-            // $http.get(url, { headers: { "Authorization": "Bearer " + token } })
-            //     .then(function (response) {
-            //         var reviews = response.data.data;
-            //         deferred.resolve(reviews);
-            //     }, function (error) {
-            //         deferred.resolve(null);
-            //     })
-                
-             LoginSrv.accessToken().then(
-                function (token) {
-                    var url = Config.getWeLiveProxyUri() + "appComments/" + opts.id + "?start=" + opts.start + "&count=" + opts.count;
-                    $http.get(url, { headers: { "Authorization": "Bearer " + token } })
-                        .then(function (response) {
-                            var reviews = response.data.data;
-                            deferred.resolve(reviews);
+        // var token = "4155f2a3-e1ab-44b3-a7f0-7f292faa7a57";
+        // var url = Config.getWeLiveProxyUri() + "appComments/" + opts.id;
+        // $http.get(url, { headers: { "Authorization": "Bearer " + token } })
+        //     .then(function (response) {
+        //         var reviews = response.data.data;
+        //         deferred.resolve(reviews);
+        //     }, function (error) {
+        //         deferred.resolve(null);
+        //     })
 
-                        }, function (error) {
-                            deferred.resolve(null);
-                        })
+        LoginSrv.accessToken().then(
+            function (token) {
+                var url = Config.getWeLiveProxyUri() + "appComments/" + opts.id + "?start=" + opts.start + "&count=" + opts.count;
+                $http.get(url, {
+                        headers: {
+                            "Authorization": "Bearer " + token
+                        }
+                    })
+                    .then(function (response) {
+                        var reviews = response.data.data;
+                        deferred.resolve(reviews);
 
-                },
-                function (responseError) {
-                    deferred.resolve(null);
-                }
+                    }, function (error) {
+                        deferred.resolve(null);
+                    })
 
-                );    
-
-
-            return deferred.promise;
-
-        }
-   
-/*      var playStoreUserReviews = new Object();
-
-        playStoreService.convertSort = function convertSort(sort) {
-            switch (sort) {
-                case 'newest':
-                    return 0;
-                case 'rating':
-                    return 1;
-                case 'helpfulness':
-                    return 4;
-                default:
-                    return 0;
             }
-        }*/
-        
-        /*
+            , function (responseError) {
+                deferred.resolve(null);
+            }
+
+        );
+
+
+        return deferred.promise;
+
+    }
+
+    /*      var playStoreUserReviews = new Object();
+
+            playStoreService.convertSort = function convertSort(sort) {
+                switch (sort) {
+                    case 'newest':
+                        return 0;
+                    case 'rating':
+                        return 1;
+                    case 'helpfulness':
+                        return 4;
+                    default:
+                        return 0;
+                }
+            }*/
+
+    /*
         playStoreService.getUserReviews = function getUserReviews(opts) {
 
             var deferred = $q.defer();
@@ -168,40 +172,40 @@ angular.module('weliveplayer.services.playstore', [])
 
         }*/
 
-        /*playStoreService.parseFields = function parseFields(response) {
+    /*playStoreService.parseFields = function parseFields(response) {
 
-            var document = angular.element(response);
+        var document = angular.element(response);
 
-            var userReviews = [];
+        var userReviews = [];
 
-            for (var i = 0, len = document.length; i < len; i++) {
+        for (var i = 0, len = document.length; i < len; i++) {
 
-                if (document[i].className == 'single-review') {
-                    // review header.
-                    var authorNode = document[i].childNodes[3].childNodes[1].childNodes[1].outerText;
-                    var publishDate = document[i].childNodes[3].childNodes[1].childNodes[3].outerText;
-                    var rating = document[i].childNodes[3].childNodes[1].childNodes[9].childNodes[1].attributes[1].value;
-                    var comment = document[i].childNodes[5].childNodes[1].innerText;
+            if (document[i].className == 'single-review') {
+                // review header.
+                var authorNode = document[i].childNodes[3].childNodes[1].childNodes[1].outerText;
+                var publishDate = document[i].childNodes[3].childNodes[1].childNodes[3].outerText;
+                var rating = document[i].childNodes[3].childNodes[1].childNodes[9].childNodes[1].attributes[1].value;
+                var comment = document[i].childNodes[5].childNodes[1].innerText;
 
-                    var user = {};
-                    user.authorNode = authorNode;
-                    user.publishDate = publishDate;
-                    user.comment = comment;
-                    // regex.
-                    var r = /\d+/;
-                    var matching = rating.match(r)
-                    if (matching != null) {
-                        user.rating = matching[0];
-                    }
-
-                    userReviews.push(user);
-
+                var user = {};
+                user.authorNode = authorNode;
+                user.publishDate = publishDate;
+                user.comment = comment;
+                // regex.
+                var r = /\d+/;
+                var matching = rating.match(r)
+                if (matching != null) {
+                    user.rating = matching[0];
                 }
+
+                userReviews.push(user);
+
             }
+        }
 
 
-            return userReviews;
-        }*/
+        return userReviews;
+    }*/
 
-        return playStoreService;
-    });
+    return playStoreService;
+});
