@@ -131,6 +131,11 @@
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>com.springsource.org.apache.commons.httpclient</artifactId>
+			<version>3.1.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -180,6 +185,16 @@
 		<repository>
 			<id>SmartCommunity-releases</id>
 			<url>http://repository.smartcommunitylab.it/content/repositories/releases</url>
+		</repository>
+		<repository>
+			<id>com.springsource.repository.bundles.release</id>
+			<name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
+			<url>http://repository.springsource.com/maven/bundles/release</url>
+		</repository>
+		<repository>
+			<id>com.springsource.repository.bundles.external</id>
+			<name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
+			<url>http://repository.springsource.com/maven/bundles/external</url>
 		</repository>
 	</repositories>
 

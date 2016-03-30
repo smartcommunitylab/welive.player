@@ -10,6 +10,9 @@ import java.util.Date;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -19,6 +22,8 @@ public class WeLivePlayerUtils {
 
 	/** USER AGENT. **/
 	private String USER_AGENT = "Mozilla/5.0";
+	/** HTTP Client. **/
+	private HttpClient httpClient = new HttpClient();
 	@Autowired
 	private Environment env;
 
@@ -128,77 +133,19 @@ public class WeLivePlayerUtils {
 	}
 
 	// HTTP POST request
-	public String sendPOST(String url, String accept, String contentType, String auth, String body, boolean secure)
-			throws Exception {
+	public String sendPOST(String url, String accept, String contentType, String authHeader, String json,
+			boolean secure) throws Exception {
 
-		StringBuffer response = new StringBuffer();
-		
-		String value = new String(body.getBytes("UTF-8"));
-		
-		URL obj = new URL(url);
-		// HTTPS.
-		if (secure) {
-			HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
-			// add request header
-			con.setRequestMethod("POST");
-			
-			if (accept != null && !(accept.isEmpty())) {
-				con.setRequestProperty("Accept", accept);
-			}
-			if (contentType != null && !(contentType.isEmpty())) {
-				con.setRequestProperty("Content-Type", contentType);
-			}
-			if (auth != null && !(auth.isEmpty())) {
-				con.setRequestProperty("Authorization", auth);
-			}
-
-			// Send post request
-			con.setDoOutput(true);
-
-			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-			wr.writeBytes(value);
-			wr.flush();
-			wr.close();
-			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-			String inputLine;
-			response = new StringBuffer();
-
-			while ((inputLine = in.readLine()) != null) {
-				response.append(inputLine);
-			}
-			in.close();
-		} else { // HTTP.
-			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-			// add request header
-			con.setRequestMethod("POST");
-			
-			if (accept != null && !(accept.isEmpty())) {
-				con.setRequestProperty("Accept", accept);
-			}
-			if (contentType != null && !(contentType.isEmpty())) {
-				con.setRequestProperty("Content-Type", contentType);
-			}
-			if (auth != null && !(auth.isEmpty())) {
-				con.setRequestProperty("Authentication", auth);
-			}
-			// Send post request
-			con.setDoOutput(true);
-
-			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-			wr.writeBytes(value);
-			wr.flush();
-			wr.close();
-
-			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-			String inputLine;
-
-			while ((inputLine = in.readLine()) != null) {
-				response.append(inputLine);
-			}
-			in.close();
+		StringRequestEntity requestEntity = new StringRequestEntity(json, contentType, "UTF-8");
+		PostMethod postMethod = new PostMethod(url);
+		postMethod.setRequestEntity(requestEntity);
+		postMethod.addRequestHeader("Authorization", authHeader);
+		int statusCode = httpClient.executeMethod(postMethod);
+		if ((statusCode >= 200) && (statusCode < 300)) {
+			String result = postMethod.getResponseBodyAsString();
+			return result;
 		}
-		// logger.info(response.toString());
-		return response.toString();
+		return null;
 
 	}
 

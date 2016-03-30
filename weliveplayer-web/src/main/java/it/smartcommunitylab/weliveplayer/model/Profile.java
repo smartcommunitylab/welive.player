@@ -206,16 +206,36 @@ public class Profile {
 	public String updateProfileBody()
 			throws JsonGenerationException, JsonMappingException, IOException, ParseException {
 
-		Date bday = this.parseDate(birthdate, birthdayFormat);
+		String body = null;
+		Map<String, Integer> dob = new HashMap<>();
+		Map<String, Object> map = new HashMap<>();
 
-		String body = "{" + "\"ccUserID\" : \"" + ccUserID + "\"," + "\"isMale\" : \"" + gender + "\","
-				+ "\"birthdate\" : { \"day\" : " + WeLivePlayerUtils.getDayOfMonth(bday) + ",\"month\" : "
-				+ WeLivePlayerUtils.getMonthOfYear(bday) + ",\"year\" : " + WeLivePlayerUtils.getYear(bday) + "},"
-				+ "\"address\" : \"" + address + "\"," + "\"city\" : \"" + city + "\"," + "\"country\" : \"" + country
-				+ "\"," + "\"zipCode\" : \"" + zipCode + "\"," + "\"referredPilot\" : \"" + referredPilot + "\","
-				+ "\"languages\" : " + mapper.writeValueAsString(languages) + "," + "\"skills\" : "
-				+ mapper.writeValueAsString(skills) + "," + "\"isDeveloper\" : "+ developer + ","
-				+ "\"userTags\" : " + mapper.writeValueAsString(userTags) + "}";
+		map.put("ccUserID", ccUserID);
+		map.put("referredPilot", referredPilot);
+		map.put("address", address);
+		map.put("city", city);
+		map.put("country", country);
+		map.put("zipCode", zipCode);
+		map.put("isDeveloper", developer);
+		map.put("languages", languages);
+		map.put("userTags", userTags);
+		map.put("skills", skills);
+
+		try {
+
+			Date bday = this.parseDate(birthdate, birthdayFormat);
+
+			dob.put("day", WeLivePlayerUtils.getDayOfMonth(bday));
+			dob.put("month", WeLivePlayerUtils.getMonthOfYear(bday));
+			dob.put("year", WeLivePlayerUtils.getYear(bday));
+
+			map.put("birthdate", mapper.writeValueAsString(dob));
+
+		} catch (Exception e) {
+
+		}
+
+		body = mapper.writeValueAsString(map);
 
 		return body;
 	}
