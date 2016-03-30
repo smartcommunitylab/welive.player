@@ -213,8 +213,9 @@ public class Profile {
 				+ WeLivePlayerUtils.getMonthOfYear(bday) + ",\"year\" : " + WeLivePlayerUtils.getYear(bday) + "},"
 				+ "\"address\" : \"" + address + "\"," + "\"city\" : \"" + city + "\"," + "\"country\" : \"" + country
 				+ "\"," + "\"zipCode\" : \"" + zipCode + "\"," + "\"referredPilot\" : \"" + referredPilot + "\","
-				+ "\"languages\" : " + mapper.writeValueAsString(languages) + "," + "\"isDeveloper\" : \"" + isDeveloper
-				+ "\"," + "\"userTags\" : " + mapper.writeValueAsString(userTags) + "}";
+				+ "\"languages\" : " + mapper.writeValueAsString(languages) + "," + "\"skills\" : "
+				+ mapper.writeValueAsString(skills) + "," + "\"isDeveloper\" : \"" + isDeveloper + "\","
+				+ "\"userTags\" : " + mapper.writeValueAsString(userTags) + "}";
 
 		return body;
 	}

@@ -132,15 +132,16 @@ public class WeLivePlayerUtils {
 			throws Exception {
 
 		StringBuffer response = new StringBuffer();
+		
+		String value = new String(body.getBytes("UTF-8"));
+		
 		URL obj = new URL(url);
 		// HTTPS.
 		if (secure) {
 			HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
 			// add request header
 			con.setRequestMethod("POST");
-			con.setRequestProperty("User-Agent", this.USER_AGENT);
-			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-
+			
 			if (accept != null && !(accept.isEmpty())) {
 				con.setRequestProperty("Accept", accept);
 			}
@@ -155,7 +156,7 @@ public class WeLivePlayerUtils {
 			con.setDoOutput(true);
 
 			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-			wr.writeBytes(body);
+			wr.writeBytes(value);
 			wr.flush();
 			wr.close();
 			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -170,9 +171,7 @@ public class WeLivePlayerUtils {
 			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 			// add request header
 			con.setRequestMethod("POST");
-			con.setRequestProperty("User-Agent", this.USER_AGENT);
-			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-
+			
 			if (accept != null && !(accept.isEmpty())) {
 				con.setRequestProperty("Accept", accept);
 			}
@@ -186,7 +185,7 @@ public class WeLivePlayerUtils {
 			con.setDoOutput(true);
 
 			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-			wr.writeBytes(body);
+			wr.writeBytes(value);
 			wr.flush();
 			wr.close();
 
