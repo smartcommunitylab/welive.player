@@ -33,7 +33,7 @@ public class Profile {
 	private String email;
 	private String referredPilot;
 	private List<String> languages = new ArrayList<String>();
-	private boolean isDeveloper = false;
+	private boolean developer = false;
 	private List<String> skills = new ArrayList<String>();
 	private List<String> usedApps = new ArrayList<String>();
 	private Map<String, Integer> profileData = new HashMap<String, Integer>();
@@ -135,11 +135,11 @@ public class Profile {
 	}
 
 	public boolean isDeveloper() {
-		return isDeveloper;
+		return developer;
 	}
 
 	public void setDeveloper(boolean isDeveloper) {
-		this.isDeveloper = isDeveloper;
+		this.developer = isDeveloper;
 	}
 
 	public List<String> getSkills() {
@@ -214,7 +214,7 @@ public class Profile {
 				+ "\"address\" : \"" + address + "\"," + "\"city\" : \"" + city + "\"," + "\"country\" : \"" + country
 				+ "\"," + "\"zipCode\" : \"" + zipCode + "\"," + "\"referredPilot\" : \"" + referredPilot + "\","
 				+ "\"languages\" : " + mapper.writeValueAsString(languages) + "," + "\"skills\" : "
-				+ mapper.writeValueAsString(skills) + "," + "\"isDeveloper\" : \"" + isDeveloper + "\","
+				+ mapper.writeValueAsString(skills) + "," + "\"isDeveloper\" : "+ developer + ","
 				+ "\"userTags\" : " + mapper.writeValueAsString(userTags) + "}";
 
 		return body;
