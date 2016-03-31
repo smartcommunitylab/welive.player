@@ -366,21 +366,20 @@ public class WeLivePlayerManager {
 								profile.setZipCode(profileJson.getString("zipCode"));
 							if (profileJson.has("referredPilot"))
 								profile.setReferredPilot(profileJson.getString("referredPilot"));
-							// field arrays.
-							if (profileJson.has("usedApps")
-									&& !profileJson.get("usedApps").toString().equalsIgnoreCase("[]")) {
-
-								JSONArray usedApps = (JSONArray) profileJson.get("usedApps");
-
-								List<String> usedAppsSet = new ArrayList<String>();
-
-								for (int i = 0; i < usedApps.length(); i++) {
-									JSONObject usedApp = (JSONObject) usedApps.get(i);
-									usedAppsSet.add(String.valueOf(usedApp.get("appName")));
-								}
-
-								profile.setUsedApps(usedAppsSet);
-							}
+//							if (profileJson.has("usedApps")
+//									&& !profileJson.get("usedApps").toString().equalsIgnoreCase("[]")) {
+//
+//								JSONArray usedApps = (JSONArray) profileJson.get("usedApps");
+//
+//								List<String> usedAppsSet = new ArrayList<String>();
+//
+//								for (int i = 0; i < usedApps.length(); i++) {
+//									JSONObject usedApp = (JSONObject) usedApps.get(i);
+//									usedAppsSet.add(String.valueOf(usedApp.get("appName")));
+//								}
+//
+//								profile.setUsedApps(usedAppsSet);
+//							}
 							if (profileJson.has("skills")
 									&& !profileJson.get("skills").toString().equalsIgnoreCase("[]")) {
 
@@ -400,11 +399,11 @@ public class WeLivePlayerManager {
 								profile.setLanguages(
 										mapper.readValue(profileJson.get("languages").toString(), List.class));
 							}
-							if (profileJson.has("thirdParties")
-									&& !profileJson.get("thirdParties").toString().equalsIgnoreCase("[]")) {
-								profile.setThirdParties(
-										mapper.readValue(profileJson.get("thirdParties").toString(), List.class));
-							}
+//							if (profileJson.has("thirdParties")
+//									&& !profileJson.get("thirdParties").toString().equalsIgnoreCase("[]")) {
+//								profile.setThirdParties(
+//										mapper.readValue(profileJson.get("thirdParties").toString(), List.class));
+//							}
 //							if (profileJson.has("lastKnownLocation")
 //									&& !profileJson.get("lastKnownLocation").toString().equalsIgnoreCase("{}")) {
 //								profile.setLastKnownLocation(mapper
