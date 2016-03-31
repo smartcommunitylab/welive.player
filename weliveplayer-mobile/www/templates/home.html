@@ -28,6 +28,8 @@
                 <div ng-if="item.recommendation" class="text-recomm">{{'lbl_home_recommended' | translate}}</div>
             </ion-item>
         </ion-list>
+        <ion-infinite-scroll ng-if="moreAppsPossible" on-infinite="loadMoreApps()" distance="5%">
+        </ion-infinite-scroll>
     </ion-content>
 
     <div class="bar bar-footer">

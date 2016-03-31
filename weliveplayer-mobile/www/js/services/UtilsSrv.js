@@ -7,7 +7,7 @@ angular.module('weliveplayer.services.utils', [])
     //app cache.
     var appMap = new Object();
 
-    utilsService.getAppsByRegion = function (region, forceReset) {
+    utilsService.getAppsByRegion = function (region, forceReset, opts) {
 
 
         var deferred = $q.defer();
@@ -32,7 +32,7 @@ angular.module('weliveplayer.services.utils', [])
                 deferred.resolve(null);
             };
 
-            var singlePromise = utilsService.fetchApps(element).then(creationSuccess, creationError);
+            var singlePromise = utilsService.fetchApps(element, opts).then(creationSuccess, creationError);
             promises.push(singlePromise);
 
         })
@@ -51,7 +51,7 @@ angular.module('weliveplayer.services.utils', [])
     }
 
 
-    utilsService.fetchApps = function fetchApps(region) {
+    utilsService.fetchApps = function fetchApps(region, opts) {
 
         var deferred = $q.defer();
 
@@ -65,8 +65,8 @@ angular.module('weliveplayer.services.utils', [])
             }
         } else {
             LoginSrv.accessToken().then(
-                function (token) {
-                    var url = Config.getWeLiveProxyUri() + "apps/" + region + "/" + Config.getDefaultAppType();
+                function(token) {
+                    var url = Config.getWeLiveProxyUri() + "apps/" + region + "/" + Config.getDefaultAppType() + "?start=" + opts.start + "&count=" + opts.count;
                     $http.get(url, {
                         headers: {
                             "Authorization": "Bearer " + token

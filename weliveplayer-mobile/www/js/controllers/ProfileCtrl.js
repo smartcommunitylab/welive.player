@@ -30,7 +30,7 @@
                             }
                             $scope.cdvProfile = 'exist';
                         } else {
-                            $scope.cdvProfile = 'create';
+                            // $scope.cdvProfile = 'create';
                         }
 
                     }
@@ -50,7 +50,7 @@
                 if (updateProfile.birthdate.length > 9 && $scope.isValidDate(updateProfile.birthdate)) {
                     profileBody.birthdate = updateProfile.birthdate.substring(0, 10);
                 } else {
-                    profileBody.profile.birthdate = null;
+                    profileBody.birthdate = null;
                 }
                 profileBody.address = updateProfile.address;
                 profileBody.city = updateProfile.city;
@@ -65,27 +65,31 @@
                 var body = JSON.stringify(profileBody);
 
                 LoginSrv.makeUpdateCDVProfile(body)
-                    .then(function (response) {
-
-                            if (updateProfile.birthdate.length > 9 && $scope.isValidDate(updateProfile.birthdate)) {
-                                $scope.profile.birthdate = updateProfile.birthdate.substring(0, 10);
-                            } else {
-                                $scope.profile.birthdate = 'yyyy-mm-dd';
+                    .then(function (response) {                        
+                        LoginSrv.makeCDVProfileCall(userId)
+                            .then(function(response) {
+                                if (response) {
+                                    if (response.data.data.ccUserID) {
+                                        $scope.profile = response.data.data;
+                                        // fix birtdate string.
+                                        if (response.data.data.birthdate.length > 9 && $scope.isValidDate(response.data.data.birthdate)) {
+                                            $scope.profile.birthdate = response.data.data.birthdate.substring(0, 10);
+                                        } else {
+                                            $scope.profile.birthdate = 'yyyy-mm-dd';
+                                        }
+                                        $scope.cdvProfile = 'exist';
+                                    } else {
+                                        // $scope.cdvProfile = 'create';
+                                    }
+                                }
                             }
-                            $scope.profile.address = updateProfile.address;
-                            $scope.profile.city = updateProfile.city;
-                            $scope.profile.country = updateProfile.country;
-                            $scope.profile.zipCode = updateProfile.zipCode;
-                            $scope.profile.referredPilot = updateProfile.referredPilot;
-                            $scope.profile.languages = updateProfile.languages.toString().split(",");
-                            // $scope.profile.skills = updateProfile.skills.toString().split(",");
-                            $scope.profile.userTags = updateProfile.userTags.toString().split(",");
-                            $scope.profile.developer = (updateProfile.developer.toString().toLowerCase() === "true") ? true : false;
-                            $scope.cdvProfile = 'exist';
-                        }
-                        , function (error) {
-                            $scope.cdvProfile = 'exist';
-                        })
+                            , function(error) {
+                                $scope.cdvProfile = 'create';
+                            });
+                    }
+                    , function(error) {
+                        $scope.cdvProfile = 'exist';
+                    })
             }
 
             $scope.isValidDate = function isValidDate(str) {

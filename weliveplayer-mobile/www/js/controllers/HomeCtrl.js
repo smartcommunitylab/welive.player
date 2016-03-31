@@ -1,7 +1,12 @@
 angular.module('weliveplayer.controllers.home', [])
     .controller('HomeCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, PlayStore, Config, $filter) {
 
-        // read it from user profile (pilotId).	
+        var opts = {};
+        opts.start = 0;
+        opts.count = 20;
+        $scope.moreAppsPossible = false;
+
+        // read it from user profile (pilotId).
         $scope.selections = Utils.getUserPilotCity();
 
         // bottom buttons.
@@ -19,7 +24,7 @@ angular.module('weliveplayer.controllers.home', [])
         };
 
         Utils.loading();
-        Utils.getAppsByRegion($scope.selections, false).then(creationSuccess, creationError);
+        Utils.getAppsByRegion($scope.selections, false, opts).then(creationSuccess, creationError);
 
         $scope.sort = {};
         $scope.sort.choice = 'Consigliati';
@@ -48,9 +53,6 @@ angular.module('weliveplayer.controllers.home', [])
                         text: $filter('translate')('lbl_popup_button_cancel')
                         , type: 'button-small welive-popup-button'
                     , }
-
-
-                    
                     , {
                         text: $filter('translate')('lbl_popup_button_ok')
                         , type: 'button-small welive-popup-button'
@@ -85,7 +87,7 @@ angular.module('weliveplayer.controllers.home', [])
             }
 
             Utils.loading();
-            Utils.getAppsByRegion($scope.selections, false).then(creationSuccess, creationError);
+            Utils.getAppsByRegion($scope.selections, false, opts).then(creationSuccess, creationError);
         }
 
         $scope.getStars = function (vote) {
@@ -94,7 +96,7 @@ angular.module('weliveplayer.controllers.home', [])
 
         $scope.doRefresh = function () {
             // alert($filter('translate')('lbl_home_refresh'));
-            Utils.getAppsByRegion($scope.selections, true).then(
+            Utils.getAppsByRegion($scope.selections, true, opts).then(
                 function success(apps) {
                     $scope.items = apps;
                     $scope.$broadcast('scroll.refreshComplete');
@@ -105,7 +107,52 @@ angular.module('weliveplayer.controllers.home', [])
             )
         }
 
+        // infinite list reload.
+        $scope.loadMoreApps = function(reset) {
+            if (opts.start === 0) {
+                Utils.loading();
+            }
+
+            if (reset) {
+                $scope.items = null;
+            }
+
+            Utils.getAppsByRegion($scope.selections, true, opts).then(
+
+                function success(apps) {
+                    if (opts.start === 0) {
+                        Utils.loaded();
+                    } else {
+                        $scope.$broadcast('scroll.infiniteScrollComplete');
+                    }
+
+                    // not equal, type
+                    $scope.items = !!$scope.items ? $scope.items.concat(apps) : apps;
+
+                    if (apps.length === opts.count) {
+                        $scope.moreAppsPossible = true;
+                        opts.start = opts.start + 1;
+                        opts.count = opts.count + 5;
+                    } else {
+                        $scope.moreReviewsPossible = false;
+                    }
+                }
+                , function(error) {
+                    if (opts.count === 0) {
+                        Utils.loaded();
+                    } else {
+                        $scope.$broadcast('scroll.infiniteScrollComplete');
+                    }
+                    Utils.toast();
+
+                    if ($scope.items === null) {
+                        $scope.items = [];
+                    }
+                }
+            );
+        };
     })
+
 
 .controller('AppDetailCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, PlayStore) {
 
@@ -307,7 +354,7 @@ angular.module('weliveplayer.controllers.home', [])
 
                 if (reviews.length === opts.count) {
                     $scope.moreReviewsPossible = true;
-                    opts.start = reviews.length;
+                    opts.start = opts.start + 1;
                     opts.count = opts.count + 5;
                 } else {
                     $scope.moreReviewsPossible = false;
