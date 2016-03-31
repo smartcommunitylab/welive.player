@@ -273,7 +273,7 @@ angular.module(
         , lbl_profileData: 'Profilo'
         , lbl_lastLoc: 'Posizione'
         , lbl_save: 'SALVA'
-        , ver_info: 'Versione 0.1.0'
+        , ver_info: 'Versione 0.1.1'
     });
 
     $translateProvider.translations('en', {
@@ -315,7 +315,7 @@ angular.module(
         , lbl_profileData: 'Profile'
         , lbl_lastLoc: 'Location'
         , lbl_save: 'SAVE'
-        , ver_info: 'Version 0.1.0'
+        , ver_info: 'Version 0.1.1'
 
     });
 
@@ -358,7 +358,7 @@ angular.module(
         , lbl_profileData: 'Profiili'
         , lbl_lastLoc: 'Sijainti'
         , lbl_save: 'TALLENNA'
-        , ver_info: 'Version 0.1.0'
+        , ver_info: 'Version 0.1.1'
     });
 
     $translateProvider.translations('es', {
@@ -400,7 +400,7 @@ angular.module(
         , lbl_profileData: 'Profile'
         , lbl_lastLoc: 'Location'
         , lbl_save: 'SAVE'
-        , ver_info: 'Version 0.1.0'
+        , ver_info: 'Version 0.1.1'
     });
 
     $translateProvider.translations('sr', {
@@ -442,7 +442,7 @@ angular.module(
         , lbl_profileData: 'Profil'
         , lbl_lastLoc: 'Lokacija'
         , lbl_save: 'SAČUVAJ'
-        , ver_info: 'Version 0.1.0'
+        , ver_info: 'Version 0.1.1'
     });
 
     $translateProvider.translations('sr_cyril', {
@@ -484,7 +484,7 @@ angular.module(
         , lbl_profileData: 'Профил'
         , lbl_lastLoc: 'Локација'
         , lbl_save: 'САЧУВАЈ'
-        , ver_info: 'Version 0.1.0'
+        , ver_info: 'Version 0.1.1'
     });
 
     $translateProvider.preferredLanguage('en');
