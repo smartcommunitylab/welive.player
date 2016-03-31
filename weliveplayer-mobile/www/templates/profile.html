@@ -5,6 +5,7 @@
     </ion-nav-buttons>
 
     <ion-content class="padding">
+        <ion-refresher on-refresh="doRefresh()"></ion-refresher>
         <div class="padding profile" ng-show="cdvProfile == 'exist'">
             <div class="row">
                 <div class="col">{{'lbl_name'| translate}}</div>
@@ -36,7 +37,8 @@
             </div>
             <div class="row">
                 <div class="col">{{'lbl_isDeveloper'| translate}}:</div>
-                <div class="col">{{profile.developer}}</div>
+                <div class="col" ng-if="profile.developer">{{'lbl_true'| translate}}</div>
+                <div class="col" ng-if="!profile.developer">{{'lbl_false'| translate}}</div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_skills'| translate}}:</div>
@@ -95,10 +97,12 @@
             <div class="row">
                 <div class="col">{{'lbl_isDeveloper'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.developer}}" ng-model="profile.developer">
-                </div>
+                    <input type="checkbox" ng-model="profile.developer">
+                 </div>
             </div>
             <!--<div class="row">
+                <div class="col profile-edit-toggle"></div>
+                toggle-class="toggle-small"
                 <div class="col">{{'lbl_skills'| translate}}:</div>
                 <div class="col">
                     <input type="text" placeholder="{{profile.skills.join()}}" ng-model="profile.skills">

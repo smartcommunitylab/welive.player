@@ -126,4 +126,26 @@
                 return ret;
             }
 
+
+            $scope.doRefresh = function() {
+                LoginSrv.makeCDVProfileCall(userId)
+                    .then(function(response) {
+                        if (response) {
+                            if (response.data.data.ccUserID) {
+                                $scope.profile = response.data.data;
+                                if (response.data.data.birthdate.length > 9 && $scope.isValidDate(response.data.data.birthdate)) {
+                                    $scope.profile.birthdate = response.data.data.birthdate.substring(0, 10);
+                                } else {
+                                    $scope.profile.birthdate = 'yyyy-mm-dd';
+                                }
+                                $scope.cdvProfile = 'exist';
+                            }
+                            $scope.$broadcast('scroll.refreshComplete');
+                        }
+                    }
+                    , function(error) {
+                        $scope.cdvProfile = 'create';
+                        $scope.$broadcast('scroll.refreshComplete');
+                    });
+            }
         })
