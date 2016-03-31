@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -368,12 +369,31 @@ public class WeLivePlayerManager {
 							// field arrays.
 							if (profileJson.has("usedApps")
 									&& !profileJson.get("usedApps").toString().equalsIgnoreCase("[]")) {
-								profile.setUsedApps(
-										mapper.readValue(profileJson.get("usedApps").toString(), List.class));
+
+								JSONArray usedApps = (JSONArray) profileJson.get("usedApps");
+
+								List<String> usedAppsSet = new ArrayList<String>();
+
+								for (int i = 0; i < usedApps.length(); i++) {
+									JSONObject usedApp = (JSONObject) usedApps.get(i);
+									usedAppsSet.add(String.valueOf(usedApp.get("appName")));
+								}
+
+								profile.setUsedApps(usedAppsSet);
 							}
 							if (profileJson.has("skills")
 									&& !profileJson.get("skills").toString().equalsIgnoreCase("[]")) {
-								profile.setSkills(mapper.readValue(profileJson.get("skills").toString(), List.class));
+
+								JSONArray skills = (JSONArray) profileJson.get("skills");
+
+								List<String> skillSet = new ArrayList<String>();
+								for (int i = 0; i < skills.length(); i++) {
+									JSONObject skill = (JSONObject) skills.get(i);
+									skillSet.add(String.valueOf(skill.get("skillName")));
+								}
+
+								profile.setSkills(skillSet);
+
 							}
 							if (profileJson.has("languages")
 									&& !profileJson.get("languages").toString().equalsIgnoreCase("[]")) {
@@ -385,16 +405,16 @@ public class WeLivePlayerManager {
 								profile.setThirdParties(
 										mapper.readValue(profileJson.get("thirdParties").toString(), List.class));
 							}
-							if (profileJson.has("lastKnownLocation")
-									&& !profileJson.get("lastKnownLocation").toString().equalsIgnoreCase("{}")) {
-								profile.setLastKnownLocation(mapper
-										.readValue(profileJson.get("lastKnownLocation").toString(), HashMap.class));
-							}
-							if (profileJson.has("profileData")
-									&& !profileJson.get("profileData").toString().equalsIgnoreCase("{}")) {
-								profile.setProfileData(
-										mapper.readValue(profileJson.get("profileData").toString(), HashMap.class));
-							}
+//							if (profileJson.has("lastKnownLocation")
+//									&& !profileJson.get("lastKnownLocation").toString().equalsIgnoreCase("{}")) {
+//								profile.setLastKnownLocation(mapper
+//										.readValue(profileJson.get("lastKnownLocation").toString(), HashMap.class));
+//							}
+//							if (profileJson.has("profileData")
+//									&& !profileJson.get("profileData").toString().equalsIgnoreCase("{}")) {
+//								profile.setProfileData(
+//										mapper.readValue(profileJson.get("profileData").toString(), HashMap.class));
+//							}
 
 							// get user tags.
 							String userTagsUrl = env.getProperty("welive.cdv.getUserTags.uri");
