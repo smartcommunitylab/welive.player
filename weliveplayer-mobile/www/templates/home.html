@@ -1,7 +1,12 @@
-<ion-view title="{{ 'app_name' | translate }}">
+<ion-view>
+
+    <ion-nav-title class="ng-hide" ng-hide="!hideSearchInput">{{ 'app_name' | translate }}</ion-nav-title>
 
     <ion-nav-buttons side="right">
-        <a href="#" class="button button-icon ion-android-search padding-left" ng-click="showSearchInput()"></a>
+        <!--<a href="#" class="button button-icon ion-android-search padding-left" ng-click="showSearchInput()"></a>-->
+        <input type="search" placeholder="{{'lbl_search' | translate}}" ng-model="formData.searchString" class="ng-hide" ng-hide="hideSearchInput"
+        style="padding-left:5px;">
+        <a href="#" class="button button-icon ion-android-search padding-left" ng-click="doSearch()"></a>
         <button class="button button-icon ion-android-funnel" ng-click="showPopup()"></button>
     </ion-nav-buttons>
 
