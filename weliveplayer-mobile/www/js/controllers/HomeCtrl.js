@@ -1,10 +1,16 @@
 angular.module('weliveplayer.controllers.home', [])
     .controller('HomeCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, PlayStore, Config, $filter) {
 
+        $scope.hideSearchInput = true;
         var opts = {};
         opts.start = 0;
         opts.count = 20;
         $scope.moreAppsPossible = false;
+
+        // before routine.
+        $scope.$on('$ionicView.enter', function() {
+             $scope.hideSearchInput = true;
+        });
 
         // read it from user profile (pilotId).
         $scope.selections = Utils.getUserPilotCity();
@@ -38,7 +44,19 @@ angular.module('weliveplayer.controllers.home', [])
         }
 
         $scope.showSearchInput = function () {
-            $state.go('app.search');
+             $state.go('app.search');
+        }
+
+        $scope.formData = {};
+        $scope.doSearch = function() {
+            if ($scope.hideSearchInput) {
+                $scope.hideSearchInput = false;
+            } else {
+                if ($scope.formData.searchString) {
+                    $scope.items = Utils.searchApp($scope.formData.searchString);
+                }
+                $scope.hideSearchInput = true;
+            }
         }
 
         $scope.showPopup = function () {
@@ -96,6 +114,7 @@ angular.module('weliveplayer.controllers.home', [])
 
         $scope.doRefresh = function () {
             // alert($filter('translate')('lbl_home_refresh'));
+            $scope.hideSearchInput = true;
             Utils.getAppsByRegion($scope.selections, true, opts).then(
                 function success(apps) {
                     $scope.items = apps;
@@ -151,6 +170,12 @@ angular.module('weliveplayer.controllers.home', [])
                 }
             );
         };
+
+        // after routine.
+        $scope.$on("$ionicView.afterLeave", function() {
+            $scope.hideSearchInput = true;
+            Utils.getAppsByRegion($scope.selections, false, opts).then(creationSuccess, creationError);
+        });        
     })
 
 

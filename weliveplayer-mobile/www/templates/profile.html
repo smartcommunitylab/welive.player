@@ -1,5 +1,5 @@
-<ion-view title="{{'menu_profile'| translate}}">
-
+<ion-view>
+    <ion-nav-title>{{'menu_profile'| translate}}</ion-nav-title>
     <ion-nav-buttons side="right">
         <a href="#" class="button button-icon ion-edit padding-left" ng-show="cdvProfile == 'exist'" ng-click="editProfile()"></a>
     </ion-nav-buttons>
@@ -98,7 +98,7 @@
                 <div class="col">{{'lbl_isDeveloper'| translate}}:</div>
                 <div class="col">
                     <input type="checkbox" ng-model="profile.developer">
-                 </div>
+                </div>
             </div>
             <!--<div class="row">
                 <div class="col profile-edit-toggle"></div>

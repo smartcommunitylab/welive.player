@@ -7,498 +7,498 @@
 angular.module(
     'weliveplayer', [
         'ionic'
-        
+
         , 'ngCordova'
-        
+
         , 'ngIOS9UIWebViewPatch'
-        
+
         , 'pascalprecht.translate'
-        
+
         , 'weliveplayer.services.config'
-        
+
         , 'weliveplayer.services.login'
-        
+
         , 'weliveplayer.services.playstore'
-        
+
         , 'weliveplayer.services.storage'
-        
+
         , 'weliveplayer.services.utils'
-        
+
         , 'weliveplayer.controllers.app'
-        
+
         , 'weliveplayer.controllers.home'
-        
+
         , 'weliveplayer.controllers.profile'])
 
-.run(function ($ionicPlatform, $state, $rootScope, $translate, StorageSrv, LoginSrv, Config, Utils) {
+    .run(function($ionicPlatform, $state, $rootScope, $translate, StorageSrv, LoginSrv, Config, Utils) {
 
 
-    $rootScope.loginStarted = false;
-    $rootScope.login = function () {
+        $rootScope.loginStarted = false;
+        $rootScope.login = function() {
 
-        if ($rootScope.loginStarted) return;
+            if ($rootScope.loginStarted) return;
 
-        $rootScope.loginStarted = true;
-        LoginSrv.login().then(
-            function (profile) {
-                $rootScope.loginStarted = false;
+            $rootScope.loginStarted = true;
+            LoginSrv.login().then(
+                function(profile) {
+                    $rootScope.loginStarted = false;
+
+                    $state.go('app.home', {}, {
+                        reload: true
+                    });
+                }
+                , function(error) {
+                    $rootScope.loginStarted = false;
+                    Utils.toast();
+                    StorageSrv.saveUser(null);
+                    ionic.Platform.exitApp();
+                }
+            );
+        };
+
+        $rootScope.logout = function() {
+            LoginSrv.logout().then(
+                function(data) {
+                    window.location.reload(true);
+                }
+                , function(error) { }
+            );
+        };
+
+        $ionicPlatform.ready(function() {
+
+            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+            // for form inputs)
+            if (window.cordova && window.cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+                cordova.plugins.Keyboard.disableScroll(true);
+            }
+
+            if (window.StatusBar) {
+                // org.apache.cordova.statusbar required
+                StatusBar.styleDefault();
+            }
+
+            if (typeof navigator.globalization !== "undefined") {
+                navigator.globalization.getPreferredLanguage(function(language) {
+                    var lang = language.value.split("-")[0];
+                    if (Config.getSupportedLanguages().indexOf(lang) > -1) {
+                        $translate.use((language.value).split("-")[0]).then(function(data) {
+                            console.log("SUCCESS -> " + data);
+                        }, function(error) {
+                            console.log("ERROR -> " + error);
+                        });
+                    } else {
+                        $translate.use("en").then(function(data) {
+                            console.log("SUCCESS -> " + data);
+                        }, function(error) {
+                            console.log("ERROR -> " + error);
+                        });
+                    }
+
+                }, null);
+            }
+
+            //disable login fix.
+            // $state.go('app.profile', {}, {
+            //             reload: true
+            //         });
+            // $state.go('app.home', {}, {
+            //             reload: true
+            //         });
+
+            if (LoginSrv.userIsLogged()) {
+
+                // LoginSrv.accessToken().then( 
+                //     function (token) { 
+                //         alert(token)
+                //     },
+                //     function (error) {
+                //          alert(error);
+                //     });
 
                 $state.go('app.home', {}, {
                     reload: true
                 });
+            } else {
+                $rootScope.login();
             }
-            , function (error) {
-                $rootScope.loginStarted = false;
-                Utils.toast();
-                StorageSrv.saveUser(null);
-                ionic.Platform.exitApp();
-            }
-        );
-    };
 
-    $rootScope.logout = function () {
-        LoginSrv.logout().then(
-            function (data) {
-                window.location.reload(true);
-            }
-            , function (error) {}
-        );
-    };
+            // LOG EVENT (PlayerAccess)
+            var jsonPlayerAccess = Config.getPlayerAccessJson();
+            var userId = StorageSrv.getLoggedInUserId();
+            jsonPlayerAccess.custom_attr.UserID = userId;
 
-    $ionicPlatform.ready(function () {
 
-        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-        // for form inputs)
-        if (window.cordova && window.cordova.plugins.Keyboard) {
-            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-            cordova.plugins.Keyboard.disableScroll(true);
-        }
+            Utils.log(jsonPlayerAccess);
 
-        if (window.StatusBar) {
-            // org.apache.cordova.statusbar required
-            StatusBar.styleDefault();
-        }
+        });
 
-        if (typeof navigator.globalization !== "undefined") {
-            navigator.globalization.getPreferredLanguage(function (language) {
-                var lang = language.value.split("-")[0];
-                if (Config.getSupportedLanguages().indexOf(lang) > -1) {
-                    $translate.use((language.value).split("-")[0]).then(function (data) {
-                        console.log("SUCCESS -> " + data);
-                    }, function (error) {
-                        console.log("ERROR -> " + error);
-                    });
-                } else {
-                    $translate.use("en").then(function (data) {
-                        console.log("SUCCESS -> " + data);
-                    }, function (error) {
-                        console.log("ERROR -> " + error);
-                    });
+
+    })
+
+
+    .config(function($stateProvider, $urlRouterProvider) {
+        $stateProvider
+
+            .state('app', {
+                url: '/app'
+                , abstract: true
+                , templateUrl: 'templates/menu.html'
+                , controller: 'AppCtrl'
+            })
+
+            .state('app.home', {
+                url: '/home'
+                , views: {
+                    'menuContent': {
+                        templateUrl: 'templates/home.html'
+                        , controller: 'HomeCtrl'
+                    }
                 }
+            })
 
-            }, null);
-        }
+            .state('app.info', {
+                url: '/info'
+                , views: {
+                    'menuContent': {
+                        templateUrl: 'templates/info.html'
+                    }
+                }
+            })
 
-        //disable login fix.
-        // $state.go('app.profile', {}, {
-        //             reload: true
-        //         });
-        // $state.go('app.home', {}, {
-        //             reload: true
-        //         });
+            .state('app.termine', {
+                url: '/termine'
+                , views: {
+                    'menuContent': {
+                        templateUrl: 'templates/termine.html'
+                    }
+                }
+            })
 
-        if (LoginSrv.userIsLogged()) {
+            .state('app.profile', {
+                url: '/profile'
+                , views: {
+                    'menuContent': {
+                        templateUrl: 'templates/profile.html'
+                        , controller: 'ProfileCtrl'
+                    }
+                }
+            })
 
-            // LoginSrv.accessToken().then( 
-            //     function (token) { 
-            //         alert(token)
-            //     },
-            //     function (error) {
-            //          alert(error);
-            //     });
 
-            $state.go('app.home', {}, {
-                reload: true
+            .state('app.search', {
+                url: '/apps/appSearch'
+                , views: {
+                    'menuContent': {
+                        templateUrl: 'templates/appSearch.html'
+                        , controller: 'AppSearchCtrl'
+                    }
+                }
+            })
+
+            .state('app.single', {
+                url: '/apps/:appId/:appRegion'
+                , views: {
+                    'menuContent': {
+                        templateUrl: 'templates/appDetails.html'
+                        , controller: 'AppDetailCtrl'
+                    }
+                }
+            })
+
+            .state('app.comments', {
+                url: '/apps/:appId/:appRegion'
+                , views: {
+                    'menuContent': {
+                        templateUrl: 'templates/appComments.html'
+                        , controller: 'AppCommentsCtrl'
+                    }
+                }
             });
-        } else {
-            $rootScope.login();
-        }
-
-        // LOG EVENT (PlayerAccess)
-        var jsonPlayerAccess = Config.getPlayerAccessJson();
-        var userId = StorageSrv.getLoggedInUserId();
-        jsonPlayerAccess.custom_attr.UserID = userId;
 
 
-        Utils.log(jsonPlayerAccess);
+        // if none of the above states are matched, use this as the fallback
+        // $urlRouterProvider.otherwise('/app/home');
 
-    });
-
-
-})
-
-
-.config(function ($stateProvider, $urlRouterProvider) {
-    $stateProvider
-
-        .state('app', {
-        url: '/app'
-        , abstract: true
-        , templateUrl: 'templates/menu.html'
-        , controller: 'AppCtrl'
+        // if none of the above states are matched, use this as the fallback
+        $urlRouterProvider.otherwise(function($injector) {
+            var logged = $injector.get('LoginSrv').userIsLogged();
+            if (!logged) {
+                return '/';
+            }
+            return '/app/home';
+        });
     })
 
-    .state('app.home', {
-        url: '/home'
-        , views: {
-            'menuContent': {
-                templateUrl: 'templates/home.html'
-                , controller: 'HomeCtrl'
-            }
-        }
-    })
+    .config(function($translateProvider, $ionicConfigProvider) {
+        $ionicConfigProvider.backButton.text('');
+        $ionicConfigProvider.backButton.previousTitleText(false);
+        $translateProvider.translations('it', {
+            app_name: 'WeLivePlayer'
+            , lbl_search: 'Cerca'
+            , lbl_comment: 'Commenti'
+            , lbl_description: 'Descrizione'
+            , menu_home: 'Home'
+            , menu_profile: 'Profilo'
+            , menu_info: 'Informazioni'
+            , menu_termine: 'Termini del servizio'
+            , menu_logout: 'Esci'
+            , toast_error_generic: 'Errore! Riavvia la app.'
+            , no_apps: 'Nessuna app trovata. Effettua una nuova ricerca.'
+            , no_apps_no_selection: 'Seleziona una città per visualizzare le relative App.'
+            , lbl_popup_title: 'Scegli un ordinamento'
+            , lbl_popup_recommended: 'Consigliate'
+            , lbl_popup_recent: 'Più recenti'
+            , lbl_popup_popular: 'Più popolari'
+            , lbl_popup_alphbetical: 'Alfabetico'
+            , lbl_home_recommended: 'Consigliata'
+            , lbl_popup_button_ok: 'ORDINA'
+            , lbl_popup_button_cancel: 'ANNULLA'
+            , lbl_name: 'Nome'
+            , lbl_surname: 'Cognome'
+            , lbl_gender: 'Genere'
+            , lbl_dob: 'Data di nascita'
+            , lbl_addr: 'Indrizzo'
+            , lbl_pilotId: 'Città pilota'
+            , lbl_city: 'Citta'
+            , lbl_country: 'Stato'
+            , lbl_zipcode: 'Cap'
+            , lbl_email: 'Email'
+            , lbl_languages: 'Lingue'
+            , lbl_isDeveloper: 'Sviluppatore'
+            , lbl_skills: 'Capacità'
+            , lbl_userTags: 'Tag utente'
+            , lbl_usedApps: 'Applicazioni utilizzate'
+            , lbl_profileData: 'Profilo'
+            , lbl_lastLoc: 'Posizione'
+            , lbl_save: 'SALVA'
+            , lbl_true: 'Vero'
+            , lbl_false: 'Falso'
+            , ver_info: 'Versione 0.1.3'
+        });
 
-    .state('app.info', {
-        url: '/info'
-        , views: {
-            'menuContent': {
-                templateUrl: 'templates/info.html'
-            }
-        }
-    })
+        $translateProvider.translations('en', {
+            app_name: 'WeLivePlayer'
+            , lbl_search: 'Search'
+            , lbl_comment: 'Comments'
+            , lbl_description: 'Description'
+            , menu_home: 'Home'
+            , menu_profile: 'Profile'
+            , menu_info: 'Information'
+            , menu_termine: 'Terms of Service'
+            , menu_logout: 'Logout'
+            , toast_error_generic: 'Error! Restart the App'
+            , no_apps: 'No application found. Try a new research.'
+            , no_apps_no_selection: 'Select a city to display its apps.'
+            , lbl_popup_title: 'Select an order'
+            , lbl_popup_recommended: 'Recommended'
+            , lbl_popup_recent: 'Most recent'
+            , lbl_popup_popular: 'Most popular'
+            , lbl_popup_alphbetical: 'Alphabetic'
+            , lbl_home_recommended: 'Recommended'
+            , lbl_popup_button_ok: 'ORDER'
+            , lbl_popup_button_cancel: 'CANCEL'
+            , lbl_name: 'Name'
+            , lbl_surname: 'Surname'
+            , lbl_gender: 'Gender'
+            , lbl_dob: 'Birthdate'
+            , lbl_addr: 'Address'
+            , lbl_pilotId: 'Pilot city'
+            , lbl_city: 'City'
+            , lbl_country: 'Country'
+            , lbl_zipcode: 'Zipcode'
+            , lbl_email: 'Email'
+            , lbl_languages: 'Languages'
+            , lbl_isDeveloper: 'Developer'
+            , lbl_skills: 'Skills'
+            , lbl_userTags: 'User tags'
+            , lbl_usedApps: 'Used Apps'
+            , lbl_profileData: 'Profile'
+            , lbl_lastLoc: 'Location'
+            , lbl_save: 'SAVE'
+            , lbl_true: 'True'
+            , lbl_false: 'False'
+            , ver_info: 'Version 0.1.3'
 
-    .state('app.termine', {
-        url: '/termine'
-        , views: {
-            'menuContent': {
-                templateUrl: 'templates/termine.html'
-            }
-        }
-    })
+        });
 
-    .state('app.profile', {
-        url: '/profile'
-        , views: {
-            'menuContent': {
-                templateUrl: 'templates/profile.html'
-                , controller: 'ProfileCtrl'
-            }
-        }
-    })
+        $translateProvider.translations('fi', {
+            app_name: 'WeLivePlayer'
+            , lbl_search: 'Etsi'
+            , lbl_comment: 'Kommentit'
+            , lbl_description: 'Kuvaus'
+            , menu_home: 'Etusivu'
+            , menu_profile: 'Profiili'
+            , menu_info: 'Lisätietoja'
+            , menu_termine: 'Käyttöehdot'
+            , menu_logout: 'Kirjaudu ulos'
+            , toast_error_generic: 'Jotain meni pieleen! Käynnistä sovellus uudestaan.'
+            , no_apps: 'Sovellusta ei löydy. Yritä etsiä uudelleen.'
+            , no_apps_no_selection: 'Valitse kaupunki, jonka sovellukset haluat nähdä.'
+            , lbl_popup_title: 'Valitse järjestys'
+            , lbl_popup_recommended: 'Suositeltu'
+            , lbl_popup_recent: 'Uusi'
+            , lbl_popup_popular: 'Suosittu'
+            , lbl_popup_alphbetical: 'Aakkosjärjestys'
+            , lbl_home_recommended: 'Suositeltu'
+            , lbl_popup_button_ok: 'JÄRJESTÄ'
+            , lbl_popup_button_cancel: 'PERUUTA'
+            , lbl_name: 'Etunimi'
+            , lbl_surname: 'Sukunimi'
+            , lbl_gender: 'Sukupuoli'
+            , lbl_dob: 'Syntymäpäivä'
+            , lbl_addr: 'Osoite'
+            , lbl_pilotId: 'Pilottikaupunki'
+            , lbl_city: 'Kaupunki'
+            , lbl_country: 'Maa'
+            , lbl_zipcode: 'Postinumero'
+            , lbl_email: 'Sähköposti'
+            , lbl_languages: 'Kielet'
+            , lbl_isDeveloper: 'Kehittäjä'
+            , lbl_skills: 'Taidot'
+            , lbl_userTags: 'User tags' //??
+            , lbl_usedApps: 'Käytetyt Sovellukset'
+            , lbl_profileData: 'Profiili'
+            , lbl_lastLoc: 'Sijainti'
+            , lbl_save: 'TALLENNA'
+            , lbl_true: 'True'  //??
+            , lbl_false: 'False' //??
+            , ver_info: 'Version 0.1.3'
+        });
 
+        $translateProvider.translations('es', {
+            app_name: 'WeLivePlayer'
+            , lbl_search: 'Buscar'
+            , lbl_comment: 'Comentarios'
+            , lbl_description: 'Descripción'
+            , menu_home: 'Inicio'
+            , menu_profile: 'Perfil'
+            , menu_info: 'Información'
+            , menu_termine: 'Condiciones del servicio'
+            , menu_logout: 'Salir'
+            , toast_error_generic: 'Error! Reinicie la aplicación'
+            , no_apps: 'No se ha encontrado ninguna aplicación. Pruebe una nueva búsqueda.'
+            , no_apps_no_selection: 'Sleccione una ciudad para mostrar sus aplicaciones.'
+            , lbl_popup_title: 'Seleccione un orden'
+            , lbl_popup_recommended: 'Recomendado'
+            , lbl_popup_recent: 'Reciente'
+            , lbl_popup_popular: 'Popular'
+            , lbl_popup_alphbetical: 'Alfabéticamente'
+            , lbl_home_recommended: 'Recomendado'
+            , lbl_popup_button_ok: 'ORDENAR'
+            , lbl_popup_button_cancel: 'CANCELAR'
+            , lbl_name: 'Nombre'
+            , lbl_surname: 'Apellido'
+            , lbl_gender: 'Género'
+            , lbl_dob: 'Fecha de nacimiento'
+            , lbl_addr: 'Dirección'
+            , lbl_pilotId: 'Ciudad piloto'
+            , lbl_city: 'Ciudad'
+            , lbl_country: 'País'
+            , lbl_zipcode: 'Código Postal'
+            , lbl_email: 'Email'
+            , lbl_languages: 'Idiomas'
+            , lbl_isDeveloper: 'Desarollador'
+            , lbl_skills: 'Habilidades'
+            , lbl_userTags: 'User tags' // ??
+            , lbl_usedApps: 'Aplicaciones utilizadas'
+            , lbl_profileData: 'Perfil'
+            , lbl_lastLoc: 'Ubicación'
+            , lbl_save: 'GUARDAR'
+            , lbl_true: 'True' //??
+            , lbl_false: 'False' //??
+            , ver_info: 'Version 0.1.3'
+        });
 
-    .state('app.search', {
-        url: '/apps/appSearch'
-        , views: {
-            'menuContent': {
-                templateUrl: 'templates/appSearch.html'
-                , controller: 'AppSearchCtrl'
-            }
-        }
-    })
+        $translateProvider.translations('sr', {
+            app_name: 'WeLivePlayer'
+            , lbl_search: 'Traži'
+            , lbl_comment: 'Komentari'
+            , lbl_description: 'Opis'
+            , menu_home: 'Početna strana'
+            , menu_profile: 'Profil'
+            , menu_info: 'Informacija'
+            , menu_termine: 'Uslovi korištenja Servisa'
+            , menu_logout: 'Odjava'
+            , toast_error_generic: 'Greška! Restartuj aplikaciju'
+            , no_apps: 'Nije pronašao aplikacija. Probajte novu pretragu.'
+            , no_apps_no_selection: 'Izaberi grad da prikaže svoje aplikacije.'
+            , lbl_popup_title: 'Izaberi poredak'
+            , lbl_popup_recommended: 'Preporučena'
+            , lbl_popup_recent: 'Najnovije'
+            , lbl_popup_popular: 'Popularno'
+            , lbl_popup_alphbetical: 'Alfabetski'
+            , lbl_home_recommended: 'Preporučena'
+            , lbl_popup_button_ok: 'NARU'
+            , lbl_popup_button_cancel: 'ODUSTANI'
+            , lbl_name: 'Ime'
+            , lbl_surname: 'Prezime'
+            , lbl_gender: 'Pol'
+            , lbl_dob: 'Dan rodenja'
+            , lbl_addr: 'Adresa'
+            , lbl_pilotId: 'Pilot grad'
+            , lbl_city: 'Grad'
+            , lbl_country: 'Zemlja'
+            , lbl_zipcode: 'Zipkod'
+            , lbl_email: 'Email'
+            , lbl_languages: 'Jezici'
+            , lbl_isDeveloper: 'Developer'
+            , lbl_skills: 'Veštine'
+            , lbl_userTags: 'User tags' //??
+            , lbl_usedApps: 'Korištene aplikacije'
+            , lbl_profileData: 'Profil'
+            , lbl_lastLoc: 'Lokacija'
+            , lbl_save: 'SAČUVAJ'
+            , lbl_true: 'True' //??
+            , lbl_false: 'False' //??
+            , ver_info: 'Version 0.1.3'
+        });
 
-    .state('app.single', {
-        url: '/apps/:appId/:appRegion'
-        , views: {
-            'menuContent': {
-                templateUrl: 'templates/appDetails.html'
-                , controller: 'AppDetailCtrl'
-            }
-        }
-    })
+        $translateProvider.translations('sr_cyril', {
+            app_name: 'WeLivePlayer'
+            , lbl_search: 'Тражи'
+            , lbl_comment: 'Коментари'
+            , lbl_description: 'Опис'
+            , menu_home: 'Почетна страна'
+            , menu_profile: 'Профил'
+            , menu_info: 'Информација'
+            , menu_termine: 'Услови коришћења сервиса'
+            , menu_logout: 'Одјава'
+            , toast_error_generic: 'Грешка! Рестартуј аплиакцију'
+            , no_apps: 'Није пронађена апликација. Пробајте нову претрагу.'
+            , no_apps_no_selection: 'Изабери грaд да прикаже своје апликације.'
+            , lbl_popup_title: 'Изабери поредак'
+            , lbl_popup_recommended: 'Препоручено'
+            , lbl_popup_recent: 'Недавно'
+            , lbl_popup_popular: 'Популарно'
+            , lbl_popup_alphbetical: 'Алфабетски'
+            , lbl_home_recommended: 'Препоручено'
+            , lbl_popup_button_ok: 'НАРУЧИ'
+            , lbl_popup_button_cancel: 'ОДУСТАНИ'
+            , lbl_name: 'Име'
+            , lbl_surname: 'Презиме'
+            , lbl_gender: 'Пол'
+            , lbl_dob: 'Дан рођења'
+            , lbl_addr: 'Адреса'
+            , lbl_pilotId: 'Пилот град'
+            , lbl_city: 'Град'
+            , lbl_country: 'Земља'
+            , lbl_zipcode: 'Зипкод'
+            , lbl_email: 'Имејл'
+            , lbl_languages: 'Језици'
+            , lbl_isDeveloper: 'Девелопер'
+            , lbl_skills: 'Вештине'
+            , lbl_userTags: 'User tags' //??
+            , lbl_usedApps: 'Коришћене апликације'
+            , lbl_profileData: 'Профил'
+            , lbl_lastLoc: 'Локација'
+            , lbl_save: 'САЧУВАЈ'
+            , lbl_true: 'True' //??
+            , lbl_false: 'False' //??
+            , ver_info: 'Version 0.1.3'
+        });
 
-    .state('app.comments', {
-        url: '/apps/:appId/:appRegion'
-        , views: {
-            'menuContent': {
-                templateUrl: 'templates/appComments.html'
-                , controller: 'AppCommentsCtrl'
-            }
-        }
+        $translateProvider.preferredLanguage('en');
+        $translateProvider.useSanitizeValueStrategy('escape');
     });
-
-
-    // if none of the above states are matched, use this as the fallback
-    // $urlRouterProvider.otherwise('/app/home');
-
-    // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise(function ($injector) {
-        var logged = $injector.get('LoginSrv').userIsLogged();
-        if (!logged) {
-            return '/';
-        }
-        return '/app/home';
-    });
-})
-
-.config(function ($translateProvider, $ionicConfigProvider) {
-    $ionicConfigProvider.backButton.text('');
-    $ionicConfigProvider.backButton.previousTitleText(false);
-    $translateProvider.translations('it', {
-        app_name: 'WeLivePlayer'
-        , lbl_search: 'Cerca'
-        , lbl_comment: 'Commenti'
-        , lbl_description: 'Descrizione'
-        , menu_home: 'Home'
-        , menu_profile: 'Profilo'
-        , menu_info: 'Informazioni'
-        , menu_termine: 'Termini del servizio'
-        , menu_logout: 'Esci'
-        , toast_error_generic: 'Errore! Riavvia la app.'
-        , no_apps: 'Nessuna app trovata. Effettua una nuova ricerca.'
-        , no_apps_no_selection: 'Seleziona una città per visualizzare le relative App.'
-        , lbl_popup_title: 'Scegli un ordinamento'
-        , lbl_popup_recommended: 'Consigliate'
-        , lbl_popup_recent: 'Più recenti'
-        , lbl_popup_popular: 'Più popolari'
-        , lbl_popup_alphbetical: 'Alfabetico'
-        , lbl_home_recommended: 'Consigliata'
-        , lbl_popup_button_ok: 'ORDINA'
-        , lbl_popup_button_cancel: 'ANNULLA'
-        , lbl_name: 'Nome'
-        , lbl_surname: 'Cognome'
-        , lbl_gender: 'Genere'
-        , lbl_dob: 'Data di nascita'
-        , lbl_addr: 'Indrizzo'
-        , lbl_pilotId: 'Città pilota'
-        , lbl_city: 'Citta'
-        , lbl_country: 'Stato'
-        , lbl_zipcode: 'Cap'
-        , lbl_email: 'Email'
-        , lbl_languages: 'Lingue'
-        , lbl_isDeveloper: 'Sviluppatore'
-        , lbl_skills: 'Capacità'
-        , lbl_userTags: 'Tag utente'
-        , lbl_usedApps: 'Applicazioni utilizzate'
-        , lbl_profileData: 'Profilo'
-        , lbl_lastLoc: 'Posizione'
-        , lbl_save: 'SALVA'
-        , lbl_true: 'Vero'
-        , lbl_false: 'Falso'
-        , ver_info: 'Versione 0.1.2'
-    });
-
-    $translateProvider.translations('en', {
-        app_name: 'WeLivePlayer'
-        , lbl_search: 'Search'
-        , lbl_comment: 'Comments'
-        , lbl_description: 'Description'
-        , menu_home: 'Home'
-        , menu_profile: 'Profile'
-        , menu_info: 'Information'
-        , menu_termine: 'Terms of Service'
-        , menu_logout: 'Logout'
-        , toast_error_generic: 'Error! Restart the App'
-        , no_apps: 'No application found. Try a new research.'
-        , no_apps_no_selection: 'Select a city to display its apps.'
-        , lbl_popup_title: 'Select an order'
-        , lbl_popup_recommended: 'Recommended'
-        , lbl_popup_recent: 'Most recent'
-        , lbl_popup_popular: 'Most popular'
-        , lbl_popup_alphbetical: 'Alphabetic'
-        , lbl_home_recommended: 'Recommended'
-        , lbl_popup_button_ok: 'ORDER'
-        , lbl_popup_button_cancel: 'CANCEL'
-        , lbl_name: 'Name'
-        , lbl_surname: 'Surname'
-        , lbl_gender: 'Gender'
-        , lbl_dob: 'Birthdate'
-        , lbl_addr: 'Address'
-        , lbl_pilotId: 'Pilot city'
-        , lbl_city: 'City'
-        , lbl_country: 'Country'
-        , lbl_zipcode: 'Zipcode'
-        , lbl_email: 'Email'
-        , lbl_languages: 'Languages'
-        , lbl_isDeveloper: 'Developer'
-        , lbl_skills: 'Skills'
-        , lbl_userTags: 'User tags'
-        , lbl_usedApps: 'Used Apps'
-        , lbl_profileData: 'Profile'
-        , lbl_lastLoc: 'Location'
-        , lbl_save: 'SAVE'
-        , lbl_true: 'True'
-        , lbl_false: 'False'
-        , ver_info: 'Version 0.1.2'
-
-    });
-
-    $translateProvider.translations('fi', {
-        app_name: 'WeLivePlayer'
-        , lbl_search: 'Etsi'
-        , lbl_comment: 'Kommentit'
-        , lbl_description: 'Kuvaus'
-        , menu_home: 'Etusivu'
-        , menu_profile: 'Profiili'
-        , menu_info: 'Lisätietoja'
-        , menu_termine: 'Käyttöehdot'
-        , menu_logout: 'Kirjaudu ulos'
-        , toast_error_generic: 'Jotain meni pieleen! Käynnistä sovellus uudestaan.'
-        , no_apps: 'Sovellusta ei löydy. Yritä etsiä uudelleen.'
-        , no_apps_no_selection: 'Valitse kaupunki, jonka sovellukset haluat nähdä.'
-        , lbl_popup_title: 'Valitse järjestys'
-        , lbl_popup_recommended: 'Suositeltu'
-        , lbl_popup_recent: 'Uusi'
-        , lbl_popup_popular: 'Suosittu'
-        , lbl_popup_alphbetical: 'Aakkosjärjestys'
-        , lbl_home_recommended: 'Suositeltu'
-        , lbl_popup_button_ok: 'JÄRJESTÄ'
-        , lbl_popup_button_cancel: 'PERUUTA'
-        , lbl_name: 'Etunimi'
-        , lbl_surname: 'Sukunimi'
-        , lbl_gender: 'Sukupuoli'
-        , lbl_dob: 'Syntymäpäivä'
-        , lbl_addr: 'Osoite'
-        , lbl_pilotId: 'Pilottikaupunki'
-        , lbl_city: 'Kaupunki'
-        , lbl_country: 'Maa'
-        , lbl_zipcode: 'Postinumero'
-        , lbl_email: 'Sähköposti'
-        , lbl_languages: 'Kielet'
-        , lbl_isDeveloper: 'Kehittäjä'
-        , lbl_skills: 'Taidot'
-        , lbl_userTags: 'Käyttäjän tunniste'
-        , lbl_usedApps: 'Käytetyt Sovellukset'
-        , lbl_profileData: 'Profiili'
-        , lbl_lastLoc: 'Sijainti'
-        , lbl_save: 'TALLENNA'
-        , lbl_true: 'True'
-        , lbl_false: 'False'
-        , ver_info: 'Version 0.1.2'
-    });
-
-    $translateProvider.translations('es', {
-        app_name: 'WeLivePlayer'
-        , lbl_search: 'Search'
-        , lbl_comment: 'Comments'
-        , lbl_description: 'Description'
-        , menu_home: 'Home'
-        , menu_profile: 'Profile'
-        , menu_info: 'Information'
-        , menu_termine: 'Terms of Service'
-        , menu_logout: 'Logout'
-        , toast_error_generic: 'Error! Restart the App'
-        , no_apps: 'No application found. Try a new research.'
-        , no_apps_no_selection: 'Select a city to display its apps.'
-        , lbl_popup_title: 'Select an order'
-        , lbl_popup_recommended: 'Recommended'
-        , lbl_popup_recent: 'Most recent'
-        , lbl_popup_popular: 'Most popular'
-        , lbl_popup_alphbetical: 'Alphabetic'
-        , lbl_home_recommended: 'Recommended'
-        , lbl_popup_button_ok: 'ORDER'
-        , lbl_popup_button_cancel: 'CANCEL'
-        , lbl_name: 'Name'
-        , lbl_surname: 'Surname'
-        , lbl_gender: 'Gender'
-        , lbl_dob: 'Birthdate'
-        , lbl_addr: 'Address'
-        , lbl_pilotId: 'Pilot city'
-        , lbl_city: 'City'
-        , lbl_country: 'Country'
-        , lbl_zipcode: 'Zipcode'
-        , lbl_email: 'Email'
-        , lbl_languages: 'Languages'
-        , lbl_isDeveloper: 'Developer'
-        , lbl_skills: 'Skills'
-        , lbl_userTags: 'User tags'
-        , lbl_usedApps: 'Used apps'
-        , lbl_profileData: 'Profile'
-        , lbl_lastLoc: 'Location'
-        , lbl_save: 'SAVE'
-        , lbl_true: 'True'
-        , lbl_false: 'False'
-        , ver_info: 'Version 0.1.2'
-    });
-
-    $translateProvider.translations('sr', {
-        app_name: 'WeLivePlayer'
-        , lbl_search: 'Traži'
-        , lbl_comment: 'Komentari'
-        , lbl_description: 'Opis'
-        , menu_home: 'Početna strana'
-        , menu_profile: 'Profil'
-        , menu_info: 'Informacija'
-        , menu_termine: 'Uslovi korištenja Servisa'
-        , menu_logout: 'Odjava'
-        , toast_error_generic: 'Greška! Restartuj aplikaciju'
-        , no_apps: 'Nije pronašao aplikacija. Probajte novu pretragu.'
-        , no_apps_no_selection: 'Izaberi grad da prikaže svoje aplikacije.'
-        , lbl_popup_title: 'Izaberi poredak'
-        , lbl_popup_recommended: 'Preporučena'
-        , lbl_popup_recent: 'Najnovije'
-        , lbl_popup_popular: 'Popularno'
-        , lbl_popup_alphbetical: 'Alfabetski'
-        , lbl_home_recommended: 'Preporučena'
-        , lbl_popup_button_ok: 'NARU'
-        , lbl_popup_button_cancel: 'ODUSTANI'
-        , lbl_name: 'Ime'
-        , lbl_surname: 'Prezime'
-        , lbl_gender: 'Pol'
-        , lbl_dob: 'Dan rodenja'
-        , lbl_addr: 'Adresa'
-        , lbl_pilotId: 'Pilot grad'
-        , lbl_city: 'Grad'
-        , lbl_country: 'Zemlja'
-        , lbl_zipcode: 'Zipkod'
-        , lbl_email: 'Email'
-        , lbl_languages: 'Jezici'
-        , lbl_isDeveloper: 'Developer'
-        , lbl_skills: 'Veštine'
-        , lbl_userTags: 'Tagi'
-        , lbl_usedApps: 'Korištene aplikacije'
-        , lbl_profileData: 'Profil'
-        , lbl_lastLoc: 'Lokacija'
-        , lbl_save: 'SAČUVAJ'
-        , lbl_true: 'True'
-        , lbl_false: 'False'
-        , ver_info: 'Version 0.1.2'
-    });
-
-    $translateProvider.translations('sr_cyril', {
-        app_name: 'WeLivePlayer'
-        , lbl_search: 'Тражи'
-        , lbl_comment: 'Коментари'
-        , lbl_description: 'Опис'
-        , menu_home: 'Почетна страна'
-        , menu_profile: 'Профил'
-        , menu_info: 'Информација'
-        , menu_termine: 'Услови коришћења сервиса'
-        , menu_logout: 'Одјава'
-        , toast_error_generic: 'Грешка! Рестартуј аплиакцију'
-        , no_apps: 'Није пронађена апликација. Пробајте нову претрагу.'
-        , no_apps_no_selection: 'Изабери грaд да прикаже своје апликације.'
-        , lbl_popup_title: 'Изабери поредак'
-        , lbl_popup_recommended: 'Препоручено'
-        , lbl_popup_recent: 'Недавно'
-        , lbl_popup_popular: 'Популарно'
-        , lbl_popup_alphbetical: 'Алфабетски'
-        , lbl_home_recommended: 'Препоручено'
-        , lbl_popup_button_ok: 'НАРУЧИ'
-        , lbl_popup_button_cancel: 'ОДУСТАНИ'
-        , lbl_name: 'Име'
-        , lbl_surname: 'Презиме'
-        , lbl_gender: 'Пол'
-        , lbl_dob: 'Дан рођења'
-        , lbl_addr: 'Адреса'
-        , lbl_pilotId: 'Пилот град'
-        , lbl_city: 'Град'
-        , lbl_country: 'Земља'
-        , lbl_zipcode: 'Зипкод'
-        , lbl_email: 'Имејл'
-        , lbl_languages: 'Језици'
-        , lbl_isDeveloper: 'Девелопер'
-        , lbl_skills: 'Вештине'
-        , lbl_userTags: 'Усер тагс'
-        , lbl_usedApps: 'Коришћене апликације'
-        , lbl_profileData: 'Профил'
-        , lbl_lastLoc: 'Локација'
-        , lbl_save: 'САЧУВАЈ'
-        , lbl_true: 'True'
-        , lbl_false: 'False'
-        , ver_info: 'Version 0.1.2'
-    });
-
-    $translateProvider.preferredLanguage('en');
-    $translateProvider.useSanitizeValueStrategy('escape');
-});

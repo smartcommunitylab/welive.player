@@ -1,4 +1,5 @@
-<ion-view title="{{name}}">
+<ion-view>
+    <ion-nav-title>{{name}}</ion-nav-title>
     <ion-content class="padding">
         <h4>{{ 'lbl_comment' | translate }}</h4>
         <ion-list>
@@ -15,8 +16,10 @@
     <div class="bar bar-footer">
         <div class="button-bar">
             <button class="button button-icon ion-ios-information" ng-class="{'active' : selection == 'info'}" ng-click="info()" />
-            <button class="button button-icon" ng-class="{'ion-archive' : appInstallStatus == 'download', 'ion-forward': appInstallStatus == 'forward' }" ng-click="download()"></button>
-            <button class="button button-icon ion-ios-chatboxes" ng-class="{'active' : selection == 'userComment'}" ng-click="showAppComments(id, city)" />
+            <button class="button button-icon" ng-class="{'ion-archive' : appInstallStatus == 'download', 'ion-forward': appInstallStatus == 'forward' }"
+            ng-click="download()"></button>
+            <button class="button button-icon ion-ios-chatboxes" ng-class="{'active' : selection == 'userComment'}" ng-click="showAppComments(id, city)"
+            />
         </div>
     </div>
 </ion-view>
