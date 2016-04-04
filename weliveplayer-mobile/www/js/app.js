@@ -235,7 +235,7 @@ angular.module(
         $ionicConfigProvider.backButton.text('');
         $ionicConfigProvider.backButton.previousTitleText(false);
         $translateProvider.translations('it', {
-            app_name: 'WeLivePlayer'
+            app_name: 'WeLive Player'
             , lbl_search: 'Cerca'
             , lbl_comment: 'Commenti'
             , lbl_description: 'Descrizione'
@@ -279,7 +279,7 @@ angular.module(
         });
 
         $translateProvider.translations('en', {
-            app_name: 'WeLivePlayer'
+            app_name: 'WeLive Player'
             , lbl_search: 'Search'
             , lbl_comment: 'Comments'
             , lbl_description: 'Description'
@@ -324,7 +324,7 @@ angular.module(
         });
 
         $translateProvider.translations('fi', {
-            app_name: 'WeLivePlayer'
+            app_name: 'WeLive Player'
             , lbl_search: 'Etsi'
             , lbl_comment: 'Kommentit'
             , lbl_description: 'Kuvaus'
@@ -368,7 +368,7 @@ angular.module(
         });
 
         $translateProvider.translations('es', {
-            app_name: 'WeLivePlayer'
+            app_name: 'WeLive Player'
             , lbl_search: 'Buscar'
             , lbl_comment: 'Comentarios'
             , lbl_description: 'Descripción'
@@ -412,7 +412,7 @@ angular.module(
         });
 
         $translateProvider.translations('sr', {
-            app_name: 'WeLivePlayer'
+            app_name: 'WeLive Player'
             , lbl_search: 'Traži'
             , lbl_comment: 'Komentari'
             , lbl_description: 'Opis'
@@ -456,7 +456,7 @@ angular.module(
         });
 
         $translateProvider.translations('sr_cyril', {
-            app_name: 'WeLivePlayer'
+            app_name: 'WeLive Player'
             , lbl_search: 'Тражи'
             , lbl_comment: 'Коментари'
             , lbl_description: 'Опис'
