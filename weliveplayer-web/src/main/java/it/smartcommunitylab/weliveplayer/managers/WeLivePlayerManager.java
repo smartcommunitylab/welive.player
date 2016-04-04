@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -482,7 +481,7 @@ public class WeLivePlayerManager {
 		return userId;
 	}
 
-	public Map<String, String> updateUserProfile(String bearerHeader, Profile profile) {
+	public Map<String, String> updateUserProfile(String userId, Profile profile) {
 
 		Map<String, String> status = new HashMap<String, String>();
 
@@ -490,24 +489,30 @@ public class WeLivePlayerManager {
 
 			if (profile != null) {
 
-				String url = env.getProperty("welive.cdv.updateUserprofile.uri");
-				// url = url.replace("{id}", userId);
+				// check if passed in token user has same id as the one in profile body.
+				if (profile.getCcUserID().equalsIgnoreCase(userId)) {
+					
+					String url = env.getProperty("welive.cdv.updateUserprofile.uri");
+					// url = url.replace("{id}", userId);
 
-				String response = weLivePlayerUtils.sendPOST(url, null, "application/json", authHeader,
-						profile.updateProfileBody(), true);
+					String response = weLivePlayerUtils.sendPOST(url, null, "application/json", authHeader,
+							profile.updateProfileBody(), true);
 
-				if (response != null && !response.isEmpty()) {
+					if (response != null && !response.isEmpty()) {
 
-					JSONObject root = new JSONObject(response.toString());
+						JSONObject root = new JSONObject(response.toString());
 
-					if (root.has("text")) {
-						if (!root.getString("response").equalsIgnoreCase("0")) {
-							status.put(WeLivePlayerUtils.ERROR_CODE,
-									String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
-							status.put(WeLivePlayerUtils.ERROR_MSG, root.toString());
+						if (root.has("text")) {
+							if (!root.getString("response").equalsIgnoreCase("0")) {
+								status.put(WeLivePlayerUtils.ERROR_CODE,
+										String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+								status.put(WeLivePlayerUtils.ERROR_MSG, root.toString());
+							}
 						}
 					}
-
+				} else {
+					status.put(WeLivePlayerUtils.ERROR_CODE, String.valueOf(HttpStatus.FORBIDDEN.value()));
+					status.put(WeLivePlayerUtils.ERROR_MSG, "user not authorized");
 				}
 
 			} else {

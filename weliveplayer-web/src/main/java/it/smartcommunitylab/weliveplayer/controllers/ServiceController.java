@@ -79,10 +79,10 @@ public class ServiceController {
 			@RequestBody Profile profile) throws WeLivePlayerCustomException {
 
 		String authHeader = httpRequest.getHeader("Authorization");
-
+		
 		Response<String> response = new Response<String>();
 
-		Map<String, String> errorMap = weLivePlayerManager.updateUserProfile(authHeader, profile);
+		Map<String, String> errorMap = weLivePlayerManager.updateUserProfile(getUserId(authHeader), profile);
 
 		if (errorMap.isEmpty()) {
 			response.setData("user profile updated successfully.");
