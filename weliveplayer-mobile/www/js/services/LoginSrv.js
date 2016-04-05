@@ -76,14 +76,17 @@ angular.module('weliveplayer.services.login', [])
                                         // userId: "29"
 
                                         // make call to cdv profile.
-                                        loginService.makeCDVProfileCall(profile.userId, profile.token.access_token).then(function (response) { //profile.userId
+                                        loginService.makeCDVProfileCall(profile.userId, profile.token.access_token).then(function(response) {
+                                            //profile.userId
                                             if (response) {
-                                                if (response.data.data.referredPilot) {
-                                                    profile.pilotId = response.data.data.referredPilot;
+                                                if (response.data.data) {
+                                                    if (response.data.data.referredPilot) {
+                                                        profile.pilotId = response.data.data.referredPilot;
+                                                    }
                                                 }
                                             }
                                             deferred.resolve(profile);
-                                        }, function (error) {
+                                        }, function(error) {
                                             deferred.resolve(profile);
                                         });
                                     }

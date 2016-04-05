@@ -18,25 +18,23 @@
 
             LoginSrv.makeCDVProfileCall(userId)
 
-            .then(function (response) {
+                .then(function(response) {
                     if (response) {
-                        if (response.data.data.ccUserID) {
-                            $scope.profile = response.data.data;
-                            // fix birtdate string.
-                            if (response.data.data.birthdate.length > 9 && $scope.isValidDate(response.data.data.birthdate)) {
-                                $scope.profile.birthdate = response.data.data.birthdate.substring(0, 10);
-                            } else {
-                                $scope.profile.birthdate = 'yyyy-mm-dd';
+                        if (response.data.data) {
+                            if (response.data.data.ccUserID) {
+                                $scope.profile = response.data.data;
+                                // fix birtdate string.
+                                if (response.data.data.birthdate.length > 9 && $scope.isValidDate(response.data.data.birthdate)) {
+                                    $scope.profile.birthdate = response.data.data.birthdate.substring(0, 10);
+                                } else {
+                                    $scope.profile.birthdate = 'yyyy-mm-dd';
+                                }
+                                $scope.cdvProfile = 'exist';
                             }
-                            $scope.cdvProfile = 'exist';
-                        } else {
-                            // $scope.cdvProfile = 'create';
                         }
-
                     }
                 }
-                , function (error) {
-                    $scope.cdvProfile = 'create';
+                , function(error) {
                 });
 
             $scope.editProfile = function () {
@@ -65,26 +63,25 @@
                 var body = JSON.stringify(profileBody);
 
                 LoginSrv.makeUpdateCDVProfile(body)
-                    .then(function (response) {                        
+                    .then(function(response) {
                         LoginSrv.makeCDVProfileCall(userId)
                             .then(function(response) {
                                 if (response) {
-                                    if (response.data.data.ccUserID) {
-                                        $scope.profile = response.data.data;
-                                        // fix birtdate string.
-                                        if (response.data.data.birthdate.length > 9 && $scope.isValidDate(response.data.data.birthdate)) {
-                                            $scope.profile.birthdate = response.data.data.birthdate.substring(0, 10);
-                                        } else {
-                                            $scope.profile.birthdate = 'yyyy-mm-dd';
+                                    if (response.data.data) {
+                                        if (response.data.data.ccUserID) {
+                                            $scope.profile = response.data.data;
+                                            // fix birtdate string.
+                                            if (response.data.data.birthdate.length > 9 && $scope.isValidDate(response.data.data.birthdate)) {
+                                                $scope.profile.birthdate = response.data.data.birthdate.substring(0, 10);
+                                            } else {
+                                                $scope.profile.birthdate = 'yyyy-mm-dd';
+                                            }
+                                            $scope.cdvProfile = 'exist';
                                         }
-                                        $scope.cdvProfile = 'exist';
-                                    } else {
-                                        // $scope.cdvProfile = 'create';
                                     }
                                 }
                             }
                             , function(error) {
-                                $scope.cdvProfile = 'create';
                             });
                     }
                     , function(error) {
@@ -131,20 +128,21 @@
                 LoginSrv.makeCDVProfileCall(userId)
                     .then(function(response) {
                         if (response) {
-                            if (response.data.data.ccUserID) {
-                                $scope.profile = response.data.data;
-                                if (response.data.data.birthdate.length > 9 && $scope.isValidDate(response.data.data.birthdate)) {
-                                    $scope.profile.birthdate = response.data.data.birthdate.substring(0, 10);
-                                } else {
-                                    $scope.profile.birthdate = 'yyyy-mm-dd';
+                            if (response.data.data) {
+                                if (response.data.data.ccUserID) {
+                                    $scope.profile = response.data.data;
+                                    if (response.data.data.birthdate.length > 9 && $scope.isValidDate(response.data.data.birthdate)) {
+                                        $scope.profile.birthdate = response.data.data.birthdate.substring(0, 10);
+                                    } else {
+                                        $scope.profile.birthdate = 'yyyy-mm-dd';
+                                    }
+                                    $scope.cdvProfile = 'exist';
                                 }
-                                $scope.cdvProfile = 'exist';
                             }
-                            $scope.$broadcast('scroll.refreshComplete');
                         }
+                        $scope.$broadcast('scroll.refreshComplete');
                     }
                     , function(error) {
-                        $scope.cdvProfile = 'create';
                         $scope.$broadcast('scroll.refreshComplete');
                     });
             }
