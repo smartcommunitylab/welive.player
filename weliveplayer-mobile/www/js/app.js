@@ -28,7 +28,10 @@ angular.module(
 
         , 'weliveplayer.controllers.home'
 
-        , 'weliveplayer.controllers.profile'])
+        , 'weliveplayer.controllers.profile'
+
+        , 'weliveplayer.controllers.info'
+    ])
 
     .run(function($ionicPlatform, $state, $rootScope, $translate, StorageSrv, LoginSrv, Config, Utils) {
 
@@ -163,6 +166,7 @@ angular.module(
                 , views: {
                     'menuContent': {
                         templateUrl: 'templates/info.html'
+                        , controller: 'InfoCtrl'
                     }
                 }
             })
@@ -235,7 +239,7 @@ angular.module(
         $ionicConfigProvider.backButton.text('');
         $ionicConfigProvider.backButton.previousTitleText(false);
         $translateProvider.translations('it', {
-            app_name: 'WeLive Player'
+            app_name: 'WeLivePlayer'
             , lbl_search: 'Cerca'
             , lbl_comment: 'Commenti'
             , lbl_description: 'Descrizione'
@@ -275,11 +279,11 @@ angular.module(
             , lbl_save: 'SALVA'
             , lbl_true: 'Vero'
             , lbl_false: 'Falso'
-            , ver_info: 'Versione 0.1.3'
+            , lbl_version: 'Versione'
         });
 
         $translateProvider.translations('en', {
-            app_name: 'WeLive Player'
+            app_name: 'WeLivePlayer'
             , lbl_search: 'Search'
             , lbl_comment: 'Comments'
             , lbl_description: 'Description'
@@ -319,12 +323,12 @@ angular.module(
             , lbl_save: 'SAVE'
             , lbl_true: 'True'
             , lbl_false: 'False'
-            , ver_info: 'Version 0.1.3'
+            , lbl_version: 'Version'
 
         });
 
         $translateProvider.translations('fi', {
-            app_name: 'WeLive Player'
+            app_name: 'WeLivePlayer'
             , lbl_search: 'Etsi'
             , lbl_comment: 'Kommentit'
             , lbl_description: 'Kuvaus'
@@ -357,18 +361,18 @@ angular.module(
             , lbl_languages: 'Kielet'
             , lbl_isDeveloper: 'Kehittäjä'
             , lbl_skills: 'Taidot'
-            , lbl_userTags: 'User tags' //??
+            , lbl_userTags: 'User tags'
             , lbl_usedApps: 'Käytetyt Sovellukset'
             , lbl_profileData: 'Profiili'
             , lbl_lastLoc: 'Sijainti'
             , lbl_save: 'TALLENNA'
-            , lbl_true: 'True'  //??
-            , lbl_false: 'False' //??
-            , ver_info: 'Version 0.1.3'
+            , lbl_true: 'True'
+            , lbl_false: 'False'
+            , lbl_version: 'Version'
         });
 
         $translateProvider.translations('es', {
-            app_name: 'WeLive Player'
+            app_name: 'WeLivePlayer'
             , lbl_search: 'Buscar'
             , lbl_comment: 'Comentarios'
             , lbl_description: 'Descripción'
@@ -401,18 +405,17 @@ angular.module(
             , lbl_languages: 'Idiomas'
             , lbl_isDeveloper: 'Desarollador'
             , lbl_skills: 'Habilidades'
-            , lbl_userTags: 'User tags' // ??
+            , lbl_userTags: 'Tags de usuario'
             , lbl_usedApps: 'Aplicaciones utilizadas'
             , lbl_profileData: 'Perfil'
             , lbl_lastLoc: 'Ubicación'
             , lbl_save: 'GUARDAR'
-            , lbl_true: 'True' //??
-            , lbl_false: 'False' //??
-            , ver_info: 'Version 0.1.3'
+            , lbl_false: 'Falso'
+            , lbl_version: 'Version'
         });
 
         $translateProvider.translations('sr', {
-            app_name: 'WeLive Player'
+            app_name: 'WeLivePlayer'
             , lbl_search: 'Traži'
             , lbl_comment: 'Komentari'
             , lbl_description: 'Opis'
@@ -445,18 +448,18 @@ angular.module(
             , lbl_languages: 'Jezici'
             , lbl_isDeveloper: 'Developer'
             , lbl_skills: 'Veštine'
-            , lbl_userTags: 'User tags' //??
+            , lbl_userTags: 'Korisnički tagovi'
             , lbl_usedApps: 'Korištene aplikacije'
             , lbl_profileData: 'Profil'
             , lbl_lastLoc: 'Lokacija'
             , lbl_save: 'SAČUVAJ'
-            , lbl_true: 'True' //??
-            , lbl_false: 'False' //??
-            , ver_info: 'Version 0.1.3'
+            , lbl_true: 'Tačno'
+            , lbl_false: 'Netačno'
+            , lbl_version: 'Version'
         });
 
         $translateProvider.translations('sr_cyril', {
-            app_name: 'WeLive Player'
+            app_name: 'WeLivePlayer'
             , lbl_search: 'Тражи'
             , lbl_comment: 'Коментари'
             , lbl_description: 'Опис'
@@ -489,14 +492,14 @@ angular.module(
             , lbl_languages: 'Језици'
             , lbl_isDeveloper: 'Девелопер'
             , lbl_skills: 'Вештине'
-            , lbl_userTags: 'User tags' //??
+            , lbl_userTags: 'Кориснички тагови'
             , lbl_usedApps: 'Коришћене апликације'
             , lbl_profileData: 'Профил'
             , lbl_lastLoc: 'Локација'
             , lbl_save: 'САЧУВАЈ'
-            , lbl_true: 'True' //??
-            , lbl_false: 'False' //??
-            , ver_info: 'Version 0.1.3'
+            , lbl_true: 'Тачно'
+            , lbl_false: 'Нетачно'
+            , lbl_version: 'Version'
         });
 
         $translateProvider.preferredLanguage('en');

@@ -1,6 +1,13 @@
 <ion-view>
      <ion-nav-title>{{'menu_info'| translate}}</ion-nav-title>
     <ion-content class="padding">
-        <h4>{{'ver_info'| translate}}</h4>
+        <!--<h4>{{'ver_info'| translate}}</h4>-->
+        <h4 style="text-align:center">{{version}}</h4>
+        <br>
+        <!--ng-bind-html="information"class="angular-with-newlines"style="text-align:justify" -->
+        <div style="text-align:justify">
+            <p ng-bind-html="information"></p>
+            <!--<p style="white-space: pre;">{{ information}}</p>-->
+        </div>
     </ion-content>
 </ion-view>
