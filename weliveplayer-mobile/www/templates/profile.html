@@ -55,49 +55,49 @@
             <div class="row">
                 <div class="col">{{'lbl_dob'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{birthdateplaceholder}}" ng-model="profile.birthdate">
+                    <input style="height: inherit;" type="text" placeholder="{{birthdateplaceholder}}" ng-model="profile.birthdate">
                 </div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_addr'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.address}}" ng-model="profile.address">
+                    <input style="height: inherit;" type="text" placeholder="{{profile.address}}" ng-model="profile.address">
                 </div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_pilotId'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.referredPilot}}" ng-model="profile.referredPilot">
+                    <input style="height: inherit;" type="text" placeholder="{{profile.referredPilot}}" ng-model="profile.referredPilot">
                 </div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_city'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.city}}" ng-model="profile.city">
+                    <input style="height: inherit;" type="text" placeholder="{{profile.city}}" ng-model="profile.city">
                 </div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_country'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.country}}" ng-model="profile.country">
+                    <input style="height: inherit;" type="text" placeholder="{{profile.country}}" ng-model="profile.country">
                 </div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_zipcode'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.zipcode}}" ng-model="profile.zipCode">
+                    <input style="height: inherit;" type="text" placeholder="{{profile.zipcode}}" ng-model="profile.zipCode">
                 </div>
             </div>
             <div class="row">
-                <div class="col">{{'lbl_languages'| translate}}:</div>
+                <div class="col">{{'lbl_languages'| translate}}:<h6 style="font-style:italic;">{{'lbl_comma_separated'| translate}}</h6></div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.languages.join()}}" ng-model="profile.languages">
+                    <textarea rows="5" cols="50" style="height: inherit;" placeholder="{{profile.languages.join(', ')}}" ng-model="profile.languages"></textarea>
                 </div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_isDeveloper'| translate}}:</div>
                 <div class="col">
-                    <input type="checkbox" ng-model="profile.developer">
+                    <input style="height: inherit;" type="checkbox" ng-model="profile.developer">
                 </div>
             </div>
             <!--<div class="row">
@@ -111,17 +111,17 @@
             <div class="row">
                 <div class="col">{{'lbl_userTags'| translate}}:</div>
                 <div class="col">
-                    <input type="text" placeholder="{{profile.userTags.join()}}" ng-model="profile.userTags">
+                    <input style="height: inherit;" type="text" placeholder="{{profile.userTags.join()}}" ng-model="profile.userTags">
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <button ng-click="saveProfile(profile)">
-                        {{'lbl_save' | translate}}
-                    </button>
-                </div>
+            <br>
+            <br>
+            <div style="text-align: center;">
+                <button style="font-size: 16px;" ng-click="saveProfile(profile)">
+                    {{'lbl_save' | translate}}
+                </button>
             </div>
-
+        </div>
         </div>
 
     </ion-content>
