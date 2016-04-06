@@ -280,6 +280,8 @@ angular.module(
             , lbl_true: 'Vero'
             , lbl_false: 'Falso'
             , lbl_version: 'Versione'
+            , lbl_inprogress: 'In costruzione'
+            , lbl_comma_separated: 'separati da virgole'
         });
 
         $translateProvider.translations('en', {
@@ -324,7 +326,8 @@ angular.module(
             , lbl_true: 'True'
             , lbl_false: 'False'
             , lbl_version: 'Version'
-
+            , lbl_inprogress: 'Under construction'
+            , lbl_comma_separated: 'separated by commas'
         });
 
         $translateProvider.translations('fi', {
@@ -369,6 +372,8 @@ angular.module(
             , lbl_true: 'True'
             , lbl_false: 'False'
             , lbl_version: 'Version'
+            , lbl_inprogress: 'Under construction'
+            , lbl_comma_separated: 'separated by commas'
         });
 
         $translateProvider.translations('es', {
@@ -410,8 +415,11 @@ angular.module(
             , lbl_profileData: 'Perfil'
             , lbl_lastLoc: 'Ubicación'
             , lbl_save: 'GUARDAR'
+            , lbl_true: 'Verdadero'
             , lbl_false: 'Falso'
             , lbl_version: 'Version'
+            , lbl_inprogress: 'Under construction'
+            , lbl_comma_separated: 'separated by commas'
         });
 
         $translateProvider.translations('sr', {
@@ -456,6 +464,8 @@ angular.module(
             , lbl_true: 'Tačno'
             , lbl_false: 'Netačno'
             , lbl_version: 'Version'
+            , lbl_inprogress: 'Under construction'
+            , lbl_comma_separated: 'separated by commas'
         });
 
         $translateProvider.translations('sr_cyril', {
@@ -500,6 +510,8 @@ angular.module(
             , lbl_true: 'Тачно'
             , lbl_false: 'Нетачно'
             , lbl_version: 'Version'
+            , lbl_inprogress: 'Under construction'
+            , lbl_comma_separated: 'separated by commas'
         });
 
         $translateProvider.preferredLanguage('en');
