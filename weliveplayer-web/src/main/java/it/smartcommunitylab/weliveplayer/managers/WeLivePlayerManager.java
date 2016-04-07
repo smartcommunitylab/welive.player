@@ -151,8 +151,8 @@ public class WeLivePlayerManager {
 						if (commentResponse.has("creation_date")) {
 							comment.setPublishDate(commentResponse.getString("creation_date"));
 						}
-						if (commentResponse.has("author_ccUid")) {
-							comment.setAuthorNode(commentResponse.getString("author_ccUid"));
+						if (commentResponse.has("author")) {
+							comment.setAuthorNode(commentResponse.getString("author"));
 
 						}
 
