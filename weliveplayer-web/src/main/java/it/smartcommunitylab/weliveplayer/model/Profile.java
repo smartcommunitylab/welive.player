@@ -211,15 +211,15 @@ public class Profile {
 		Map<String, Object> map = new HashMap<>();
 
 		map.put("ccUserID", ccUserID);
-		map.put("referredPilot", referredPilot);
+//		map.put("referredPilot", referredPilot);
 		map.put("address", address);
 		map.put("city", city);
 		map.put("country", country);
 		map.put("zipCode", zipCode);
-		map.put("isDeveloper", developer);
+//		map.put("isDeveloper", developer);
 		map.put("languages", languages);
 		map.put("userTags", userTags);
-		map.put("skills", skills);
+//		map.put("skills", skills);
 
 		try {
 
@@ -229,7 +229,7 @@ public class Profile {
 			dob.put("month", WeLivePlayerUtils.getMonthOfYear(bday));
 			dob.put("year", WeLivePlayerUtils.getYear(bday));
 
-			map.put("birthdate", mapper.writeValueAsString(dob));
+			map.put("birthDate", dob);
 
 		} catch (Exception e) {
 
