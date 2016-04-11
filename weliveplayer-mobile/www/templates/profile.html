@@ -2,6 +2,7 @@
     <ion-nav-title>{{'menu_profile'| translate}}</ion-nav-title>
     <ion-nav-buttons side="right">
         <a href="#" class="button button-icon ion-edit padding-left" ng-show="cdvProfile == 'exist'" ng-click="editProfile()"></a>
+        <a href="#" class="button button-icon ion-checkmark padding-left" ng-show="cdvProfile == 'edit'" ng-click="saveProfile(profile)"></a>
     </ion-nav-buttons>
 
     <ion-content class="padding">
@@ -55,7 +56,8 @@
             <div class="row">
                 <div class="col">{{'lbl_dob'| translate}}:</div>
                 <div class="col">
-                    <input style="height: inherit;" type="text" placeholder="{{birthdateplaceholder}}" ng-model="profile.birthdate">
+                    <!--<input style="height: inherit;" type="tel" placeholder="{{birthdateplaceholder}}" ng-model="profile.birthdate">-->
+                    <input type="text" style="height: inherit;" mask="9999-19-39" restrict="reject"" ng-model="profile.birthdate">
                 </div>
             </div>
             <div class="row">
@@ -64,12 +66,12 @@
                     <input style="height: inherit;" type="text" placeholder="{{profile.address}}" ng-model="profile.address">
                 </div>
             </div>
-            <div class="row">
+            <!--<div class="row">
                 <div class="col">{{'lbl_pilotId'| translate}}:</div>
                 <div class="col">
                     <input style="height: inherit;" type="text" placeholder="{{profile.referredPilot}}" ng-model="profile.referredPilot">
                 </div>
-            </div>
+            </div>-->
             <div class="row">
                 <div class="col">{{'lbl_city'| translate}}:</div>
                 <div class="col">
@@ -94,12 +96,12 @@
                     <textarea rows="5" cols="50" style="height: inherit;" placeholder="{{profile.languages.join(', ')}}" ng-model="profile.languages"></textarea>
                 </div>
             </div>
-            <div class="row">
+            <!--<div class="row">
                 <div class="col">{{'lbl_isDeveloper'| translate}}:</div>
                 <div class="col">
                     <input style="height: inherit;" type="checkbox" ng-model="profile.developer">
                 </div>
-            </div>
+            </div>-->
             <!--<div class="row">
                 <div class="col profile-edit-toggle"></div>
                 toggle-class="toggle-small"
@@ -114,13 +116,13 @@
                     <input style="height: inherit;" type="text" placeholder="{{profile.userTags.join()}}" ng-model="profile.userTags">
                 </div>
             </div>
-            <br>
+            <!--<br>
             <br>
             <div style="text-align: center;">
                 <button style="font-size: 16px;" ng-click="saveProfile(profile)">
                     {{'lbl_save' | translate}}
                 </button>
-            </div>
+            </div>-->
         </div>
         </div>
 

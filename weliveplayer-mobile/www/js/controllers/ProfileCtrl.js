@@ -54,11 +54,11 @@
                 profileBody.city = updateProfile.city;
                 profileBody.country = updateProfile.country;
                 profileBody.zipCode = updateProfile.zipCode;
-                profileBody.referredPilot = updateProfile.referredPilot;
+                // profileBody.referredPilot = updateProfile.referredPilot;
                 profileBody.languages = updateProfile.languages.toString().split(",");
                 //    profileBody.skills = updateProfile.skills.toString().split(",");
                 profileBody.userTags = updateProfile.userTags.toString().split(",");
-                profileBody.developer = (updateProfile.developer.toString().toLowerCase() === "true") ? true : false;
+                // profileBody.developer = (updateProfile.developer.toString().toLowerCase() === "true") ? true : false;
 
                 var body = JSON.stringify(profileBody);
 

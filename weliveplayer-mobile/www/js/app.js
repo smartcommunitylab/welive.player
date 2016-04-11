@@ -6,31 +6,20 @@
 // 'starter.controllers' is found in controllers.js
 angular.module(
     'weliveplayer', [
-        'ionic'
-
-        , 'ngCordova'
-
-        , 'ngIOS9UIWebViewPatch'
-
-        , 'pascalprecht.translate'
-
-        , 'weliveplayer.services.config'
-
-        , 'weliveplayer.services.login'
-
-        , 'weliveplayer.services.playstore'
-
-        , 'weliveplayer.services.storage'
-
-        , 'weliveplayer.services.utils'
-
-        , 'weliveplayer.controllers.app'
-
-        , 'weliveplayer.controllers.home'
-
-        , 'weliveplayer.controllers.profile'
-
-        , 'weliveplayer.controllers.info'
+        'ionic',
+        'ngCordova',
+        'ngIOS9UIWebViewPatch',
+        'pascalprecht.translate',
+        'ngMask',
+        'weliveplayer.services.config',
+        'weliveplayer.services.login',
+        'weliveplayer.services.playstore',
+        'weliveplayer.services.storage',
+        'weliveplayer.services.utils',
+        'weliveplayer.controllers.app',
+        'weliveplayer.controllers.home',
+        'weliveplayer.controllers.profile',
+        'weliveplayer.controllers.info'
     ])
 
     .run(function($ionicPlatform, $state, $rootScope, $translate, StorageSrv, LoginSrv, Config, Utils) {

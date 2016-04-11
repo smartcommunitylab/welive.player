@@ -179,4 +179,19 @@ public class WeLivePlayerUtils {
 
 	}
 
+	public static String getPilotId(String pilotId) {
+		String pilotCity = "Trento";
+
+		if (pilotId.equalsIgnoreCase("trento")) {
+			pilotCity = "Trento";
+		} else if (pilotId.equalsIgnoreCase("bilbao")) {
+			pilotCity = "Bilbao";
+		} else if (pilotId.equalsIgnoreCase("novisad")) {
+			pilotCity = "Novisad";
+		} else if (pilotId.equalsIgnoreCase("HELSINKI-USIMAA")) {
+			pilotCity = "Helsinki-Usimaa";
+		}
+		return pilotCity;
+	}
+
 }

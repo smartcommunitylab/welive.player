@@ -173,6 +173,9 @@ public class WeLivePlayerManager {
 		List<Artifact> artifacts = new ArrayList<Artifact>();
 
 		String url = env.getProperty("welive.mkp.uri");
+		
+		pilotId = WeLivePlayerUtils.getPilotId(pilotId);
+		
 		url = url.replace("{pilotId}", pilotId);// pilotId
 		url = url.replace("{appType}", appType);// appType
 
