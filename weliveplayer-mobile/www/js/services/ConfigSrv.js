@@ -8,7 +8,7 @@ angular.module('weliveplayer.services.config', [])
         var WELIVEPLAYER_SERVER = "https://dev.welive.eu/weliveplayer/api/";
         var LOG_URI = "https://dev.welive.eu/welive.logging/log/weliveplayer";
         var CDV_URI = "https://dev.welive.eu/dev/api/cdv";
-        var PILOT_IDS = ["BILBAO", "HELSINKI-USIMAA", "Novisad", "Trento"];
+        var PILOT_IDS = ["Bilbao", "Uusimaa", "Novisad", "Trento"];
         var BASICAUTH_TOKEN = "Basic d2VsaXZlQHdlbGl2ZS5ldTp3M2wxdjN0MDBscw==";
         var APP_TYPE = "PSA";
         var LANGUAGES = ["it", "en", "fi", "es", "sr", "sr_cyril"];

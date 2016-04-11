@@ -184,13 +184,27 @@ angular.module('weliveplayer.controllers.home', [])
     // get app info.
     $scope.app = Utils.getAppDetails($state.params.appId, $state.params.appRegion);
 
+    Utils.parseUri.options.strictMode = true;
+
+
     $scope.selection = 'info';
 
     var appStoreId = "";
     if ($scope.app.url && $scope.app.url.length > 0) {
         if ($scope.app.url.indexOf("https://play.google.com/store/apps/details?id=") > -1) {
             var storeUri = $scope.app.url;
-            appStoreId = storeUri.slice(storeUri.lastIndexOf("=") + 1, storeUri.length);
+            var uriParams =  Utils.parseUri(storeUri);
+            if (uriParams.queryKey) {
+                if (uriParams.queryKey.id) {
+                    appStoreId = uriParams.queryKey.id;
+                }
+            }
+            // if (storeUri.indexOf("&") > -1) {
+            //     appStoreId = storeUri.slice(storeUri.lastIndexOf("id=") + 3, storeUri.lastIndexOf("&"));
+            // } else {
+            //     appStoreId = storeUri.slice(storeUri.lastIndexOf("id=") + 3, storeUri.length);
+                
+            // }
         }
     }
 
