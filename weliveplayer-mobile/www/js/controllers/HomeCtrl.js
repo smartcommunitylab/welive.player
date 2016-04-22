@@ -179,7 +179,7 @@ angular.module('weliveplayer.controllers.home', [])
     })
 
 
-.controller('AppDetailCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, PlayStore) {
+.controller('AppDetailCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, PlayStore, Config) {
 
     // get app info.
     $scope.app = Utils.getAppDetails($state.params.appId, $state.params.appRegion);
@@ -191,6 +191,7 @@ angular.module('weliveplayer.controllers.home', [])
 
     var appStoreId = "";
     if ($scope.app.url && $scope.app.url.length > 0) {
+        // android app.
         if ($scope.app.url.indexOf("https://play.google.com/store/apps/details?id=") > -1) {
             var storeUri = $scope.app.url;
             var uriParams =  Utils.parseUri(storeUri);
@@ -207,6 +208,7 @@ angular.module('weliveplayer.controllers.home', [])
             // }
         }
     }
+    
 
     var pilotId = $scope.app.city;
 
@@ -222,6 +224,10 @@ angular.module('weliveplayer.controllers.home', [])
         , function (error) { /* error */
             // console.log("app does not exist.");
             $scope.appInstallStatus = "download";
+            //Web Application
+            if (Config.getWebAppTypes().indexOf($scope.app.type) > -1) {
+                $scope.appInstallStatus = "forward";
+            } 
         });
 
 
@@ -250,21 +256,25 @@ angular.module('weliveplayer.controllers.home', [])
 
 
         } else if ($scope.appInstallStatus == 'forward') {
-            if (appStoreId.length === 0) {
-                console.log("missing playstore id.")
+
+            if (Config.getWebAppTypes().indexOf($scope.app.type) > -1 && $scope.app.url && $scope.app.url.length > 0) {
+                window.open($scope.app.url, '_system', 'location=no,toolbar=no');
             } else {
-                navigator.startApp.start(appStoreId, function (message) {
+                if (appStoreId.length === 0) {
+                    console.log("missing playstore id.")
+                } else {
+                    navigator.startApp.start(appStoreId, function(message) {
                     // console.log(message);
                     // lOG EVENT (APP OPEN)
-                    Utils.logAppOpen(appStoreId, pilotId);
-                }, function (error) { /* error */
-                    console.log(error);
-                });
+                        Utils.logAppOpen(appStoreId, pilotId);
+                    }, function(error) { /* error */
+                        console.log(error);
+                        });
+                }
             }
-
         }
-
     }
+
 
     $scope.info = function () {
         $scope.selection = 'info';
@@ -279,7 +289,7 @@ angular.module('weliveplayer.controllers.home', [])
 
 })
 
-.controller('AppCommentsCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, $q, PlayStore) {
+.controller('AppCommentsCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, $q, PlayStore, Config) {
 
     var app = Utils.getAppDetails($state.params.appId, $state.params.appRegion);
 
@@ -298,6 +308,10 @@ angular.module('weliveplayer.controllers.home', [])
     }, function (error) { /* error */
         // console.log("app does not exist.");
         $scope.appInstallStatus = "download";
+        if (Config.getWebAppTypes().indexOf(app.type) > -1) {
+            $scope.appInstallStatus = "forward";
+        }
+
     });
 
     $scope.name = app.name;
@@ -313,30 +327,33 @@ angular.module('weliveplayer.controllers.home', [])
                 console.log("missing playstore id.")
             } else {
                 cordova.plugins.market.open(appStoreId, {
-                    success: function () {
+                    success: function() {
                         // lOG EVENT (APP DOWNLOAD)
                         Utils.logAppDownload(appStoreId, pilotId);
                     }
-                    , failure: function () {}
+                    , failure: function() { }
                 });
             }
 
         } else if ($scope.appInstallStatus == 'forward') {
-            if (appStoreId.length === 0) {
-                console.log("missing playstore id.")
+            if (Config.getWebAppTypes().indexOf(app.type) > -1 && app.url && app.url.length > 0) {
+                window.open(app.url, '_system', 'location=no,toolbar=no');
             } else {
-                navigator.startApp.start(appStoreId, function (message) {
+                if (appStoreId.length === 0) {
+                    console.log("missing playstore id.")
+                } else {
+                    navigator.startApp.start(appStoreId, function(message) {
                     // console.log(message);
                     // lOG EVENT (APP OPEN)
-                    Utils.logAppOpen(appStoreId, pilotId);
-                }, function (error) {
-                    console.log(error);
-                });
+                        Utils.logAppOpen(appStoreId, pilotId);
+                    }, function(error) {
+                        console.log(error);
+                        });
+                }
             }
-
-
         }
     }
+
 
     $scope.selection = 'userComment';
 
