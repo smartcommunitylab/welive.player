@@ -231,6 +231,11 @@ public class WeLivePlayerManager {
 
 							temp.getComments().add(comment);
 						}
+						// tags.
+						if (artifact.has("tags")) {
+							JSONArray appTags = artifact.getJSONArray("tags");
+							temp.setTags(appTags.join(",").replace("\"", ""));
+						}
 
 						artifacts.add(temp);
 
