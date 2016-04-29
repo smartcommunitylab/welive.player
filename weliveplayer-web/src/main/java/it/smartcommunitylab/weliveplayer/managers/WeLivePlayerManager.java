@@ -234,7 +234,7 @@ public class WeLivePlayerManager {
 						// tags.
 						if (artifact.has("tags")) {
 							JSONArray appTags = artifact.getJSONArray("tags");
-							temp.setTags(appTags.join(",").replace("\"", ""));
+							temp.setTags(appTags.join(", ").replace("\"", ""));
 						}
 
 						artifacts.add(temp);
