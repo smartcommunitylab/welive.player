@@ -141,9 +141,16 @@ public class WeLivePlayerUtils {
 		postMethod.setRequestEntity(requestEntity);
 		postMethod.addRequestHeader("Authorization", authHeader);
 		int statusCode = httpClient.executeMethod(postMethod);
+		StringBuffer response = new StringBuffer();
 		if ((statusCode >= 200) && (statusCode < 300)) {
-			String result = postMethod.getResponseBodyAsString();
-			return result;
+//			String result = null;//postMethod.getResponseBodyAsString();
+			BufferedReader in = new BufferedReader(new InputStreamReader(postMethod.getResponseBodyAsStream()));
+			String inputLine;
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+			return response.toString();
 		}
 		return null;
 
