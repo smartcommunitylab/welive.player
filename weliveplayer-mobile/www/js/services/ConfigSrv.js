@@ -1,12 +1,12 @@
 angular.module('weliveplayer.services.config', [])
 
     .factory('Config', function($http, $q, $filter) {
-        var AAC_SERVER_URL = "https://dev.welive.eu/aac";
+        var AAC_SERVER_URL = "https://dev.welive.eu/dev/api/aac";
         var CLIENT_ID = "e4cd499e-81ac-4240-bd5c-1d4680f2f99f";
         var CLIENT_SEC_KEY = "6b934176-4513-43dd-a713-b926bfd979e2";
         var REDIRECT_URI = "http://localhost";
-        var WELIVEPLAYER_SERVER = "https://dev.welive.eu/weliveplayer/api/";
-        var LOG_URI = "https://dev.welive.eu/welive.logging/log/weliveplayer";
+        var WELIVEPLAYER_SERVER = "https://dev.welive.eu/dev/api/weliveplayer/api/";
+        var LOG_URI = "https://dev.welive.eu/dev/api/log/welive";
         var CDV_URI = "https://dev.welive.eu/dev/api/cdv";
         var PILOT_IDS = ["Bilbao", "Uusimaa", "Novisad", "Trento"];
         var BASICAUTH_TOKEN = "Basic d2VsaXZlQHdlbGl2ZS5ldTp3M2wxdjN0MDBscw==";

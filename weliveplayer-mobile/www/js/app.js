@@ -41,7 +41,7 @@ angular.module(
                 }
                 , function(error) {
                     $rootScope.loginStarted = false;
-                    Utils.toast();
+                    Utils.toast($filter('translate')('lbl_error'));
                     StorageSrv.saveUser(null);
                     ionic.Platform.exitApp();
                 }
@@ -271,6 +271,8 @@ angular.module(
             , lbl_version: 'Versione'
             , lbl_inprogress: 'In costruzione'
             , lbl_comma_separated: 'separati da virgole'
+            , lbl_error: 'errore'
+
         });
 
         $translateProvider.translations('en', {
@@ -317,6 +319,8 @@ angular.module(
             , lbl_version: 'Version'
             , lbl_inprogress: 'Under construction'
             , lbl_comma_separated: 'separated by commas'
+            , lbl_error: 'error'
+
         });
 
         $translateProvider.translations('fi', {
@@ -363,6 +367,8 @@ angular.module(
             , lbl_version: 'Version'
             , lbl_inprogress: 'Under construction'
             , lbl_comma_separated: 'separated by commas'
+            , lbl_error: 'error'
+
         });
 
         $translateProvider.translations('es', {
@@ -409,6 +415,8 @@ angular.module(
             , lbl_version: 'Version'
             , lbl_inprogress: 'Under construction'
             , lbl_comma_separated: 'separated by commas'
+            , lbl_error: 'error'
+
         });
 
         $translateProvider.translations('sr', {
@@ -455,6 +463,8 @@ angular.module(
             , lbl_version: 'Version'
             , lbl_inprogress: 'Under construction'
             , lbl_comma_separated: 'separated by commas'
+            , lbl_error: 'error'
+
         });
 
         $translateProvider.translations('sr_cyril', {
@@ -501,6 +511,8 @@ angular.module(
             , lbl_version: 'Version'
             , lbl_inprogress: 'Under construction'
             , lbl_comma_separated: 'separated by commas'
+            , lbl_error: 'error'
+
         });
 
         $translateProvider.preferredLanguage('en');

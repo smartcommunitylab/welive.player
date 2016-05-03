@@ -22,7 +22,7 @@ angular.module('weliveplayer.services.login', [])
                 var processThat = false;
 
                 //Build the OAuth consent page URL
-                var authUrl = Config.getServerURL() + '/eauth/authorize?client_id=' + Config.getClientId() + "&response_type=code&redirect_uri=" + Config.getRedirectUri();
+                var authUrl = 'https://dev.welive.eu/aac/eauth/authorize?client_id=' + Config.getClientId() + "&response_type=code&redirect_uri=" + Config.getRedirectUri();
 
                 //Open the OAuth consent page in the InAppBrowser
                 if (!authWindow) {
@@ -146,7 +146,7 @@ angular.module('weliveplayer.services.login', [])
     loginService.logout = function () {
         var deferred = $q.defer();
 
-        var logoutURL = Config.getServerURL() + "/logout";
+        var logoutURL = "https://dev.welive.eu/aac/logout";
 
         $http.get(logoutURL)
 

@@ -1,5 +1,5 @@
     angular.module('weliveplayer.controllers.profile', [])
-        .controller('ProfileCtrl', function ($scope, $ionicModal, $timeout, LoginSrv, StorageSrv) {
+        .controller('ProfileCtrl', function ($scope, $ionicModal, $timeout, $filter, LoginSrv, StorageSrv, Utils) {
 
             var userId = StorageSrv.getLoggedInUserId();
 
@@ -35,6 +35,8 @@
                     }
                 }
                 , function(error) {
+                    Utils.toast($filter('translate')('lbl_error'));
+                    
                 });
 
             $scope.editProfile = function () {

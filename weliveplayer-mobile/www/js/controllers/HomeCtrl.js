@@ -26,7 +26,7 @@ angular.module('weliveplayer.controllers.home', [])
 
         var creationError = function (error) {
             Utils.loaded();
-            Utils.toast();
+            Utils.toast($filter('translate')('lbl_error'));
         };
 
         Utils.loading();
@@ -122,6 +122,7 @@ angular.module('weliveplayer.controllers.home', [])
                 }
                 , function error() {
                     $scope.$broadcast('scroll.refreshComplete');
+                    Utils.toast($filter('translate')('lbl_error'));
                 }
             )
         }
@@ -162,7 +163,7 @@ angular.module('weliveplayer.controllers.home', [])
                     } else {
                         $scope.$broadcast('scroll.infiniteScrollComplete');
                     }
-                    Utils.toast();
+                    Utils.toast($filter('translate')('lbl_error'));
 
                     if ($scope.items === null) {
                         $scope.items = [];
@@ -381,7 +382,7 @@ angular.module('weliveplayer.controllers.home', [])
 
     var creationError = function (error) {
         Utils.loaded();
-        Utils.toast();
+        Utils.toast($filter('translate')('lbl_error'));
     };
 
     Utils.loading();
@@ -423,7 +424,7 @@ angular.module('weliveplayer.controllers.home', [])
                     $scope.$broadcast('scroll.infiniteScrollComplete');
                 }
 
-                Utils.toast();
+                Utils.toast($filter('translate')('lbl_error'));
 
                 if ($scope.userReviews === null) {
                     $scope.userReviews = [];
