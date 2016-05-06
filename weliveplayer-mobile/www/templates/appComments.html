@@ -3,8 +3,8 @@
     <ion-content class="padding">
         <h4>{{ 'lbl_comment' | translate }}</h4>
         <ion-list>
-            <ion-item ng-repeat="userReview in userReviews" class="item-thumbnail-left comments" ng-click="">
-                <img ng-src="img/ionic.png">
+            <ion-item ng-repeat="userReview in userReviews" class="comments" ng-click="">
+                <!--<img ng-src="img/ionic.png">-->
                 <div>{{ userReview.authorNode }}</div>
                 <div>{{ userReview.publishDate.slice(0,userReview.publishDate.lastIndexOf(":")) }}</div>
                 <div>{{ userReview.comment }}</div>
