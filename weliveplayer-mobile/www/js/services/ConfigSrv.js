@@ -6,7 +6,7 @@ angular.module('weliveplayer.services.config', [])
         var CLIENT_SEC_KEY = "6b934176-4513-43dd-a713-b926bfd979e2";
         var REDIRECT_URI = "http://localhost";
         var WELIVEPLAYER_SERVER = "https://dev.welive.eu/dev/api/weliveplayer/api/";
-        var LOG_URI = "https://dev.welive.eu/dev/api/log/welive";
+        var LOG_URI = "https://dev.welive.eu/dev/api/log/weliveplayer";
         var CDV_URI = "https://dev.welive.eu/dev/api/cdv";
         var PILOT_IDS = ["Bilbao", "Uusimaa", "Novisad", "Trento"];
         var BASICAUTH_TOKEN = "Basic d2VsaXZlQHdlbGl2ZS5ldTp3M2wxdjN0MDBscw==";
