@@ -22,6 +22,15 @@ angular.module('weliveplayer.services.config', [])
             "sr_cyril": "The WeLive Player gives the possibility to discover and launch the mobile apps developed by WeLive users using the WeLive framework.<br /><br />The WeLive framework is one of the results of the WeLive project, a H2020 project funded by the EU, whose goal is to foster a new concept of public administration, based on citizen co-created mobile urban services.<br /><br />The WeLive Player is a container in which all the services created by WeLive users using the WeLive framework, and exposed onto the WeLive Marketplace, are shown and suggested to Android users basing on their preferences.<br /><br />The available services are grouped by the four pilot cities/regions involved in the project: Bilbao, Helsinki-Usimaa, Novi Sad, Trento.<br /><br />The app allows to filter, search and order the apps using different criteria. It requires to authenticate using wither a social (Google/Facebook) or a WeLive account. During the authentication process the user is asked to optionally provide some personal details that are used by the WeLive framework to suggest apps that are more likely to be of interest.<br /><br />The WeLive Player allows to download and launch the apps chosen by the user. Finally, it shows the comments and ratings expressed by the users on the WeLive Marketplace about the apps."
         }
 
+        var CREDITINFOP1 = {
+            "it": "The WeLive project has been financed under European Commission's H2020 programme for research, development and innovation under agreement #64584",
+            "en": "The WeLive project has been financed under European Commission's H2020 programme for research, development and innovation under agreement #64584",
+            "fi": "The WeLive project has been financed under European Commission's H2020 programme for research, development and innovation under agreement #64584",
+            "es": "The WeLive project has been financed under European Commission's H2020 programme for research, development and innovation under agreement #64584",
+            "sr": "The WeLive project has been financed under European Commission's H2020 programme for research, development and innovation under agreement #64584",
+            "sr_cyril": "The WeLive project has been financed under European Commission's H2020 programme for research, development and innovation under agreement #64584"
+        }
+
         var HTTP_CONFIG = {
             timeout: 5000
         };
@@ -129,6 +138,11 @@ angular.module('weliveplayer.services.config', [])
             , getAppInformation: function (lang) {
                 if (INFORMATION[lang]) {
                     return INFORMATION[lang];
+                }
+            },
+            getCreditInfoP1: function (lang) {
+                if (CREDITINFOP1[lang]) {
+                    return CREDITINFOP1[lang];
                 }
             }
             , getWebAppTypes: function () {

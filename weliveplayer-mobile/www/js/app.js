@@ -287,6 +287,7 @@ angular.module(
             , lbl_reject: 'Rifiuto'
             , about_subtitle: 'Information and Terms of Use'
             , terms_refused_alert_text: 'Terms refused.'
+            , lbl_credit_p2: "What is it?"
         });
 
         $translateProvider.translations('en', {
@@ -339,6 +340,7 @@ angular.module(
             , lbl_reject: 'Reject'
             , about_subtitle: 'Information and Terms of Use'
             , terms_refused_alert_text: 'Terms refused.'
+            , lbl_credit_p2: "What is it?"
 
         });
 
@@ -392,6 +394,7 @@ angular.module(
             , lbl_reject: 'Reject'
             , about_subtitle: 'Information and Terms of Use'
             , terms_refused_alert_text: 'Terms refused.'
+            , lbl_credit_p2: "What is it?"
 
         });
 
@@ -445,7 +448,8 @@ angular.module(
             , lbl_reject: 'Reject'
             , about_subtitle: 'Information and Terms of Use'
             , terms_refused_alert_text: 'Terms refused.'
-
+            , lbl_credit_p2: "What is it?"
+           
         });
 
         $translateProvider.translations('sr', {
@@ -498,7 +502,7 @@ angular.module(
             , lbl_reject: 'Reject'
             , about_subtitle: 'Information and Terms of Use'
             , terms_refused_alert_text: 'Terms refused.'
-
+            , lbl_credit_p2: "What is it?"
 
         });
 
@@ -552,6 +556,7 @@ angular.module(
             , lbl_reject: 'Reject'
             , about_subtitle: 'Information and Terms of Use'
             , terms_refused_alert_text: 'Terms refused.'
+            , lbl_credit_p2: "What is it?"
 
         });
 

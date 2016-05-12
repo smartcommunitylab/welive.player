@@ -68,6 +68,7 @@ angular.module('weliveplayer.services.utils', [])
                     function(token) {
                         var url = Config.getWeLiveProxyUri() + "apps/" + region + "/" + Config.getDefaultAppType() + "?start=" + opts.start + "&count=" + opts.count;
                         $http.get(url, {
+                            timeout: 5000,
                             headers: {
                                 "Authorization": "Bearer " + token
                             }
