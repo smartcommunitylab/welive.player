@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="it.smartcommunitylab.weliveplayer" version="0.1.9" android-versionCode="7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>WeLive Player</name>
-  <description>&#xD;
-		An Ionic Framework and Cordova project.&#xD;
+  <description>&#xD;&#xD;
+		An Ionic Framework and Cordova project.&#xD;&#xD;
 	</description>
-  <author email="info@smartcommunitylab.it" href="http://smartcommunitylab.it">SmartCommunity&#xD;
-		Lab
+  <author email="info@smartcommunitylab.it" href="http://smartcommunitylab.it">SmartCommunity&#xD;&#xD;
+		Lab&#xD;
 	</author>
   <content src="index.html"/>
   <access origin="*"/>
@@ -16,8 +16,8 @@
   <preference name="BackupWebStorage" value="none"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="SplashScreenDelay" value="3000"/>
-  <preference name="android-minSdkVersion" value="15" />
-  <preference name="android-targetSdkVersion" value="20" />
+  <preference name="android-minSdkVersion" value="15"/>
+  <preference name="android-targetSdkVersion" value="20"/>
   <platform name="android">
     <icon src="resources\android\icon\drawable-ldpi-icon.png" density="ldpi"/>
     <icon src="resources\android\icon\drawable-mdpi-icon.png" density="mdpi"/>

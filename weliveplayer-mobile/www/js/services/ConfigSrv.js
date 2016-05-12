@@ -1,6 +1,6 @@
 angular.module('weliveplayer.services.config', [])
 
-    .factory('Config', function($http, $q, $filter) {
+    .factory('Config', function ($http, $q, $filter) {
         var AAC_SERVER_URL = "https://dev.welive.eu/dev/api/aac";
         var CLIENT_ID = "e4cd499e-81ac-4240-bd5c-1d4680f2f99f";
         var CLIENT_SEC_KEY = "6b934176-4513-43dd-a713-b926bfd979e2";
@@ -72,66 +72,66 @@ angular.module('weliveplayer.services.config', [])
         var RATING_MAX = 5;
 
         return {
-            getLogUri: function() {
+            getLogUri: function () {
                 return LOG_URI;
             }
-            , getServerURL: function() {
+            , getServerURL: function () {
                 return AAC_SERVER_URL;
             }
-            , getZoom: function() {
+            , getZoom: function () {
                 return ZOOM;
             }
-            , getRatingMax: function() {
+            , getRatingMax: function () {
                 return RATING_MAX;
             }
-            , getRedirectUri: function() {
+            , getRedirectUri: function () {
                 return REDIRECT_URI;
             }
-            , getClientId: function() {
+            , getClientId: function () {
                 return CLIENT_ID;
             }
-            , getClientSecKey: function() {
+            , getClientSecKey: function () {
                 return CLIENT_SEC_KEY;
             }
-            , getHTTPConfig: function() {
+            , getHTTPConfig: function () {
                 return HTTP_CONFIG;
             }
-            , getWeLiveProxyUri: function() {
+            , getWeLiveProxyUri: function () {
                 return WELIVEPLAYER_SERVER;
             }
-            , getPlayerAccessJson: function() {
+            , getPlayerAccessJson: function () {
                 return LOG_PLAYER_ACCESS;
             }
-            , getAppDownloadJson: function() {
+            , getAppDownloadJson: function () {
                 return LOG_APP_DOWNLOAD;
             }
-            , getAppOpenJson: function() {
+            , getAppOpenJson: function () {
                 return LOG_APP_OPEN;
             }
-            , getAppInfoAccessJson: function() {
+            , getAppInfoAccessJson: function () {
                 return LOG_APP_INFO_ACCESS;
             }
-            , getPilotIds: function() {
+            , getPilotIds: function () {
                 return PILOT_IDS;
             }
-            , getCDVUri: function() {
+            , getCDVUri: function () {
                 return CDV_URI;
             }
-            , getBasicAuthToken: function() {
+            , getBasicAuthToken: function () {
                 return BASICAUTH_TOKEN;
             }
-            , getDefaultAppType: function() {
+            , getDefaultAppType: function () {
                 return APP_TYPE;
             }
-            , getSupportedLanguages: function() {
+            , getSupportedLanguages: function () {
                 return LANGUAGES;
             }
-            , getAppInformation: function(lang) {
+            , getAppInformation: function (lang) {
                 if (INFORMATION[lang]) {
                     return INFORMATION[lang];
                 }
             }
-            , getWebAppTypes: function() {
+            , getWebAppTypes: function () {
                 return WEBAPPS_TYPES;
             }
         }

@@ -58,6 +58,13 @@
     vertical-align: middle;
 }
 
+.weliveplayer-theme .menu .item h2 {
+    position: absolute;
+    top: 40%;
+    left: 20%;
+    color: #FFFFFF;
+}
+
 .app-item .rating-avg-star {
     position: absolute;
     bottom: 8px;
@@ -166,13 +173,18 @@
     font-weight: bold;
 }
 
-/*
-.popup-title .item-radio {
-    font-size: 16px;
-    font-style: italic;
-}*/
+.terms div {
+  padding: 5px;
+  text-align: justify;
+}
 
-/*.profile-edit .row .col:nth-child(2) .input-placeholder
-{
-  border-bottom: 1px solid #000;
-}*/
+.terms div.help_title {
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center
+}
+
+.terms div.policy_text p.tool_tit {
+  /*font-weight: bold;*/
+  font-size: 14px;
+}

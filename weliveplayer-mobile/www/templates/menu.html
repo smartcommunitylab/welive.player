@@ -15,19 +15,28 @@
         <ion-content>
             <ion-list>
                 <ion-item nav-clear menu-close href="#/app/home">
-                    <i class="icon ion-home">{{'menu_home'| translate}}</i>
+                    <i class="icon ion-home"></i>
+                    <h2>{{'menu_home'| translate}}</h2>
                 </ion-item>
                 <ion-item nav-clear menu-close href="#/app/profile">
-                    <i class="icon ion-person">{{'menu_profile'| translate}}</i>
+                    <i class="icon ion-person"></i>
+                    <h2>{{'menu_profile'| translate}}</h2>
                 </ion-item>
-                <ion-item nav-clear menu-close href="#/app/info">
-                    <i class="icon ion-information-circled">{{'menu_info'| translate}}</i>
-                </ion-item>
+                <!--<ion-item nav-clear menu-close href="#/app/info">
+                    <i class="icon ion-help" style="padding:5px;"></i>
+                    <h2>{{'menu_info'| translate}}</h2>
+                </ion-item>-->
                 <ion-item nav-clear menu-close href="#/app/termine">
-                    <i class="icon ion-ios-cog-outline">{{'menu_termine'| translate}}</i>
+                    <i class="icon ion-gear-a"></i>
+                    <h2>{{'menu_termine'| translate}}</h2>
+                </ion-item>
+                <ion-item nav-clear menu-close href="#/app/about">
+                    <i class="icon ion-information-circled"></i>
+                    <h2>{{'menu_about'| translate}}</h2>
                 </ion-item>
                 <ion-item nav-clear menu-close href="#" ng-click="logout()">
-                    <i class="icon ion-log-out">{{'menu_logout'| translate}}</i>
+                    <i class="icon ion-log-out"></i>
+                    <h2>{{'menu_logout'| translate}}</h2>
                 </ion-item>
             </ion-list>
         </ion-content>

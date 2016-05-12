@@ -1,5 +1,14 @@
 angular.module('weliveplayer.controllers.home', [])
-    .controller('HomeCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, PlayStore, Config, $filter) {
+
+.controller('LoginCtrl', function ($scope, $rootScope, $ionicPlatform, $state, $ionicPopup, $timeout) {
+    
+    $ionicPlatform.ready(function () {
+        $rootScope.login();
+    });
+    
+ })
+    
+.controller('HomeCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, PlayStore, Config, $filter) {
 
         $scope.hideSearchInput = true;
         var opts = {};
@@ -178,7 +187,6 @@ angular.module('weliveplayer.controllers.home', [])
             Utils.getAppsByRegion($scope.selections, false, opts).then(creationSuccess, creationError);
         });        
     })
-
 
 .controller('AppDetailCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, PlayStore, Config) {
 

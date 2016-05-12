@@ -19,27 +19,26 @@ angular.module(
         'weliveplayer.controllers.app',
         'weliveplayer.controllers.home',
         'weliveplayer.controllers.profile',
-        'weliveplayer.controllers.info'
+        'weliveplayer.controllers.info',
+        'weliveplayer.controllers.about',
+        'weliveplayer.controllers.terms'
     ])
 
-    .run(function($ionicPlatform, $state, $rootScope, $translate, StorageSrv, LoginSrv, Config, Utils) {
+    .run(function ($ionicPlatform, $state, $rootScope, $translate, StorageSrv, LoginSrv, Config, Utils) {
 
 
         $rootScope.loginStarted = false;
-        $rootScope.login = function() {
+        $rootScope.login = function () {
 
             if ($rootScope.loginStarted) return;
 
             $rootScope.loginStarted = true;
             LoginSrv.login().then(
-                function(profile) {
+                function (profile) {
                     $rootScope.loginStarted = false;
-
-                    $state.go('app.home', {}, {
-                        reload: true
-                    });
+                    $state.go('app.termine');
                 }
-                , function(error) {
+                , function (error) {
                     $rootScope.loginStarted = false;
                     Utils.toast($filter('translate')('lbl_error'));
                     StorageSrv.saveUser(null);
@@ -48,16 +47,17 @@ angular.module(
             );
         };
 
-        $rootScope.logout = function() {
+        $rootScope.logout = function () {
             LoginSrv.logout().then(
-                function(data) {
+                function (data) {
                     window.location.reload(true);
                 }
-                , function(error) { }
+                , function (error) { }
             );
         };
 
-        $ionicPlatform.ready(function() {
+        $ionicPlatform.ready(function () {
+            
 
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -72,48 +72,23 @@ angular.module(
             }
 
             if (typeof navigator.globalization !== "undefined") {
-                navigator.globalization.getPreferredLanguage(function(language) {
+                navigator.globalization.getPreferredLanguage(function (language) {
                     var lang = language.value.split("-")[0];
                     if (Config.getSupportedLanguages().indexOf(lang) > -1) {
-                        $translate.use((language.value).split("-")[0]).then(function(data) {
+                        $translate.use((language.value).split("-")[0]).then(function (data) {
                             console.log("SUCCESS -> " + data);
-                        }, function(error) {
+                        }, function (error) {
                             console.log("ERROR -> " + error);
                         });
                     } else {
-                        $translate.use("en").then(function(data) {
+                        $translate.use("en").then(function (data) {
                             console.log("SUCCESS -> " + data);
-                        }, function(error) {
+                        }, function (error) {
                             console.log("ERROR -> " + error);
                         });
                     }
 
                 }, null);
-            }
-
-            //disable login fix.
-            // $state.go('app.profile', {}, {
-            //             reload: true
-            //         });
-            // $state.go('app.home', {}, {
-            //             reload: true
-            //         });
-
-            if (LoginSrv.userIsLogged()) {
-
-                // LoginSrv.accessToken().then( 
-                //     function (token) { 
-                //         alert(token)
-                //     },
-                //     function (error) {
-                //          alert(error);
-                //     });
-
-                $state.go('app.home', {}, {
-                    reload: true
-                });
-            } else {
-                $rootScope.login();
             }
 
             // LOG EVENT (PlayerAccess)
@@ -130,7 +105,7 @@ angular.module(
     })
 
 
-    .config(function($stateProvider, $urlRouterProvider) {
+    .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
 
             .state('app', {
@@ -160,11 +135,22 @@ angular.module(
                 }
             })
 
+            .state('app.about', {
+                url: '/about'
+                , views: {
+                    'menuContent': {
+                        templateUrl: 'templates/about.html'
+                        , controller: 'AboutCtrl'
+                    }
+                }
+            })
+
             .state('app.termine', {
                 url: '/termine'
                 , views: {
                     'menuContent': {
                         templateUrl: 'templates/termine.html'
+                        , controller: 'TermsCtrl'
                     }
                 }
             })
@@ -200,6 +186,16 @@ angular.module(
                 }
             })
 
+            .state('app.login', {
+                url: '/login'
+                , views: {
+                    'menuContent': {
+                        templateUrl: 'templates/login.html'
+                        , controller: 'LoginCtrl'
+                    }
+                }
+            })
+
             .state('app.comments', {
                 url: '/apps/:appId/:appRegion'
                 , views: {
@@ -210,21 +206,35 @@ angular.module(
                 }
             });
 
+        // if none of the above states are matched, use this as the fallback
+        // $urlRouterProvider.otherwise('/');
 
         // if none of the above states are matched, use this as the fallback
-        // $urlRouterProvider.otherwise('/app/home');
+        $urlRouterProvider.otherwise(function ($injector) {
 
-        // if none of the above states are matched, use this as the fallback
-        $urlRouterProvider.otherwise(function($injector) {
-            var logged = $injector.get('LoginSrv').userIsLogged();
-            if (!logged) {
-                return '/';
+            // var logged = $injector.get('LoginSrv').userIsLogged();
+            // if (!logged) {
+            //     return '/';
+            // }
+            // return '/';
+
+            var isPrivacyAccepted = $injector.get('StorageSrv').get("isPrivacyAccepted");
+
+            if ($injector.get('LoginSrv').userIsLogged()) {
+
+                if (isPrivacyAccepted) {
+                    return '/app/home';
+                } else {
+                    return '/app/termine';
+                }
+            } else {
+                return '/app/login';
             }
-            return '/app/home';
+
         });
     })
 
-    .config(function($translateProvider, $ionicConfigProvider) {
+    .config(function ($translateProvider, $ionicConfigProvider) {
         $ionicConfigProvider.backButton.text('');
         $ionicConfigProvider.backButton.previousTitleText(false);
         $translateProvider.translations('it', {
@@ -235,6 +245,7 @@ angular.module(
             , menu_home: 'Home'
             , menu_profile: 'Profilo'
             , menu_info: 'Informazioni'
+            , menu_about: 'About'
             , menu_termine: 'Termini del servizio'
             , menu_logout: 'Esci'
             , toast_error_generic: 'Errore! Riavvia la app.'
@@ -272,7 +283,10 @@ angular.module(
             , lbl_inprogress: 'In costruzione'
             , lbl_comma_separated: 'separati da virgole'
             , lbl_error: 'errore'
-
+            , lbl_accept: 'Accetto'
+            , lbl_reject: 'Rifiuto'
+            , about_subtitle: 'Information and Terms of Use'
+            , terms_refused_alert_text: 'Terms refused.'
         });
 
         $translateProvider.translations('en', {
@@ -283,6 +297,7 @@ angular.module(
             , menu_home: 'Home'
             , menu_profile: 'Profile'
             , menu_info: 'Information'
+            , menu_about: 'About'
             , menu_termine: 'Terms of Service'
             , menu_logout: 'Logout'
             , toast_error_generic: 'Error! Restart the App'
@@ -320,6 +335,10 @@ angular.module(
             , lbl_inprogress: 'Under construction'
             , lbl_comma_separated: 'separated by commas'
             , lbl_error: 'error'
+            , lbl_accept: 'Accept'
+            , lbl_reject: 'Reject'
+            , about_subtitle: 'Information and Terms of Use'
+            , terms_refused_alert_text: 'Terms refused.'
 
         });
 
@@ -331,6 +350,7 @@ angular.module(
             , menu_home: 'Etusivu'
             , menu_profile: 'Profiili'
             , menu_info: 'Lisätietoja'
+            , menu_about: 'About'
             , menu_termine: 'Käyttöehdot'
             , menu_logout: 'Kirjaudu ulos'
             , toast_error_generic: 'Jotain meni pieleen! Käynnistä sovellus uudestaan.'
@@ -368,6 +388,10 @@ angular.module(
             , lbl_inprogress: 'Under construction'
             , lbl_comma_separated: 'separated by commas'
             , lbl_error: 'error'
+            , lbl_accept: 'Accept'
+            , lbl_reject: 'Reject'
+            , about_subtitle: 'Information and Terms of Use'
+            , terms_refused_alert_text: 'Terms refused.'
 
         });
 
@@ -379,6 +403,7 @@ angular.module(
             , menu_home: 'Inicio'
             , menu_profile: 'Perfil'
             , menu_info: 'Información'
+            , menu_about: 'About'
             , menu_termine: 'Condiciones del servicio'
             , menu_logout: 'Salir'
             , toast_error_generic: 'Error! Reinicie la aplicación'
@@ -416,6 +441,10 @@ angular.module(
             , lbl_inprogress: 'Under construction'
             , lbl_comma_separated: 'separated by commas'
             , lbl_error: 'error'
+            , lbl_accept: 'Accept'
+            , lbl_reject: 'Reject'
+            , about_subtitle: 'Information and Terms of Use'
+            , terms_refused_alert_text: 'Terms refused.'
 
         });
 
@@ -427,6 +456,7 @@ angular.module(
             , menu_home: 'Početna strana'
             , menu_profile: 'Profil'
             , menu_info: 'Informacija'
+            , menu_about: 'About'
             , menu_termine: 'Uslovi korištenja Servisa'
             , menu_logout: 'Odjava'
             , toast_error_generic: 'Greška! Restartuj aplikaciju'
@@ -464,6 +494,11 @@ angular.module(
             , lbl_inprogress: 'Under construction'
             , lbl_comma_separated: 'separated by commas'
             , lbl_error: 'error'
+            , lbl_accept: 'Accept'
+            , lbl_reject: 'Reject'
+            , about_subtitle: 'Information and Terms of Use'
+            , terms_refused_alert_text: 'Terms refused.'
+
 
         });
 
@@ -475,6 +510,7 @@ angular.module(
             , menu_home: 'Почетна страна'
             , menu_profile: 'Профил'
             , menu_info: 'Информација'
+            , menu_about: 'About'
             , menu_termine: 'Услови коришћења сервиса'
             , menu_logout: 'Одјава'
             , toast_error_generic: 'Грешка! Рестартуј аплиакцију'
@@ -512,6 +548,10 @@ angular.module(
             , lbl_inprogress: 'Under construction'
             , lbl_comma_separated: 'separated by commas'
             , lbl_error: 'error'
+            , lbl_accept: 'Accept'
+            , lbl_reject: 'Reject'
+            , about_subtitle: 'Information and Terms of Use'
+            , terms_refused_alert_text: 'Terms refused.'
 
         });
 
