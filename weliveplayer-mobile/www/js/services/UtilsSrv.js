@@ -1,9 +1,11 @@
 angular.module('weliveplayer.services.utils', [])
 
-    .factory('Utils', function($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, $http, Config, LoginSrv, StorageSrv) {
+    .factory('Utils', function($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, $http, Config, LoginSrv, StorageSrv, LoggingTokenSrv) {
 
         var utilsService = {};
 
+        var loggingToken = LoggingTokenSrv.getLoggingToken();
+ 
         //app cache.
         var appMap = new Object();
 
@@ -408,6 +410,7 @@ angular.module('weliveplayer.services.utils', [])
                 headers: {
                     "Accept": "application/json"
                     , "Content-Type": "application/json"
+                    , "Authorization": 'Bearer ' + loggingToken
                 }
             })
 

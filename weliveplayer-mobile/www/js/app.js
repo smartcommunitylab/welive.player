@@ -16,6 +16,7 @@ angular.module(
         'weliveplayer.services.playstore',
         'weliveplayer.services.storage',
         'weliveplayer.services.utils',
+        'weliveplayer.services.loggingtokensrv',
         'weliveplayer.controllers.app',
         'weliveplayer.controllers.home',
         'weliveplayer.controllers.profile',

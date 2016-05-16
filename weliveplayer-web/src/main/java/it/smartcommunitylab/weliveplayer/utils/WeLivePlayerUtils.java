@@ -24,6 +24,8 @@ public class WeLivePlayerUtils {
 	private String USER_AGENT = "Mozilla/5.0";
 	/** HTTP Client. **/
 	private HttpClient httpClient = new HttpClient();
+	/** Logging Authorization. **/
+	public static String loggingAuth = "Bearer da44df79-2168-4d6d-82fe-52a0cc2f3e22";
 	@Autowired
 	private Environment env;
 
@@ -163,7 +165,7 @@ public class WeLivePlayerUtils {
 		String body = "{\"msg\" : \"PlayerAppsAccess\",\"type\" : \"PlayerAppsAccess\", \"appId\": \"weliveplayer\", \"custom_attr\": {\"UserID\": \""
 				+ userId + "\",\"PilotID\": \"" + pilotId + "\"}}";
 		try {
-			sendPOST(logUrl, "application/json", "application/json", "", body, true);
+			sendPOST(logUrl, "application/json", "application/json", loggingAuth, body, true);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -178,7 +180,7 @@ public class WeLivePlayerUtils {
 		String body = "{\"msg\" : \"AppInfoAccess\",\"type\" : \"AppInfoAccess\", \"appId\": \"weliveplayer\", \"custom_attr\": {\"UserID\": \""
 				+ userId + "\",\"AppID\": \"" + artifactId + "\",\"PilotID\": \"" + pilotId + "\"}}";
 		try {
-			sendPOST(logUrl, "application/json", "application/json", "", body, true);
+			sendPOST(logUrl, "application/json", "application/json", loggingAuth, body, true);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

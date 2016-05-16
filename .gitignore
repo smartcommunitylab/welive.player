@@ -14,3 +14,4 @@ weliveplayer-web/target/*
 
 *.ts
 *.project
+weliveplayer-mobile/www/js/services/LoggingTokenSrv.js
