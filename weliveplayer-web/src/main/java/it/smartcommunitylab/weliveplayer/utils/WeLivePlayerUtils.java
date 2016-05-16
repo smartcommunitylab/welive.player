@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class WeLivePlayerUtils {
 	/** USER AGENT. **/
 	private String USER_AGENT = "Mozilla/5.0";
 	/** HTTP Client. **/
-	private HttpClient httpClient = new HttpClient();
+	private HttpClient httpClient = new HttpClient(new MultiThreadedHttpConnectionManager());
 	/** Logging Authorization. **/
 	public static String loggingAuth = "Bearer da44df79-2168-4d6d-82fe-52a0cc2f3e22";
 	@Autowired
@@ -137,23 +138,28 @@ public class WeLivePlayerUtils {
 	public String sendPOST(String url, String accept, String contentType, String authHeader, String json,
 			boolean secure) throws Exception {
 
+		String result = null;
 		StringRequestEntity requestEntity = new StringRequestEntity(json, contentType, "UTF-8");
 		PostMethod postMethod = new PostMethod(url);
 		postMethod.setRequestEntity(requestEntity);
 		postMethod.addRequestHeader("Authorization", authHeader);
-		int statusCode = httpClient.executeMethod(postMethod);
-		StringBuffer response = new StringBuffer();
-		if ((statusCode >= 200) && (statusCode < 300)) {
-//			String result = null;//postMethod.getResponseBodyAsString();
-			BufferedReader in = new BufferedReader(new InputStreamReader(postMethod.getResponseBodyAsStream()));
-			String inputLine;
-			while ((inputLine = in.readLine()) != null) {
-				response.append(inputLine);
+		try {
+			int statusCode = httpClient.executeMethod(postMethod);
+			StringBuffer response = new StringBuffer();
+			if ((statusCode >= 200) && (statusCode < 300)) {
+				// String result = null;//postMethod.getResponseBodyAsString();
+				BufferedReader in = new BufferedReader(new InputStreamReader(postMethod.getResponseBodyAsStream()));
+				String inputLine;
+				while ((inputLine = in.readLine()) != null) {
+					response.append(inputLine);
+				}
+				in.close();
+				result = response.toString();
 			}
-			in.close();
-			return response.toString();
+		} finally {
+			postMethod.releaseConnection();
 		}
-		return null;
+		return result;
 
 	}
 
