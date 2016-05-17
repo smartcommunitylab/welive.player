@@ -76,6 +76,16 @@ angular.module('weliveplayer.services.config', [])
             }
         }
 
+        var LOG_APP_SEARCH = {
+            "msg": "PlayerAppSearch",
+            "appId": "weliveplayer",
+            "type": "PlayerAppSearch",
+            "custom_attr": {
+                "UserID": "",
+                "PilotID": ""
+            }
+        }
+
         var ZOOM = 15;
 
         var RATING_MAX = 5;
@@ -119,6 +129,9 @@ angular.module('weliveplayer.services.config', [])
             }
             , getAppInfoAccessJson: function () {
                 return LOG_APP_INFO_ACCESS;
+            }
+            , getPlayerAppSearchJson: function () {
+                return LOG_APP_SEARCH;
             }
             , getPilotIds: function () {
                 return PILOT_IDS;

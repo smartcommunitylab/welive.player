@@ -320,14 +320,20 @@ angular.module('weliveplayer.services.utils', [])
             for (var key in appMap) {
                 if (appMap.hasOwnProperty(key)) {
                     var apps = appMap[key];
-                    for (var i = 0, len = apps.length; i < len; i++) {
-                        if (apps[i].name.toUpperCase().indexOf(searchText.toUpperCase()) > -1) {
-                            foundApps.push(apps[i]);
+                    if (apps) {
+                        for (var i = 0, len = apps.length; i < len; i++) {
+                            if (apps[i].name.toUpperCase().indexOf(searchText.toUpperCase()) > -1) {
+                                foundApps.push(apps[i]);
+                            }
                         }
                     }
                 }
             }
-
+            
+            var appSearchJson = Config.getPlayerAppSearchJson();
+            appSearchJson.custom_attr.UserID = StorageSrv.getLoggedInUserId();
+            appSearchJson.custom_attr.PilotID = StorageSrv.getLoggedInUserPilotId();
+            utilsService.log(appSearchJson);
 
             return foundApps;
         }
