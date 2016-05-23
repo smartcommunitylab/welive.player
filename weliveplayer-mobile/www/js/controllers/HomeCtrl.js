@@ -126,8 +126,8 @@ angular.module('weliveplayer.controllers.home', [])
             $scope.hideSearchInput = true;
             Utils.getAppsByRegion($scope.selections, true, opts).then(
                 function success(apps) {
-                    $scope.items = apps;
                     $scope.$broadcast('scroll.refreshComplete');
+                    $scope.items = Utils.orderByType($scope.sort.choice, $scope.items);
                 }
                 , function error() {
                     $scope.$broadcast('scroll.refreshComplete');
