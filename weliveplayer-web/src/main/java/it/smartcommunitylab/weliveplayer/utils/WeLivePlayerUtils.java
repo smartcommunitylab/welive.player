@@ -192,6 +192,21 @@ public class WeLivePlayerUtils {
 		}
 
 	}
+	
+	public void logPlayerAppRecommendation(String userId, String artifactId, String pilotId) {
+
+		String logUrl = env.getProperty("log.endpoint");
+
+		String body = "{\"msg\" : \"PlayerAppRecommendation\",\"type\" : \"PlayerAppRecommendation\", \"appId\": \"weliveplayer\", \"custom_attr\": {\"UserID\": \""
+				+ userId + "\",\"AppID\": \"" + artifactId + "\",\"PilotID\": \"" + pilotId + "\"}}";
+		try {
+			sendPOST(logUrl, "application/json", "application/json", loggingAuth, body, true);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 
 	public static String getPilotId(String pilotId) {
 		String pilotCity = "Trento";

@@ -59,7 +59,7 @@ public class ServiceController {
 
 		String authHeader = httpRequest.getHeader("Authorization");
 
-		return new Response<List<Artifact>>(weLivePlayerManager.getArtifacts(getUserId(authHeader), pilotId, appType,
+		return new Response<List<Artifact>>(weLivePlayerManager.getArtifacts(authHeader, getUserId(authHeader), pilotId, appType,
 				(start == null ? 0 : start), (count == null ? 20 : count)));
 
 	}

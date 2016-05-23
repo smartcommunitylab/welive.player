@@ -306,7 +306,12 @@ angular.module('weliveplayer.controllers.home', [])
     if (app.url && app.url.length > 0) {
         if (app.url.indexOf("https://play.google.com/store/apps/details?id=") > -1) {
             var storeUri = app.url;
-            appStoreId = storeUri.slice(storeUri.lastIndexOf("=") + 1, storeUri.length);
+            var uriParams =  Utils.parseUri(storeUri);
+            if (uriParams.queryKey) {
+                if (uriParams.queryKey.id) {
+                    appStoreId = uriParams.queryKey.id;
+                }
+            }
         }
     }
 
