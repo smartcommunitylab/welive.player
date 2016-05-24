@@ -217,8 +217,8 @@ public class WeLivePlayerUtils {
 			pilotCity = "Bilbao";
 		} else if (pilotId.equalsIgnoreCase("novisad")) {
 			pilotCity = "Novisad";
-		} else if (pilotId.equalsIgnoreCase("HELSINKI-USIMAA")) {
-			pilotCity = "Helsinki-Usimaa";
+		} else if (pilotId.equalsIgnoreCase("uusimaa")) {
+			pilotCity = "Uusimaa";
 		}
 		return pilotCity;
 	}
