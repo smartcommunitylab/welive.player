@@ -199,7 +199,7 @@ public class WeLivePlayerManager {
 							temp.setLinkImage(imageLink);
 						}
 						temp.setName(artifact.getString("name"));
-						temp.setDescription(artifact.getString("description"));
+						temp.setDescription(artifact.getString("description").replace("\\n", "<br />"));
 						temp.seteId(artifact.getString("eId"));
 
 						/** to be removed in future. **/
