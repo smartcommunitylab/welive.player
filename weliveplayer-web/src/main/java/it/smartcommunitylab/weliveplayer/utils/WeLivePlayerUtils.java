@@ -97,7 +97,7 @@ public class WeLivePlayerUtils {
 			if (auth != null && !(auth.isEmpty())) {
 				con.setRequestProperty("Authorization", auth);
 			}
-			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
 			String inputLine;
 			while ((inputLine = in.readLine()) != null) {
 				response.append(inputLine);
