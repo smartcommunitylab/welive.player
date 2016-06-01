@@ -48,8 +48,8 @@ angular.module('weliveplayer.controllers.home', [])
         // sub controller.
         $scope.showAppDetails = function (id, region) {
             $state.go('app.single', {
-                appId: id
-                , appRegion: region
+                appId: id,
+                appRegion: region
             });
         }
 
@@ -222,6 +222,7 @@ angular.module('weliveplayer.controllers.home', [])
 
 
         var pilotId = $scope.app.city;
+        console.log(pilotId);
 
         // check if app is installed.
         navigator.startApp.check(appStoreId, function (message) { /* success */
@@ -246,8 +247,8 @@ angular.module('weliveplayer.controllers.home', [])
         $scope.showAppComments = function () {
             // $scope.selection = 'userComment';
             $state.go('app.comments', {
-                appId: $scope.app.id
-                , appRegion: $scope.app.city
+                appId: $scope.app.id,
+                appRegion: $scope.app.city
             });
         }
 
@@ -259,7 +260,8 @@ angular.module('weliveplayer.controllers.home', [])
                     cordova.plugins.market.open(appStoreId, {
                         success: function () {
                             // lOG EVENT (APP DOWNLOAD)
-                            Utils.logAppDownload(appStoreId, pilotId);
+                            console.log("LOG -> APPDOWNLOAD ( " + $scope.app.id + "," + $scope.app.city + "," + $scope.app.name + ")");
+                            Utils.logAppDownload($scope.app.id, $scope.app.city, $scope.app.name);
                         }
                         , failure: function () { }
                     });
@@ -275,9 +277,9 @@ angular.module('weliveplayer.controllers.home', [])
                         console.log("missing playstore id.")
                     } else {
                         navigator.startApp.start(appStoreId, function (message) {
-                            // console.log(message);
+                            console.log("LOG -> APPOPEN ( " + $scope.app.id + "," + $scope.app.city + "," + $scope.app.name + ")");
                             // lOG EVENT (APP OPEN)
-                            Utils.logAppOpen(appStoreId, pilotId);
+                            Utils.logAppOpen($scope.app.id, $scope.app.city, $scope.app.name);
                         }, function (error) { /* error */
                             console.log(error);
                         });
@@ -290,8 +292,8 @@ angular.module('weliveplayer.controllers.home', [])
         $scope.info = function () {
             $scope.selection = 'info';
             $state.go('app.single', {
-                appId: $scope.app.id
-                , appRegion: $scope.app.city
+                appId: $scope.app.id,
+                appRegion: $scope.app.city
             });
         }
 
@@ -334,7 +336,7 @@ angular.module('weliveplayer.controllers.home', [])
         $scope.id = app.id;
         $scope.region = app.city;
 
-        var pilotId = app.city;
+        // var pilotId = app.city;
 
         $scope.download = function (id) {
             if ($scope.appInstallStatus == 'download') {
@@ -345,7 +347,8 @@ angular.module('weliveplayer.controllers.home', [])
                     cordova.plugins.market.open(appStoreId, {
                         success: function () {
                             // lOG EVENT (APP DOWNLOAD)
-                            Utils.logAppDownload(appStoreId, pilotId);
+                            console.log("LOG -> APPDOWNLOAD ( " + app.id + "," + app.city + "," + app.name + ")");
+                            Utils.logAppDownload(app.id, app.city, app.name);
                         }
                         , failure: function () { }
                     });
@@ -359,9 +362,9 @@ angular.module('weliveplayer.controllers.home', [])
                         console.log("missing playstore id.")
                     } else {
                         navigator.startApp.start(appStoreId, function (message) {
-                            // console.log(message);
                             // lOG EVENT (APP OPEN)
-                            Utils.logAppOpen(appStoreId, pilotId);
+                            console.log("LOG -> APPOPEN ( " + app.id + "," + app.city + "," + app.name + ")");
+                            Utils.logAppOpen(app.id, app.city, app.name);
                         }, function (error) {
                             console.log(error);
                         });

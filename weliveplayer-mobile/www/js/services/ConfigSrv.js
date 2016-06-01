@@ -40,7 +40,7 @@ angular.module('weliveplayer.services.config', [])
             , "appId": "weliveplayer"
             , "type": "PlayerAccess"
             , "custom_attr": {
-                "UserID": ""
+                "userid": ""
             }
         }
         var LOG_APP_OPEN = {
@@ -48,9 +48,10 @@ angular.module('weliveplayer.services.config', [])
             , "appId": "weliveplayer"
             , "type": "AppOpen"
             , "custom_attr": {
-                "UserID": ""
-                , "AppID": ""
-                , "PilotID": ""
+                "userid": "",
+                "appid": "",
+                "pilot": "",
+                "appname": ""
             }
         }
 
@@ -59,9 +60,10 @@ angular.module('weliveplayer.services.config', [])
             , "appId": "weliveplayer"
             , "type": "AppDownload"
             , "custom_attr": {
-                "UserID": ""
-                , "AppID": ""
-                , "PilotID": ""
+                "userid": "",
+                "appid": "",
+                "pilot": "",
+                "appname": ""
             }
         }
 
@@ -81,8 +83,8 @@ angular.module('weliveplayer.services.config', [])
             "appId": "weliveplayer",
             "type": "PlayerAppSearch",
             "custom_attr": {
-                "UserID": "",
-                "PilotID": ""
+                "userid": "",
+                "pilot": ""
             }
         }
 

@@ -95,7 +95,7 @@ angular.module(
             // LOG EVENT (PlayerAccess)
             var jsonPlayerAccess = Config.getPlayerAccessJson();
             var userId = StorageSrv.getLoggedInUserId();
-            jsonPlayerAccess.custom_attr.UserID = userId;
+            jsonPlayerAccess.custom_attr.userid = userId;
 
 
             Utils.log(jsonPlayerAccess);

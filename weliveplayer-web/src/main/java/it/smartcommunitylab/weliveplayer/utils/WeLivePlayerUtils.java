@@ -32,6 +32,7 @@ public class WeLivePlayerUtils {
 	/** constants. **/
 	public static final String ERROR_CODE = "errorCode";
 	public static final String ERROR_MSG = "errorMsg";
+	public static final String KEYSEPARATOR = "#";
 
 	public static int getDayOfMonth(Date reqDate) {
 		int day = -1;
@@ -167,8 +168,8 @@ public class WeLivePlayerUtils {
 
 		String logUrl = env.getProperty("log.endpoint");
 
-		String body = "{\"msg\" : \"PlayerAppsAccess\",\"type\" : \"PlayerAppsAccess\", \"appId\": \"weliveplayer\", \"custom_attr\": {\"UserID\": \""
-				+ userId + "\",\"PilotID\": \"" + pilotId + "\"}}";
+		String body = "{\"msg\" : \"PlayerAppsAccess\",\"type\" : \"PlayerAppsAccess\", \"appId\": \"weliveplayer\", \"custom_attr\": {\"userid\": \""
+				+ userId + "\",\"pilot\": \"" + pilotId + "\"}}";
 		try {
 			sendPOST(logUrl, "application/json", "application/json", loggingAuth, body, true);
 		} catch (Exception e) {
@@ -178,12 +179,13 @@ public class WeLivePlayerUtils {
 
 	}
 
-	public void logAppInfoAccess(String userId, String artifactId, String pilotId) {
+	public void logAppInfoAccess(String userId, String artifactId, String pilotId, String appName) {
 
 		String logUrl = env.getProperty("log.endpoint");
 
-		String body = "{\"msg\" : \"AppInfoAccess\",\"type\" : \"AppInfoAccess\", \"appId\": \"weliveplayer\", \"custom_attr\": {\"UserID\": \""
-				+ userId + "\",\"AppID\": \"" + artifactId + "\",\"PilotID\": \"" + pilotId + "\"}}";
+		String body = "{\"msg\" : \"AppInfoAccess\",\"type\" : \"AppInfoAccess\", \"appId\": \"weliveplayer\", \"custom_attr\": {\"userid\": \""
+				+ userId + "\",\"appid\": \"" + artifactId + "\",\"pilot\": \"" + pilotId + "\",\"appname\": \""
+				+ appName + "\"}}";
 		try {
 			sendPOST(logUrl, "application/json", "application/json", loggingAuth, body, true);
 		} catch (Exception e) {
@@ -192,13 +194,14 @@ public class WeLivePlayerUtils {
 		}
 
 	}
-	
-	public void logPlayerAppRecommendation(String userId, String artifactId, String pilotId) {
+
+	public void logPlayerAppRecommendation(String userId, String artifactId, String pilotId, String appName) {
 
 		String logUrl = env.getProperty("log.endpoint");
 
-		String body = "{\"msg\" : \"PlayerAppRecommendation\",\"type\" : \"PlayerAppRecommendation\", \"appId\": \"weliveplayer\", \"custom_attr\": {\"UserID\": \""
-				+ userId + "\",\"AppID\": \"" + artifactId + "\",\"PilotID\": \"" + pilotId + "\"}}";
+		String body = "{\"msg\" : \"PlayerAppRecommendation\",\"type\" : \"PlayerAppRecommendation\", \"appId\": \"weliveplayer\", \"custom_attr\": {\"userid\": \""
+				+ userId + "\",\"appid\": \"" + artifactId + "\",\"pilot\": \"" + pilotId + "\",\"appname\": \""
+				+ appName + "\"}}";
 		try {
 			sendPOST(logUrl, "application/json", "application/json", loggingAuth, body, true);
 		} catch (Exception e) {

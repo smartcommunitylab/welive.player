@@ -79,7 +79,7 @@ public class WeLivePlayerManager {
 	/** application type. **/
 	private static String appType = "PSA";
 	/** appId-pilot map. **/
-	private static Map<String, String> appPilotMap = new HashMap<String, String>();
+	private static Map<String, String> appInfoMap = new HashMap<String, String>();
 
 	/**
 	 * Apps Cache Generator.
@@ -204,7 +204,7 @@ public class WeLivePlayerManager {
 
 						/** to be removed in future. **/
 						temp.setReferredPilotId(pilotId);
-						appPilotMap.put(temp.getId(), pilotId);
+						appInfoMap.put(temp.getId(), pilotId + WeLivePlayerUtils.KEYSEPARATOR + temp.getName());
 						/** to be removed in future. **/
 
 						if (artifact.has("url")) {
@@ -312,8 +312,9 @@ public class WeLivePlayerManager {
 			throws WeLivePlayerCustomException {
 
 		// log here.
-		if (appPilotMap.containsKey(artifactId)) {
-			weLivePlayerUtils.logAppInfoAccess(userId, artifactId, appPilotMap.get(artifactId));
+		if (appInfoMap.containsKey(artifactId)) {
+			String appInfo[] = appInfoMap.get(artifactId).split(WeLivePlayerUtils.KEYSEPARATOR);
+			weLivePlayerUtils.logAppInfoAccess(userId, artifactId, appInfo[0], appInfo[1]);
 		}
 
 		List<Comment> commentsList = new ArrayList<Comment>();

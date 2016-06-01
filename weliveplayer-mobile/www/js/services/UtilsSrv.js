@@ -331,8 +331,8 @@ angular.module('weliveplayer.services.utils', [])
             }
             
             var appSearchJson = Config.getPlayerAppSearchJson();
-            appSearchJson.custom_attr.UserID = StorageSrv.getLoggedInUserId();
-            appSearchJson.custom_attr.PilotID = StorageSrv.getLoggedInUserPilotId();
+            appSearchJson.custom_attr.userid = StorageSrv.getLoggedInUserId();
+            appSearchJson.custom_attr.pilot = StorageSrv.getLoggedInUserPilotId();
             utilsService.log(appSearchJson);
 
             return foundApps;
@@ -385,22 +385,24 @@ angular.module('weliveplayer.services.utils', [])
                 });
         };
 
-        utilsService.logAppDownload = function(appStoreId, pilotId) {
+        utilsService.logAppDownload = function(artifactId, pilotId, appName) {
             var userId = StorageSrv.getLoggedInUserId();
             var appDownloadJson = Config.getAppDownloadJson();
-            appDownloadJson.custom_attr.UserID = userId;
-            appDownloadJson.custom_attr.AppID = appStoreId;
-            appDownloadJson.custom_attr.PilotID = pilotId;
+            appDownloadJson.custom_attr.userid = userId;
+            appDownloadJson.custom_attr.appid = artifactId;
+            appDownloadJson.custom_attr.pilot = pilotId;
+            appDownloadJson.custom_attr.appname = appName;
 
             utilsService.log(appDownloadJson);
         };
 
-        utilsService.logAppOpen = function(appStoreId, pilotId) {
+        utilsService.logAppOpen = function(artifactId, pilotId, appName) {
             var userId = StorageSrv.getLoggedInUserId();
             var appOpenJson = Config.getAppOpenJson();
-            appOpenJson.custom_attr.UserID = userId;
-            appOpenJson.custom_attr.AppID = appStoreId;
-            appOpenJson.custom_attr.PilotID = pilotId;
+            appOpenJson.custom_attr.userid = userId;
+            appOpenJson.custom_attr.appid = artifactId;
+            appOpenJson.custom_attr.pilot = pilotId;
+            appOpenJson.custom_attr.appname = appName;
 
             utilsService.log(appOpenJson);
 
