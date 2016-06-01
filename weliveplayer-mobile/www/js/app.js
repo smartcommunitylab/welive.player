@@ -36,6 +36,12 @@ angular.module(
             $rootScope.loginStarted = true;
             LoginSrv.login().then(
                 function (profile) {
+                     // LOG EVENT (PlayerAccess)
+                    var jsonPlayerAccess = Config.getPlayerAccessJson();
+                    var userId = StorageSrv.getLoggedInUserId();
+                    jsonPlayerAccess.custom_attr.userid = userId;
+                    Utils.log(jsonPlayerAccess);
+                    
                     $rootScope.loginStarted = false;
                     $state.go('app.termine');
                 }
@@ -58,7 +64,7 @@ angular.module(
         };
 
         $ionicPlatform.ready(function () {
-            
+
 
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -91,14 +97,6 @@ angular.module(
 
                 }, null);
             }
-
-            // LOG EVENT (PlayerAccess)
-            var jsonPlayerAccess = Config.getPlayerAccessJson();
-            var userId = StorageSrv.getLoggedInUserId();
-            jsonPlayerAccess.custom_attr.userid = userId;
-
-
-            Utils.log(jsonPlayerAccess);
 
         });
 
@@ -219,9 +217,17 @@ angular.module(
             // }
             // return '/';
 
-            var isPrivacyAccepted = $injector.get('StorageSrv').get("isPrivacyAccepted");
+            var storageService = $injector.get('StorageSrv');
+            
+            var isPrivacyAccepted = storageService.get("isPrivacyAccepted");
 
             if ($injector.get('LoginSrv').userIsLogged()) {
+
+                // LOG EVENT (PlayerAccess)
+                var jsonPlayerAccess = $injector.get('Config').getPlayerAccessJson();
+                var userId = storageService.getLoggedInUserId();
+                jsonPlayerAccess.custom_attr.userid = userId;
+                $injector.get('Utils').log(jsonPlayerAccess);
 
                 if (isPrivacyAccepted) {
                     return '/app/home';
@@ -450,7 +456,7 @@ angular.module(
             , about_subtitle: 'Information and Terms of Use'
             , terms_refused_alert_text: 'Terms refused.'
             , lbl_credit_p2: "What is it?"
-           
+
         });
 
         $translateProvider.translations('sr', {
