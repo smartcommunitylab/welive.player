@@ -4,7 +4,7 @@ angular.module('weliveplayer.controllers.about', [])
         cordova.getAppVersion(function(version) {
             $scope.version = "v " + version;
         }, function(error) {
-            $scope.version = "v " + "0.2.4";
+            $scope.version = "v " + "0.2.5";
             }
         );
 
