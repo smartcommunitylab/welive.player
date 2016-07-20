@@ -27,9 +27,18 @@ angular.module('weliveplayer.services.playstore', [])
                         }
                     })
                     .then(function (response) {
-                        var reviews = response.data.data;
-                        deferred.resolve(reviews);
+                        var reviews = [];
 
+                        if (response.data.data) {
+                            response.data.data.forEach(function (review) {
+                                var d = new Date(review.publishDate);
+                                review.publishDate = d;
+                                reviews.push(review);
+                            });                
+                        }
+                        
+                        deferred.resolve(reviews);
+                        
                     }, function (error) {
                         deferred.resolve(null);
                     })

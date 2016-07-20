@@ -23,6 +23,9 @@
                         if (response.data.data) {
                             if (response.data.data.ccUserID) {
                                 $scope.profile = response.data.data;
+                                // gender.
+                                var inputGender = $scope.profile.gender; 
+                                $scope.profile.gender = $filter('translate')('lbl_' + inputGender.toLowerCase());
                                 // fix birtdate string.
                                 if (response.data.data.birthdate.length > 9 && $scope.isValidDate(response.data.data.birthdate)) {
                                     $scope.profile.birthdate = response.data.data.birthdate.substring(0, 10);
@@ -133,6 +136,9 @@
                             if (response.data.data) {
                                 if (response.data.data.ccUserID) {
                                     $scope.profile = response.data.data;
+                                    // gender.
+                                    var inputGender = $scope.profile.gender;
+                                    $scope.profile.gender = $filter('translate')('lbl_' + inputGender.toLowerCase());
                                     if (response.data.data.birthdate.length > 9 && $scope.isValidDate(response.data.data.birthdate)) {
                                         $scope.profile.birthdate = response.data.data.birthdate.substring(0, 10);
                                     } else {

@@ -1,13 +1,18 @@
 <ion-view>
     <ion-nav-title>{{name}}</ion-nav-title>
     <ion-content class="padding has-footer">
-        <h4>{{ 'lbl_comment' | translate }}</h4>
+        <div class="text-center" ng-if="!!userReviews && userReviews.length == 0">
+            <h4>{{'no_comments' | translate}}</h4>
+        </div>
+        <div ng-if="userReviews.length > 0">
+            <h4>{{ 'lbl_comment' | translate }}</h4>
+        </div>   
         <ion-list>
             <ion-item ng-repeat="userReview in userReviews" class="comments" ng-click="">
                 <!--<img ng-src="img/ionic.png">-->
                 <div>{{ userReview.authorNode }}</div>
-                <div>{{ userReview.publishDate.slice(0,userReview.publishDate.lastIndexOf(":")) }}</div>
-                <div>{{ userReview.comment }}</div>
+                <div>{{ userReview.publishDate.toLocaleString() }}</div>
+                <div style="white-space: normal;">{{ userReview.comment }}</div>
             </ion-item>
             <ion-infinite-scroll ng-if="moreReviewsPossible" on-infinite="loadMoreReviews()" distance="5%">
             </ion-infinite-scroll>

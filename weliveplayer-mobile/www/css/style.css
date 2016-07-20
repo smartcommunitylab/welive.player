@@ -249,4 +249,4 @@
 .terms div.help_text{ float:left; width:77%;}
 .terms div.policy_text.policy_text{float:left; width:98%; }
 .terms div.policy_text.policy_text p {margin-bottom:10px; text-align:justify;}
-.terms div.policy_text.policy_text ul li {font-size:11px; margin-bottom:5px;}
+.terms div.policy_text.policy_text ul li {list-style:initial;font-size:11px; margin-bottom:5px;}
