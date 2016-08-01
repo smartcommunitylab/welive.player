@@ -370,27 +370,27 @@ public class WeLivePlayerManager {
 							profile = new Profile();
 							profile.setName(profileJson.getString("name"));
 							// fields.
-							if (profileJson.has("address"))
+							if (profileJson.has("address") && !profileJson.isNull("address"))
 								profile.setAddress(profileJson.getString("address"));
-							if (profileJson.has("birthdate"))
+							if (profileJson.has("birthdate") && !profileJson.isNull("birthdate"))
 								profile.setBirthdate(profileJson.getString("birthdate"));
-							if (profileJson.has("ccUserID"))
+							if (profileJson.has("ccUserID") && !profileJson.isNull("ccUserID"))
 								profile.setCcUserID(profileJson.getString("ccUserID"));
-							if (profileJson.has("city"))
+							if (profileJson.has("city") && !profileJson.isNull("city"))
 								profile.setCity(profileJson.getString("city"));
-							if (profileJson.has("country"))
+							if (profileJson.has("country") && !profileJson.isNull("country"))
 								profile.setCountry(profileJson.getString("country"));
-							if (profileJson.has("isDeveloper"))
+							if (profileJson.has("isDeveloper") && !profileJson.isNull("isDeveloper"))
 								profile.setDeveloper(profileJson.getBoolean("isDeveloper"));
-							if (profileJson.has("email"))
+							if (profileJson.has("email") && !profileJson.isNull("email"))
 								profile.setEmail(profileJson.getString("email"));
-							if (profileJson.has("gender"))
+							if (profileJson.has("gender") && !profileJson.isNull("gender"))
 								profile.setGender(profileJson.getString("gender"));
-							if (profileJson.has("surname"))
+							if (profileJson.has("surname") && !profileJson.isNull("surname"))
 								profile.setSurname(profileJson.getString("surname"));
-							if (profileJson.has("zipCode"))
+							if (profileJson.has("zipCode") && !profileJson.isNull("zipCode"))
 								profile.setZipCode(profileJson.getString("zipCode"));
-							if (profileJson.has("referredPilot"))
+							if (profileJson.has("referredPilot") && !profileJson.isNull("referredPilot"))
 								profile.setReferredPilot(profileJson.getString("referredPilot"));
 							// if (profileJson.has("usedApps")
 							// &&
