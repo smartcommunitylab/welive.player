@@ -298,6 +298,7 @@ public class WeLivePlayerManager {
 					paginatedList.get(0).setRecommendation(true);
 				}
 			} catch (Exception e) {
+				logger.error("Error retrieving recommendations: "+e.getMessage());
 				paginatedList.get(0).setRecommendation(true);
 				//throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 			}
