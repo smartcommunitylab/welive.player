@@ -23,7 +23,12 @@
     "ionic-plugin-keyboard",
     "cordova-plugin-inappbrowser",
     "cordova-plugin-x-toast",
-    "cordova-plugin-market"
+    "cordova-plugin-market",
+    {
+      "locator": "https://github.com/markeeftb/org.apache.cordova.startapp.git",
+      "id": "org.apache.cordova.startapp"
+    },
+    "cordova-plugin-datepicker"
   ],
   "cordovaPlatforms": [
     "ios",

@@ -5,6 +5,7 @@
             <div class="row">
                 <img ng-src="{{ app.linkImage }}" width="80" height="80">
                 <div class="col col-center app-header">
+                    <h3>{{ app.name }}</h3>
                     <div>{{ app.city }}</div>
                     <div class="rating-avg-star">
                         <span>
@@ -13,7 +14,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" ng-if="!!app.tags">
                 <i class="button button-icon ion-pricetags" ng-click=""></i>
                 <div class="col col-center">{{app.tags}}</div>
             </div>

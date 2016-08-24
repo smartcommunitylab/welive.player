@@ -1,7 +1,17 @@
     angular.module('weliveplayer.controllers.profile', [])
-        .controller('ProfileCtrl', function ($scope, $ionicModal, $timeout, $filter, LoginSrv, StorageSrv, Utils) {
+        .controller('ProfileCtrl', function ($scope, $ionicModal, $timeout, $filter, LoginSrv, StorageSrv, Utils, Config) {
 
             var userId = StorageSrv.getLoggedInUserId();
+
+
+            $scope.initPicker = function() {
+              datePicker.show({mode: 'date', date: new Date($scope.profile.birthdate)}, function(date) {
+                $scope.profile.birthdate = $filter('date')(date,'yyyy-MM-dd');
+                $scope.$apply();
+              }, function(){
+
+              });
+            }
 
             var profileBody = {
                 "ccUserID": ""
@@ -16,6 +26,48 @@
                 , "developer": false
             , };
 
+            var preprocessProfile = function() {
+                $scope.profile.referredPilot = Config.getPilotMap()[$scope.profile.referredPilot];
+
+                $scope.languages = {
+                  Italian: {checked: false},
+                  Spanish: {checked: false},
+                  Finnish: {checked: false},
+                  Serbian: {checked: false},
+                  SerbianLatin: {checked: false},
+                  English: {checked: false}
+                };
+
+                if ($scope.profile.languages) {
+                  $scope.profile.languages.forEach(function(l){
+                    $scope.languages[l].checked = true;
+                  });
+                }
+
+                if ($scope.profile.userTags) {
+                  var newTags = [];
+                  $scope.profile.userTags.forEach(function(t) {
+                    if (!!t) newTags.push(t);
+                  });
+                  $scope.profile.userTags = newTags;
+                }
+                if ($scope.profile.skills) {
+                  var newTags = [];
+                  $scope.profile.skills.forEach(function(t) {
+                    if (!!t) newTags.push(t);
+                  });
+                  $scope.profile.skills = newTags;
+                }
+
+                // gender.
+                var inputGender = $scope.profile.gender;
+                $scope.profile.gender = $filter('translate')('lbl_' + inputGender.toLowerCase());
+                // fix birtdate string.
+                if ($scope.profile.birthdate.length > 9 && $scope.isValidDate($scope.profile.birthdate)) {
+                    $scope.profile.birthdate = $scope.profile.birthdate.substring(0, 10);
+                }
+            }
+
             LoginSrv.makeCDVProfileCall(userId)
 
                 .then(function(response) {
@@ -23,15 +75,8 @@
                         if (response.data.data) {
                             if (response.data.data.ccUserID) {
                                 $scope.profile = response.data.data;
-                                // gender.
-                                var inputGender = $scope.profile.gender; 
-                                $scope.profile.gender = $filter('translate')('lbl_' + inputGender.toLowerCase());
-                                // fix birtdate string.
-                                if (response.data.data.birthdate.length > 9 && $scope.isValidDate(response.data.data.birthdate)) {
-                                    $scope.profile.birthdate = response.data.data.birthdate.substring(0, 10);
-                                } else {
-                                    $scope.profile.birthdate = 'yyyy-mm-dd';
-                                }
+                                // preprocess data
+                                preprocessProfile();
                                 $scope.cdvProfile = 'exist';
                             }
                         }
@@ -60,7 +105,10 @@
                 profileBody.country = updateProfile.country;
                 profileBody.zipCode = updateProfile.zipCode;
                 // profileBody.referredPilot = updateProfile.referredPilot;
-                profileBody.languages = updateProfile.languages.toString().split(",");
+                profileBody.languages = [];//updateProfile.languages.toString().split(",");
+                for (var l in $scope.languages) {
+                  if ($scope.languages[l].checked) profileBody.languages.push(l);
+                }
                 //    profileBody.skills = updateProfile.skills.toString().split(",");
                 profileBody.userTags = updateProfile.userTags.toString().split(",");
                 // profileBody.developer = (updateProfile.developer.toString().toLowerCase() === "true") ? true : false;
@@ -75,12 +123,8 @@
                                     if (response.data.data) {
                                         if (response.data.data.ccUserID) {
                                             $scope.profile = response.data.data;
+                                            preprocessProfile();
                                             // fix birtdate string.
-                                            if (response.data.data.birthdate.length > 9 && $scope.isValidDate(response.data.data.birthdate)) {
-                                                $scope.profile.birthdate = response.data.data.birthdate.substring(0, 10);
-                                            } else {
-                                                $scope.profile.birthdate = 'yyyy-mm-dd';
-                                            }
                                             $scope.cdvProfile = 'exist';
                                         }
                                     }
@@ -136,14 +180,7 @@
                             if (response.data.data) {
                                 if (response.data.data.ccUserID) {
                                     $scope.profile = response.data.data;
-                                    // gender.
-                                    var inputGender = $scope.profile.gender;
-                                    $scope.profile.gender = $filter('translate')('lbl_' + inputGender.toLowerCase());
-                                    if (response.data.data.birthdate.length > 9 && $scope.isValidDate(response.data.data.birthdate)) {
-                                        $scope.profile.birthdate = response.data.data.birthdate.substring(0, 10);
-                                    } else {
-                                        $scope.profile.birthdate = 'yyyy-mm-dd';
-                                    }
+                                    preprocessProfile();
                                     $scope.cdvProfile = 'exist';
                                 }
                             }

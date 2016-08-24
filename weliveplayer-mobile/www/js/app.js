@@ -16,7 +16,6 @@ angular.module(
         'weliveplayer.services.playstore',
         'weliveplayer.services.storage',
         'weliveplayer.services.utils',
-        'weliveplayer.services.loggingtokensrv',
         'weliveplayer.controllers.app',
         'weliveplayer.controllers.home',
         'weliveplayer.controllers.profile',
@@ -57,7 +56,9 @@ angular.module(
         $rootScope.logout = function () {
             LoginSrv.logout().then(
                 function (data) {
-                    window.location.reload(true);
+                    ionic.Platform.exitApp();
+
+//                    window.location.reload(true);
                 }
                 , function (error) { }
             );
@@ -252,7 +253,7 @@ angular.module(
             , menu_home: 'Home'
             , menu_profile: 'Profilo'
             , menu_info: 'Informazioni'
-            , menu_about: 'About'
+            , menu_about: 'Informazioni'
             , menu_termine: 'Termini del servizio'
             , menu_logout: 'Esci'
             , toast_error_generic: 'Errore! Riavvia la app.'
@@ -282,7 +283,7 @@ angular.module(
             , lbl_languages: 'Lingue'
             , lbl_isDeveloper: 'Sviluppatore'
             , lbl_skills: 'Capacità'
-            , lbl_userTags: 'Preferenze (tag)'
+            , lbl_userTags: 'Preferenze'
             , lbl_usedApps: 'Applicazioni utilizzate'
             , lbl_profileData: 'Profilo'
             , lbl_lastLoc: 'Posizione'
@@ -295,9 +296,15 @@ angular.module(
             , lbl_error: 'errore'
             , lbl_accept: 'Accetto'
             , lbl_reject: 'Rifiuto'
-            , about_subtitle: 'Information and Terms of Use'
-            , terms_refused_alert_text: 'Terms refused.'
-            , lbl_credit_p2: "What is it?"
+            , about_subtitle: 'Termini e condizioni di utilizzo'
+            , terms_refused_alert_text: 'Termini rifiutati.'
+            , lbl_credit_p2: "Che cosa è?"
+            , Italian: "Italiano"
+            , Spanish: "Spagnolo"
+            , Serbian: "Serbo"
+            , SerbianLatin: "Serbo Latino"
+            , Finnish: "Finlandese"
+            , English: "Inglese"
         });
 
         $translateProvider.translations('en', {
@@ -308,7 +315,7 @@ angular.module(
             , menu_home: 'Home'
             , menu_profile: 'Profile'
             , menu_info: 'Information'
-            , menu_about: 'About'
+            , menu_about: 'Information'
             , menu_termine: 'Terms of Service'
             , menu_logout: 'Logout'
             , toast_error_generic: 'Error! Restart the App'
@@ -338,7 +345,7 @@ angular.module(
             , lbl_languages: 'Languages'
             , lbl_isDeveloper: 'Developer'
             , lbl_skills: 'Skills'
-            , lbl_userTags: 'Preferences (tags)'
+            , lbl_userTags: 'Preferences'
             , lbl_usedApps: 'Used Apps'
             , lbl_profileData: 'Profile'
             , lbl_lastLoc: 'Location'
@@ -354,6 +361,12 @@ angular.module(
             , about_subtitle: 'Information and Terms of Use'
             , terms_refused_alert_text: 'Terms refused.'
             , lbl_credit_p2: "What is it?"
+            , Italian: "Italian"
+            , Spanish: "Spanish"
+            , Serbian: "Serbian"
+            , SerbianLatin: "Serbian Latin"
+            , Finnish: "Finnish"
+            , English: "English"
 
         });
 
@@ -365,13 +378,12 @@ angular.module(
             , menu_home: 'Etusivu'
             , menu_profile: 'Profiili'
             , menu_info: 'Lisätietoja'
-            , menu_about: 'About'
+            , menu_about: 'Lisätietoja'
             , menu_termine: 'Käyttöehdot'
             , menu_logout: 'Kirjaudu ulos'
             , toast_error_generic: 'Jotain meni pieleen! Käynnistä sovellus uudestaan.'
             , no_apps: 'Sovellusta ei löydy. Yritä etsiä uudelleen.'
             , no_apps_no_selection: 'Valitse kaupunki, jonka sovellukset haluat nähdä.'
-            , no_comments : 'No comments yet'
             , lbl_popup_title: 'Valitse järjestys'
             , lbl_popup_recommended: 'Suositeltu'
             , lbl_popup_recent: 'Uusi'
@@ -383,8 +395,6 @@ angular.module(
             , lbl_name: 'Etunimi'
             , lbl_surname: 'Sukunimi'
             , lbl_gender: 'Sukupuoli'
-            , lbl_male: 'Male'
-            , lbl_female: 'Female'
             , lbl_dob: 'Syntymäpäivä'
             , lbl_addr: 'Osoite'
             , lbl_pilotId: 'Pilottikaupunki'
@@ -395,22 +405,32 @@ angular.module(
             , lbl_languages: 'Kielet'
             , lbl_isDeveloper: 'Kehittäjä'
             , lbl_skills: 'Taidot'
-            , lbl_userTags: 'Preferences (tags)'
             , lbl_usedApps: 'Käytetyt Sovellukset'
             , lbl_profileData: 'Profiili'
             , lbl_lastLoc: 'Sijainti'
             , lbl_save: 'TALLENNA'
+            , lbl_male: 'Mies'
+            , lbl_female: 'Nainen'
             , lbl_true: 'True'
             , lbl_false: 'False'
+            , Italian: "Italialainen"
+            , Spanish: "Espanjalainen"
+            , Serbian: "Serbia"
+            , SerbianLatin: "Serbia latinalainen"
+            , Finnish: "Suomi"
+            , English: "Englantilainen"
+            , lbl_userTags: 'Mieltymykset'
+            , lbl_accept: 'Hyväksyn'
+            , lbl_reject: 'En hyväksy'
+            , about_subtitle: 'Käyttöehdot'
+            , lbl_credit_p2: "Mikä se on?"
+
             , lbl_version: 'Version'
             , lbl_inprogress: 'Under construction'
             , lbl_comma_separated: 'separated by commas'
             , lbl_error: 'error'
-            , lbl_accept: 'Accept'
-            , lbl_reject: 'Reject'
-            , about_subtitle: 'Information and Terms of Use'
             , terms_refused_alert_text: 'Terms refused.'
-            , lbl_credit_p2: "What is it?"
+            , no_comments : 'No comments yet'
 
         });
 
@@ -422,7 +442,7 @@ angular.module(
             , menu_home: 'Inicio'
             , menu_profile: 'Perfil'
             , menu_info: 'Información'
-            , menu_about: 'About'
+            , menu_about: 'Información'
             , menu_termine: 'Condiciones del servicio'
             , menu_logout: 'Salir'
             , toast_error_generic: 'Error! Reinicie la aplicación'
@@ -440,8 +460,6 @@ angular.module(
             , lbl_name: 'Nombre'
             , lbl_surname: 'Apellido'
             , lbl_gender: 'Género'
-            , lbl_male: 'Male'
-            , lbl_female: 'Female'
             , lbl_dob: 'Fecha de nacimiento'
             , lbl_addr: 'Dirección'
             , lbl_pilotId: 'Ciudad piloto'
@@ -450,24 +468,33 @@ angular.module(
             , lbl_zipcode: 'Código Postal'
             , lbl_email: 'Email'
             , lbl_languages: 'Idiomas'
-            , lbl_isDeveloper: 'Desarollador'
+            , lbl_isDeveloper: 'Desarrollador'
             , lbl_skills: 'Habilidades'
-            , lbl_userTags: 'Preferences (tags)'
             , lbl_usedApps: 'Aplicaciones utilizadas'
             , lbl_profileData: 'Perfil'
             , lbl_lastLoc: 'Ubicación'
             , lbl_save: 'GUARDAR'
             , lbl_true: 'Verdadero'
             , lbl_false: 'Falso'
+            , lbl_accept: 'Acepto'
+            , lbl_reject: 'No acepto'
+            , about_subtitle: 'Términos y condiciones de uso'
+            , lbl_male: 'Hombre'
+            , lbl_female: 'Mujer'
+            , lbl_userTags: 'Preferencias'
+            , Italian: "Italiano"
+            , Spanish: "Español"
+            , Serbian: "Serbio"
+            , SerbianLatin: "Serbio Latín"
+            , Finnish: "Finés"
+            , English: "Inglés"
+            , lbl_credit_p2: "¿Qué es?"
+
             , lbl_version: 'Version'
             , lbl_inprogress: 'Under construction'
             , lbl_comma_separated: 'separated by commas'
             , lbl_error: 'error'
-            , lbl_accept: 'Accept'
-            , lbl_reject: 'Reject'
-            , about_subtitle: 'Information and Terms of Use'
             , terms_refused_alert_text: 'Terms refused.'
-            , lbl_credit_p2: "What is it?"
 
         });
 
@@ -479,7 +506,7 @@ angular.module(
             , menu_home: 'Početna strana'
             , menu_profile: 'Profil'
             , menu_info: 'Informacija'
-            , menu_about: 'About'
+            , menu_about: 'Informacija'
             , menu_termine: 'Uslovi korištenja Servisa'
             , menu_logout: 'Odjava'
             , toast_error_generic: 'Greška! Restartuj aplikaciju'
@@ -497,8 +524,6 @@ angular.module(
             , lbl_name: 'Ime'
             , lbl_surname: 'Prezime'
             , lbl_gender: 'Pol'
-            , lbl_male: 'Male'
-            , lbl_female: 'Female'
             , lbl_dob: 'Dan rodenja'
             , lbl_addr: 'Adresa'
             , lbl_pilotId: 'Pilot grad'
@@ -509,22 +534,31 @@ angular.module(
             , lbl_languages: 'Jezici'
             , lbl_isDeveloper: 'Developer'
             , lbl_skills: 'Veštine'
-            , lbl_userTags: 'Preferences (tags)'
+            , lbl_userTags: 'Prioritet'
             , lbl_usedApps: 'Korištene aplikacije'
             , lbl_profileData: 'Profil'
             , lbl_lastLoc: 'Lokacija'
             , lbl_save: 'SAČUVAJ'
             , lbl_true: 'Tačno'
             , lbl_false: 'Netačno'
+            , lbl_accept: 'Ovlastiti'
+            , lbl_reject: 'Poreći'
+            , about_subtitle: 'Uslovi kоrišćenja'
+            , Italian: "Italijanski"
+            , Spanish: "Španski"
+            , Serbian: "Srpski"
+            , SerbianLatin: "Srpski latinica"
+            , Finnish: "Finski"
+            , English: "Engleski"
+            , lbl_credit_p2: "Šta je to?"
+
             , lbl_version: 'Version'
             , lbl_inprogress: 'Under construction'
             , lbl_comma_separated: 'separated by commas'
             , lbl_error: 'error'
-            , lbl_accept: 'Accept'
-            , lbl_reject: 'Reject'
-            , about_subtitle: 'Information and Terms of Use'
             , terms_refused_alert_text: 'Terms refused.'
-            , lbl_credit_p2: "What is it?"
+            , lbl_male: 'Muški'
+            , lbl_female: 'Ženski'
 
         });
 
@@ -536,7 +570,7 @@ angular.module(
             , menu_home: 'Почетна страна'
             , menu_profile: 'Профил'
             , menu_info: 'Информација'
-            , menu_about: 'About'
+            , menu_about: 'Информација'
             , menu_termine: 'Услови коришћења сервиса'
             , menu_logout: 'Одјава'
             , toast_error_generic: 'Грешка! Рестартуј аплиакцију'
@@ -554,8 +588,6 @@ angular.module(
             , lbl_name: 'Име'
             , lbl_surname: 'Презиме'
             , lbl_gender: 'Пол'
-            , lbl_male: 'Male'
-            , lbl_female: 'Female'
             , lbl_dob: 'Дан рођења'
             , lbl_addr: 'Адреса'
             , lbl_pilotId: 'Пилот град'
@@ -566,22 +598,31 @@ angular.module(
             , lbl_languages: 'Језици'
             , lbl_isDeveloper: 'Девелопер'
             , lbl_skills: 'Вештине'
-            , lbl_userTags: 'Preferences (tags)'
             , lbl_usedApps: 'Коришћене апликације'
             , lbl_profileData: 'Профил'
             , lbl_lastLoc: 'Локација'
             , lbl_save: 'САЧУВАЈ'
             , lbl_true: 'Тачно'
             , lbl_false: 'Нетачно'
+            , lbl_accept: 'Овластити'
+            , lbl_reject: 'Порећи'
+            , about_subtitle: 'Услови коришћења'
+            , lbl_userTags: 'Приоритет'
+            , lbl_male: 'Мушки'
+            , lbl_female: 'Женски'
+            , Italian: "Италијански"
+            , Spanish: "Шпански"
+            , Serbian: "Српски"
+            , SerbianLatin: "Српски латиница"
+            , Finnish: "Фински"
+            , English: "Енглески"
+            , lbl_credit_p2: "Шта је то?"
+
             , lbl_version: 'Version'
             , lbl_inprogress: 'Under construction'
             , lbl_comma_separated: 'separated by commas'
             , lbl_error: 'error'
-            , lbl_accept: 'Accept'
-            , lbl_reject: 'Reject'
-            , about_subtitle: 'Information and Terms of Use'
             , terms_refused_alert_text: 'Terms refused.'
-            , lbl_credit_p2: "What is it?"
 
         });
 

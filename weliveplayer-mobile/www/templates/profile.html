@@ -18,7 +18,7 @@
             </div>
             <div class="row">
                 <div class="col">{{'lbl_dob'| translate}}:</div>
-                <div class="col">{{profile.birthdate}}</div>
+                <div class="col">{{profile.birthdate|date:'dd/MM/yyyy'}}</div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_addr'| translate}}:</div>
@@ -26,7 +26,7 @@
             </div>
             <div class="row">
                 <div class="col">{{'lbl_pilotId'| translate}}:</div>
-                <div class="col">{{profile.referredPilot}}</div>
+                <div class="col">{{profile.referredPilot | translate}}</div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_email'| translate}}:</div>
@@ -34,12 +34,11 @@
             </div>
             <div class="row">
                 <div class="col">{{'lbl_languages'| translate}}:</div>
-                <div class="col">{{profile.languages.join(", ")}}</div>
+                <div class="col"><span ng-repeat="lang in profile.languages">{{lang | translate}}&nbsp;</span></div>
             </div>
-            <div class="row">
+            <div class="row" ng-if="profile.developer">
                 <div class="col">{{'lbl_isDeveloper'| translate}}:</div>
-                <div class="col" ng-if="profile.developer">{{'lbl_true'| translate}}</div>
-                <div class="col" ng-if="!profile.developer">{{'lbl_false'| translate}}</div>
+              <div class="col" ><i class="icon ion-checkmark"></i></div>
             </div>
             <div class="row">
                 <div class="col">{{'lbl_skills'| translate}}:</div>
@@ -57,7 +56,7 @@
                 <div class="col">{{'lbl_dob'| translate}}:</div>
                 <div class="col">
                     <!--<input style="height: inherit;" type="tel" placeholder="{{birthdateplaceholder}}" ng-model="profile.birthdate">-->
-                    <input type="text" style="height: inherit;" mask="9999-19-39" restrict="reject"" ng-model="profile.birthdate">
+                    <div style="width:100%;" ng-click="initPicker()">{{profile.birthdate|date:'dd/MM/yyyy'}}</div>
                 </div>
             </div>
             <div class="row">
@@ -91,10 +90,17 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col">{{'lbl_languages'| translate}}:<h6 style="font-style:italic;">{{'lbl_comma_separated'| translate}}</h6></div>
+                <div class="col">{{'lbl_userTags'| translate}}:</div>
                 <div class="col">
-                    <textarea rows="5" cols="50" style="height: inherit;" placeholder="{{profile.languages.join(', ')}}" ng-model="profile.languages"></textarea>
+                    <input style="height: inherit;" type="text" placeholder="tag1,tag2" ng-model="profile.userTags">
                 </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                {{'lbl_languages'| translate}}:
+                <ion-checkbox ng-repeat="(lang, state) in languages" ng-model="state.checked">{{lang | translate}}</ion-checkbox>
+              </div>
+<!--                    <textarea rows="5" cols="50" style="height: inherit;" placeholder="{{profile.languages.join(', ')}}" ng-model="profile.languages"></textarea>-->
             </div>
             <!--<div class="row">
                 <div class="col">{{'lbl_isDeveloper'| translate}}:</div>
@@ -110,12 +116,6 @@
                     <input type="text" placeholder="{{profile.skills.join()}}" ng-model="profile.skills">
                 </div>
             </div>-->
-            <div class="row">
-                <div class="col">{{'lbl_userTags'| translate}}:</div>
-                <div class="col">
-                    <input style="height: inherit;" type="text" placeholder="{{profile.userTags.join()}}" ng-model="profile.userTags">
-                </div>
-            </div>
             <!--<br>
             <br>
             <div style="text-align: center;">

@@ -1,10 +1,10 @@
 angular.module('weliveplayer.services.utils', [])
 
-    .factory('Utils', function($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, $http, Config, LoginSrv, StorageSrv, LoggingTokenSrv) {
+    .factory('Utils', function($rootScope, $q, $filter, $ionicLoading, $ionicPopup, $timeout, $http, Config, LoginSrv, StorageSrv) {
 
         var utilsService = {};
 
-        var loggingToken = LoggingTokenSrv.getLoggingToken();
+        var loggingToken = LOGGING_TOKEN;
  
         //app cache.
         var appMap = new Object();
@@ -409,6 +409,7 @@ angular.module('weliveplayer.services.utils', [])
         };
 
         utilsService.log = function(body) {
+            return;
 
             var deferred = $q.defer();
 
@@ -436,6 +437,7 @@ angular.module('weliveplayer.services.utils', [])
 
             var pilot = [];
             var pilotId = StorageSrv.getLoggedInUserPilotId();
+            pilotId = Config.getPilotMap()[pilotId];
 
             if (pilotId) {
                 pilot.push(pilotId);

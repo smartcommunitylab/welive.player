@@ -9,7 +9,15 @@ angular.module('weliveplayer.services.config', [])
         var LOG_URI = "https://dev.welive.eu/dev/api/log/weliveplayer";
         var CDV_URI = "https://dev.welive.eu/dev/api/cdv";
         var PILOT_IDS = ["Bilbao", "Uusimaa", "Novisad", "Trento"];
-        var BASICAUTH_TOKEN = "Basic d2VsaXZlQHdlbGl2ZS5ldTp3M2wxdjN0MDBscw==";
+        var PILOT_IDS_MAP = {
+          "Bilbao": "Bilbao",
+          "Uusimaa": "Uusimaa",
+          "Novisad": "Novisad",
+          "Trento": "Trento",
+          "Bilbao": "Bilbao",
+          "Helsinki Region": "Uusimaa",
+          "Novi Sad": "Novisad"
+        };
         var APP_TYPE = "PSA";
         var LANGUAGES = ["it", "en", "fi", "es", "sr", "sr_cyril"];
         var WEBAPPS_TYPES = ["Web Application", "Open Social Gadget"];
@@ -138,11 +146,11 @@ angular.module('weliveplayer.services.config', [])
             , getPilotIds: function () {
                 return PILOT_IDS;
             }
+            , getPilotMap: function () {
+                return PILOT_IDS_MAP;
+            }
             , getCDVUri: function () {
                 return CDV_URI;
-            }
-            , getBasicAuthToken: function () {
-                return BASICAUTH_TOKEN;
             }
             , getDefaultAppType: function () {
                 return APP_TYPE;
