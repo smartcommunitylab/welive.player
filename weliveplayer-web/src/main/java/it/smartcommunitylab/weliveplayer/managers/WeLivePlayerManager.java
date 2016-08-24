@@ -299,7 +299,7 @@ public class WeLivePlayerManager {
 				}
 			} catch (Exception e) {
 				paginatedList.get(0).setRecommendation(true);
-				throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+				//throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 			}
 
 		}
