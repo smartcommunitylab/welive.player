@@ -35,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -430,6 +431,10 @@ public class WeLivePlayerManager {
 									&& !profileJson.get("languages").toString().equalsIgnoreCase("[]")) {
 								profile.setLanguages(
 										mapper.readValue(profileJson.get("languages").toString(), List.class));
+								for (int i = 0; i < profile.getLanguages().size(); i++) {
+									String l = profile.getLanguages().get(i);
+									profile.getLanguages().set(i,StringUtils.capitalize(l));
+								}
 							}
 							// if (profileJson.has("thirdParties")
 							// &&
