@@ -3,7 +3,8 @@
 
             var userId = StorageSrv.getLoggedInUserId();
 
-
+            $scope.canRefresh = true;
+ 
             $scope.initPicker = function() {
               datePicker.show({mode: 'date', date: new Date($scope.profile.birthdate)}, function(date) {
                 $scope.profile.birthdate = $filter('date')(date,'yyyy-MM-dd');
@@ -89,10 +90,12 @@
 
             $scope.editProfile = function () {
                 $scope.cdvProfile = 'edit';
+                $scope.canRefresh = false;
             }
 
             $scope.saveProfile = function (updateProfile) {
 
+                $scope.canRefresh = true;
                 // create profile json Body.
                 profileBody.ccUserID = updateProfile.ccUserID;
                 if (updateProfile.birthdate.length > 9 && $scope.isValidDate(updateProfile.birthdate)) {
@@ -173,22 +176,27 @@
             }
 
 
-            $scope.doRefresh = function() {
-                LoginSrv.makeCDVProfileCall(userId)
-                    .then(function(response) {
-                        if (response) {
-                            if (response.data.data) {
-                                if (response.data.data.ccUserID) {
-                                    $scope.profile = response.data.data;
-                                    preprocessProfile();
-                                    $scope.cdvProfile = 'exist';
+            $scope.doRefresh = function () {
+                if ($scope.canRefresh) {
+                    LoginSrv.makeCDVProfileCall(userId)
+                        .then(function (response) {
+                            if (response) {
+                                if (response.data.data) {
+                                    if (response.data.data.ccUserID) {
+                                        $scope.profile = response.data.data;
+                                        preprocessProfile();
+                                        $scope.cdvProfile = 'exist';
+                                    }
                                 }
                             }
+                            $scope.$broadcast('scroll.refreshComplete');
                         }
-                        $scope.$broadcast('scroll.refreshComplete');
-                    }
-                    , function(error) {
-                        $scope.$broadcast('scroll.refreshComplete');
-                    });
-            }
+                        , function (error) {
+                            $scope.$broadcast('scroll.refreshComplete');
+                        });
+                }
+                else {
+                    $ionicScrollDelegate.resize();
+                }
+            }    
         })

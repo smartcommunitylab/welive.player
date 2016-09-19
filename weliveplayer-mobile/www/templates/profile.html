@@ -6,7 +6,7 @@
     </ion-nav-buttons>
 
     <ion-content class="padding">
-        <ion-refresher on-refresh="doRefresh()"></ion-refresher>
+        <ion-refresher ng-if="canRefresh" class="refresher" pulling-icon="ion-load-c" spinner="spiral" on-refresh="doRefresh()"></ion-refresher>
         <div class="padding profile" ng-show="cdvProfile == 'exist'">
             <div class="row">
                 <div class="col">{{'lbl_name'| translate}}</div>
@@ -55,7 +55,6 @@
             <div class="row">
                 <div class="col">{{'lbl_dob'| translate}}:</div>
                 <div class="col">
-                    <!--<input style="height: inherit;" type="tel" placeholder="{{birthdateplaceholder}}" ng-model="profile.birthdate">-->
                     <div style="width:100%;" ng-click="initPicker()">{{profile.birthdate|date:'dd/MM/yyyy'}}</div>
                 </div>
             </div>
@@ -65,12 +64,6 @@
                     <input style="height: inherit;" type="text" placeholder="{{profile.address}}" ng-model="profile.address">
                 </div>
             </div>
-            <!--<div class="row">
-                <div class="col">{{'lbl_pilotId'| translate}}:</div>
-                <div class="col">
-                    <input style="height: inherit;" type="text" placeholder="{{profile.referredPilot}}" ng-model="profile.referredPilot">
-                </div>
-            </div>-->
             <div class="row">
                 <div class="col">{{'lbl_city'| translate}}:</div>
                 <div class="col">
@@ -100,29 +93,8 @@
                 {{'lbl_languages'| translate}}:
                 <ion-checkbox ng-repeat="(lang, state) in languages" ng-model="state.checked">{{lang | translate}}</ion-checkbox>
               </div>
-<!--                    <textarea rows="5" cols="50" style="height: inherit;" placeholder="{{profile.languages.join(', ')}}" ng-model="profile.languages"></textarea>-->
             </div>
-            <!--<div class="row">
-                <div class="col">{{'lbl_isDeveloper'| translate}}:</div>
-                <div class="col">
-                    <input style="height: inherit;" type="checkbox" ng-model="profile.developer">
-                </div>
-            </div>-->
-            <!--<div class="row">
-                <div class="col profile-edit-toggle"></div>
-                toggle-class="toggle-small"
-                <div class="col">{{'lbl_skills'| translate}}:</div>
-                <div class="col">
-                    <input type="text" placeholder="{{profile.skills.join()}}" ng-model="profile.skills">
-                </div>
-            </div>-->
-            <!--<br>
-            <br>
-            <div style="text-align: center;">
-                <button style="font-size: 16px;" ng-click="saveProfile(profile)">
-                    {{'lbl_save' | translate}}
-                </button>
-            </div>-->
+
         </div>
         </div>
 
