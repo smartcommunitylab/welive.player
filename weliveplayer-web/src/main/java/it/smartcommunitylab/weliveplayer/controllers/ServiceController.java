@@ -51,6 +51,11 @@ public class ServiceController {
 	@Autowired
 	private WeLivePlayerManager weLivePlayerManager;
 
+	@RequestMapping(method = RequestMethod.GET, value = "/api/apps/ping")
+	public @ResponseBody Response<String> pong() {
+		return new Response<String>("pong");
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/api/apps/{pilotId}/{appType}")
 	public @ResponseBody Response<List<Artifact>> getArtifacts(@PathVariable String pilotId,
 			@PathVariable String appType, @RequestParam(required = false) Integer start,
