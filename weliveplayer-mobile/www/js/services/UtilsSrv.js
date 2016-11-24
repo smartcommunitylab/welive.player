@@ -31,7 +31,7 @@ angular.module('weliveplayer.services.utils', [])
                 };
 
                 var creationError = function(error) {
-                    deferred.resolve(null);
+                    deferred.reject();
                 };
 
                 var singlePromise = utilsService.fetchApps(element, opts).then(creationSuccess, creationError);
@@ -81,12 +81,12 @@ angular.module('weliveplayer.services.utils', [])
                                 deferred.resolve(apps);
 
                             }, function(error) {
-                                deferred.resolve(null);
+                                deferred.reject();
                             })
 
                     }
                     , function(responseError) {
-                        deferred.resolve(null);
+                        deferred.reject();
                     }
 
                 );
@@ -94,101 +94,6 @@ angular.module('weliveplayer.services.utils', [])
             }
             return deferred.promise;
         }
-
-        /**
-            utilsService.fetchApps = function fetchApps(region) {
-            
-                var deferred = $q.defer();
-            
-                var apps = [];
-            	
-                if (appMap[region] != null) {
-                       var arr = appMap[region];
-                           if (arr) {
-                               apps = apps.concat(arr);
-                               deferred.resolve(apps);
-              }} else {
-                     $http.get("resources/" + region.toLowerCase() + '.json')
-            
-                    .then(function (response) {
-                    	
-                        var apps = response.data;
-                    	
-                        var cachedApps = [];
-                    	
-                        var promises = [];
-                    	
-                        // run for each app.
-                        apps.forEach(function(app){
-                            var creationSuccess = function (review) { 
-                                if (review.length > 0) {
-                                  app.rating = review[0];
-                               app.totalReviews = review[1];
-                             }
-                                cachedApps.push(app);
-                          };
-                          var creationError = function (error) {
-                                deferred.resolve(null);
-                          };
-            
-                            var singlePromise = PlayStore.getAgreegateReview(app.storeId).then(creationSuccess, creationError);
-                            promises.push(singlePromise); 
-                          
-                        })
-                        $q.all(promises).then (function (){
-                            deferred.resolve(cachedApps);
-                        });
-            
-                    },
-                    function (responseError) {
-                        deferred.resolve(null);
-                    }
-                   ); 
-                   }
-            	
-              return deferred.promise;
-            
-         }
-            
-            
-            var appMap = {
-            
-                Trento: [
-                          { id: 1, name: 'Viaggia Trento', city: 'Trento', rating: 5, userId : 52, consigliati : true, timestamp : 1454672400, tags : 'tag1,tagN', storeId : 'eu.trentorise.smartcampus.viaggiatrento' },
-                          { id: 2, name: 'Comune nel Tasca', city: 'Trento', rating: 4, userId : 52, consigliati : false, timestamp : 1454672400, tags : 'tag1,tagN', storeId : 'it.smartcampuslab.comuni.trento' },
-                          { id: 3, name: '%100 Riciclo Trento', city: 'Trento', rating: 3.2, userId : 52, consigliati : true, timestamp : 1454672400, tags : 'tag1,tagN', storeId : 'it.smartcommunitylab.rifiuti.trento' },
-                          { id: 4, name: 'MetroParco', city: 'Trento', rating: 1, userId : 52, consigliati : true, timestamp : 1454672400, tags : 'tag1,tagN', storeId : 'eu.trentorise.smartcampus.viaggiatrento' },
-                          { id: 5, name: 'Infanzia Digitale', city: 'Trento', rating: 0.9, userId : 52, consigliati : false, timestamp : 1454672408, tags : 'tag1,tagN', storeId : 'eu.trentorise.smartcampus.viaggiatrento' },
-                            { id: 6, name: 'Futura Trento', city: 'Trento', rating: 2, userId : 52, consigliati : true, timestamp : 1454672400, tags : 'tag1,tagN', storeId : 'eu.trentorise.smartcampus.viaggiatrento' },
-                            { id: 7, name: 'CLIMB', city: 'Trento', rating: 4, userId : 52, consigliati : false, timestamp : 1454672409, tags : 'tag1,tagN', storeId : 'eu.trentorise.smartcampus.viaggiatrento'}
-                          ],
-              Rovereto: [
-                          { id: 8, name: 'Viaggia Rovereto', city: 'Rovereto', rating: 5, userId : 52, consigliati : true, timestamp : 1454672400, tags : 'tag1,tagN', storeId : 'eu.trentorise.smartcampus.viaggiarovereto' },
-                          { id: 9, name: 'iPosto', city: 'Rovereto', rating: 3.5, userId : 52, consigliati : true, timestamp : 1454672410, tags : 'tag1,tagN', storeId : 'eu.trentorise.smartcampus.viaggiatrento' },
-                          { id: 10, name: '%100 Riciclo Rovereto', city: 'Rovereto', rating: 3.1, userId : 52, consigliati : true, timestamp : 1454672400, tags : 'tag1,tagN', storeId : 'it.smartcommunitylab.rifiuti.rovereto' }
-                        ],
-               Novisad: [
-                         { id: 11, name: 'FiemmeSKI', city: 'Novisad', rating: 3, userId : 52, consigliati : false, timestamp : 1454672400, tags : 'tag1,tagN', storeId : 'eu.trentorise.smartcampus.viaggiatrento' }
-                        ]
-            };
-            
-            
-            
-            utilsService.getAppsByRegion = function(region) {
-                var apps= [];
-            
-                // make local copy of map.
-                var tempMap = {};
-                for (var i in appMap)
-                    tempMap[i] = appMap[i];
-            
-                region.forEach(function(element){
-                    var arr = tempMap[element];
-                    if (arr) apps = apps.concat(arr);	
-                });
-            
-                return apps;
-            }*/
 
         utilsService.getAgreegateRating = function(app) {
 
@@ -409,8 +314,7 @@ angular.module('weliveplayer.services.utils', [])
         };
 
         utilsService.log = function(body) {
-            return;
-
+        
             var deferred = $q.defer();
 
             var url = Config.getLogUri();
@@ -424,10 +328,10 @@ angular.module('weliveplayer.services.utils', [])
             })
 
                 .then(function(response) {
-                    deferred.resolve(null);
+                    deferred.reject();
 
                 }, function(error) {
-                    deferred.resolve(null);
+                    deferred.reject();
                 })
 
             return deferred.promise;

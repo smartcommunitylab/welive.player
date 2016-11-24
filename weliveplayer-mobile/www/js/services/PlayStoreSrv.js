@@ -15,42 +15,36 @@ angular.module('weliveplayer.services.playstore', [])
         //         var reviews = response.data.data;
         //         deferred.resolve(reviews);
         //     }, function (error) {
-        //         deferred.resolve(null);
+        //         deferred.reject();
         //     })
 
         LoginSrv.accessToken().then(
             function (token) {
                 var url = Config.getWeLiveProxyUri() + "appComments/" + opts.id + "?start=" + opts.start + "&count=" + opts.count;
                 $http.get(url, {
-                        headers: {
-                            "Authorization": "Bearer " + token
-                        }
-                    })
-                    .then(function (response) {
-                        var reviews = [];
-
-                        if (response.data.data) {
-                            response.data.data.forEach(function (review) {
-                                var d = new Date(review.publishDate);
-                                review.publishDate = d;
-                                reviews.push(review);
-                            });                
-                        }
-                        
-                        deferred.resolve(reviews);
-                        
+                    timeout: 5000,
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    }
+                }).then(function (response) {
+                    var reviews = [];
+                    if (response.data.data) {
+                        response.data.data.forEach(function (review) {
+                            var d = new Date(review.publishDate);
+                            review.publishDate = d;
+                            reviews.push(review);
+                        });
+                    }
+                    deferred.resolve(reviews);
                     }, function (error) {
-                        deferred.resolve(null);
+                        deferred.reject();
                     })
-
             }
             , function (responseError) {
-                deferred.resolve(null);
+                deferred.reject();
             }
-
-        );
-
-
+            );
+        
         return deferred.promise;
 
     }
@@ -95,13 +89,13 @@ angular.module('weliveplayer.services.playstore', [])
                                 playStoreUserReviews[opts.city + "_" + opts.id] = reviews;
                                 deferred.resolve(reviews);
                             } else {
-                                deferred.resolve(null);
+                                deferred.reject();
                             }
 
 
                         },
                         function (responseError) {
-                            deferred.resolve(null);
+                            deferred.reject();
                         }
                         );
             }
@@ -144,7 +138,7 @@ angular.module('weliveplayer.services.playstore', [])
 
                     },
                     function (responseError) {
-                        deferred.resolve(null);
+                        deferred.reject();
                     }
                     );
 

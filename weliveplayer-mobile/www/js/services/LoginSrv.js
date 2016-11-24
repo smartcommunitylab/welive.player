@@ -200,7 +200,7 @@ angular.module('weliveplayer.services.login', [])
                 if (response.data.access_token) {
                     deferred.resolve(response.data);
                 } else {
-                    deferred.resolve(null);
+                    deferred.reject();
                 }
 
 
@@ -233,7 +233,7 @@ angular.module('weliveplayer.services.login', [])
                 if (response.data.userId) {
                     deferred.resolve(response.data);
                 } else {
-                    deferred.resolve(null);
+                    deferred.reject();
                 }
 
 
@@ -263,7 +263,7 @@ angular.module('weliveplayer.services.login', [])
                 if (response.data) {
                     deferred.resolve(response);
                 } else {
-                    deferred.resolve(null);
+                    deferred.reject();
                 }
             }, function (error) {
                 deferred.reject(error);
@@ -283,7 +283,7 @@ angular.module('weliveplayer.services.login', [])
                         if (response.data) {
                             deferred.resolve(response);
                         } else {
-                            deferred.resolve(null);
+                            deferred.reject();
                         }
                     }, function (error) {
                         deferred.reject(error);
@@ -291,7 +291,7 @@ angular.module('weliveplayer.services.login', [])
 
                 }
                 , function (responseError) {
-                    deferred.resolve(null);
+                    deferred.reject();
                 }
 
             );
@@ -318,7 +318,7 @@ angular.module('weliveplayer.services.login', [])
                         if (response.data.errorCode === 0) {
                             deferred.resolve(response);
                         } else {
-                            deferred.resolve(null);
+                            deferred.reject();
                         }
                     }, function (error) {
                         deferred.reject(error);
@@ -326,7 +326,7 @@ angular.module('weliveplayer.services.login', [])
 
             }
             , function (responseError) {
-                deferred.resolve(null);
+                deferred.reject();
             }
 
         );

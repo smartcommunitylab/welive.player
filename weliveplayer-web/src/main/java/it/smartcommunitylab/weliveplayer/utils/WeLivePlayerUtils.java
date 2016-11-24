@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import it.smartcommunitylab.weliveplayer.exception.WeLivePlayerCustomException;
+
 @Component
 public class WeLivePlayerUtils {
 
@@ -104,6 +106,11 @@ public class WeLivePlayerUtils {
 				response.append(inputLine);
 			}
 			in.close();
+
+			if (con.getResponseCode() >= 400) {
+				throw new WeLivePlayerCustomException(con.getResponseCode(), con.getResponseMessage());
+			}
+
 		} else {
 			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 			// optional default is GET
@@ -129,6 +136,10 @@ public class WeLivePlayerUtils {
 				response.append(inputLine);
 			}
 			in.close();
+
+			if (con.getResponseCode() >= 400) {
+				throw new WeLivePlayerCustomException(con.getResponseCode(), con.getResponseMessage());
+			}
 		}
 		// print result
 		// logger.info(response.toString());
