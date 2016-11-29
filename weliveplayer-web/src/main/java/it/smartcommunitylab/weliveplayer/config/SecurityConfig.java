@@ -26,6 +26,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
+import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -48,10 +50,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 
+		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+
 		http.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll().antMatchers("/api/**")
 				.fullyAuthenticated().and()
 				.addFilterBefore(oauthAuthenticationFilter(), BasicAuthenticationFilter.class).httpBasic()
-				.authenticationEntryPoint(forbEntryPoint());
+				.authenticationEntryPoint(authEntryPoint());
+
+	}
+
+	@Bean
+	public OAuth2AuthenticationEntryPoint authEntryPoint() {
+		OAuth2AuthenticationEntryPoint entryPoint = new OAuth2AuthenticationEntryPoint();
+		return entryPoint;
+	}
+
+	@Bean
+	public OAuth2AccessDeniedHandler accessDeniedHandler() {
+		OAuth2AccessDeniedHandler accessDeniedHandler = new OAuth2AccessDeniedHandler();
+		return accessDeniedHandler;
 
 	}
 
