@@ -8,7 +8,7 @@
             <h4>{{ 'lbl_comment' | translate }}</h4>
         </div>   
         <ion-list>
-            <ion-item ng-repeat="userReview in userReviews" class="comments" ng-click="">
+            <ion-item ng-repeat="userReview in userReviews" class="comments">
                 <!--<img ng-src="img/ionic.png">-->
                 <div>{{ userReview.authorNode }}</div>
                 <div>{{ userReview.publishDate.toLocaleString() }}</div>

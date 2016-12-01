@@ -302,7 +302,7 @@ angular.module('weliveplayer.controllers.home', [])
 
     })
 
-    .controller('AppCommentsCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, $q, PlayStore, Config) {
+    .controller('AppCommentsCtrl', function ($scope, $state, $ionicPopup, $timeout, Utils, $q, PlayStore, Config, $filter) {
 
         var app = Utils.getAppDetails($state.params.appId, $state.params.appRegion);
 

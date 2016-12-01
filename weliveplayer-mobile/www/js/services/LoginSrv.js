@@ -337,55 +337,59 @@ angular.module('weliveplayer.services.login', [])
 
     loginService.accessToken = function () {
 
-        var user = StorageSrv.getUser();
-
         var deferred = $q.defer();
 
-        // alert("getAccessToken");
+        var user = StorageSrv.getUser();
 
-        // debugger;
+        if (user != null) {
+            // alert("getAccessToken");
 
-        // check for expiry.
-        var now = new Date();
-        var saved = new Date(user.token.validUntil);
-        if (saved.getTime() >= now.getTime()) {
-            deferred.resolve(user.token.access_token);
-        } else {
-            var url = Config.getServerURL();
-            var params = "/oauth/token?client_id=" + Config.getClientId() + "&client_secret=" + Config.getClientSecKey() + "&refresh_token=" + user.token.refresh_token + "&grant_type=refresh_token";
+            // debugger;
 
-            $http.post(url + params)
+            // check for expiry.
+            var now = new Date();
+            var saved = new Date(user.token.validUntil);
+            if (saved.getTime() >= now.getTime()) {
+                deferred.resolve(user.token.access_token);
+            } else {
+                var url = Config.getServerURL();
+                var params = "/oauth/token?client_id=" + Config.getClientId() + "&client_secret=" + Config.getClientSecKey() + "&refresh_token=" + user.token.refresh_token + "&grant_type=refresh_token";
 
-            .then(
-                function (response) {
-                    // alert(response.data);
-                    if (response.data.exception) {
-                        // reforce login again.
-                        loginService.logout().then(function success() {
-                            loginService.login();
-                        }, function error() {});
-                    } else if (response.data.access_token) {
-                        var access_token = response.data.access_token;
-                        user.token.access_token = response.data.access_token;
-                        user.token.refresh_token = response.data.refresh_token;
-                        user.token.expires_in = response.data.expires_in;
-                        // calculate expiry (after removing 1 hr).
-                        var t = new Date();
-                        t.setSeconds(t.getSeconds() + (response.data.expires_in - 3600));
-                        user.token.validUntil = t;
-                        // update token
-                        StorageSrv.saveUser(user).then(function (success) {}, function (error) {});;
+                $http.post(url + params)
 
-                        deferred.resolve(access_token);
-                    } else {
-                        deferred.reject(null);
+                    .then(
+                    function (response) {
+                        // alert(response.data);
+                        if (response.data.exception) {
+                            // reforce login again.
+                            loginService.logout().then(function success() {
+                                loginService.login();
+                            }, function error() { });
+                        } else if (response.data.access_token) {
+                            var access_token = response.data.access_token;
+                            user.token.access_token = response.data.access_token;
+                            user.token.refresh_token = response.data.refresh_token;
+                            user.token.expires_in = response.data.expires_in;
+                            // calculate expiry (after removing 1 hr).
+                            var t = new Date();
+                            t.setSeconds(t.getSeconds() + (response.data.expires_in - 3600));
+                            user.token.validUntil = t;
+                            // update token
+                            StorageSrv.saveUser(user).then(function (success) { }, function (error) { });;
+
+                            deferred.resolve(access_token);
+                        } else {
+                            deferred.reject(null);
+                        }
                     }
-                }
-                , function (responseError) {
-                    deferred.reject(responseError);
-                }
-            );
+                    , function (responseError) {
+                        deferred.reject(responseError);
+                    }
+                    );
 
+            }
+        } else {
+            deferred.reject();
         }
 
         return deferred.promise;

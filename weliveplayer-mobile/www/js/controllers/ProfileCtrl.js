@@ -133,11 +133,15 @@
                                     }
                                 }
                             }
-                            , function(error) {
+                            , function (error) {
+                                Utils.toast($filter('translate')('lbl_error'));
+                                $scope.doRefresh();
                             });
                     }
                     , function(error) {
                         $scope.cdvProfile = 'exist';
+                        Utils.toast($filter('translate')('lbl_error'));
+                        $scope.doRefresh();
                     })
             }
 

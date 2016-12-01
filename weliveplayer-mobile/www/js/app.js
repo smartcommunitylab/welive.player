@@ -24,7 +24,7 @@ angular.module(
         'weliveplayer.controllers.terms'
     ])
 
-    .run(function ($ionicPlatform, $state, $rootScope, $translate, StorageSrv, LoginSrv, Config, Utils) {
+    .run(function ($ionicPlatform, $state, $rootScope, $translate, StorageSrv, LoginSrv, Config, Utils, $filter) {
 
 
         $rootScope.loginStarted = false;
@@ -57,10 +57,10 @@ angular.module(
             LoginSrv.logout().then(
                 function (data) {
                     ionic.Platform.exitApp();
-
-//                    window.location.reload(true);
                 }
-                , function (error) { }
+                , function (error) {
+                    Utils.toast($filter('translate')('lbl_error'));
+                }
             );
         };
 
