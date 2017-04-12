@@ -1,7 +1,7 @@
 angular.module('weliveplayer.controllers.about', [])
     .controller('AboutCtrl', function($scope, $ionicModal, $timeout, $filter, $translate, Config) {
 
-        var currentversion = 'v0.2.8';
+        var currentversion = 'v0.2.9';
 
         if (cordova.getAppVersion) {
           cordova.getAppVersion(function(version) {
