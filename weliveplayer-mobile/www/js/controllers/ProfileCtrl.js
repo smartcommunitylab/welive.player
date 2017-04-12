@@ -62,9 +62,18 @@
 
                 // gender.
                 var inputGender = $scope.profile.gender;
-                $scope.profile.gender = $filter('translate')('lbl_' + inputGender.toLowerCase());
+                if ((inputGender !== undefined) &&
+                    (inputGender !== null) &&
+                    (inputGender.length != 0)) {
+                    $scope.profile.gender = $filter('translate')('lbl_' + inputGender.toLowerCase());
+                }
+                               
                 // fix birtdate string.
-                if ($scope.profile.birthdate.length > 9 && $scope.isValidDate($scope.profile.birthdate)) {
+                if (
+                    ($scope.profile.birthdate !== undefined) &&
+                    ($scope.profile.birthdate !== null) &&
+                    ($scope.profile.birthdate.length > 9) &&
+                    ($scope.isValidDate($scope.profile.birthdate))) {
                     $scope.profile.birthdate = $scope.profile.birthdate.substring(0, 10);
                 }
             }
@@ -96,13 +105,20 @@
             $scope.saveProfile = function (updateProfile) {
 
                 $scope.canRefresh = true;
-                // create profile json Body.
+                
+                // must be set.
                 profileBody.ccUserID = updateProfile.ccUserID;
-                if (updateProfile.birthdate.length > 9 && $scope.isValidDate(updateProfile.birthdate)) {
+
+                // create profile json Body.
+                if ((updateProfile.birthdate !== undefined) &&
+                    (updateProfile.birthdate !== null) &&
+                    (updateProfile.birthdate.length > 9) &&
+                    ($scope.isValidDate(updateProfile.birthdate))) {
                     profileBody.birthdate = updateProfile.birthdate.substring(0, 10);
                 } else {
                     profileBody.birthdate = null;
                 }
+                
                 profileBody.address = updateProfile.address;
                 profileBody.city = updateProfile.city;
                 profileBody.country = updateProfile.country;
