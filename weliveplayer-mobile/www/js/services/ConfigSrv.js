@@ -1,6 +1,7 @@
 angular.module('weliveplayer.services.config', [])
 
     .factory('Config', function ($http, $q, $filter) {
+        var GOOGLEWEBCLIENTID = "71411923835-icrn361vjnau07iiccivudhc28d609fm.apps.googleusercontent.com";
         var AAC_SERVER_URL = "https://dev.welive.eu/dev/api/aac";
         var CLIENT_ID = "e4cd499e-81ac-4240-bd5c-1d4680f2f99f";
         var CLIENT_SEC_KEY = "6b934176-4513-43dd-a713-b926bfd979e2";
@@ -101,6 +102,9 @@ angular.module('weliveplayer.services.config', [])
         var RATING_MAX = 5;
 
         return {
+            getGoogleSignInClientID: function () {
+                return GOOGLEWEBCLIENTID;
+            },
             getLogUri: function () {
                 return LOG_URI;
             }

@@ -1,7 +1,7 @@
 /* global ; */
 angular.module('weliveplayer.services.login', [])
 
-.factory('LoginSrv', function ($rootScope, $q, $http, $window, StorageSrv, Config) {
+.factory('LoginSrv', function ($rootScope, $state, $q, $http, $window, StorageSrv, Config) {
     var loginService = {};
 
     var authWindow = null;
@@ -31,6 +31,37 @@ angular.module('weliveplayer.services.login', [])
                 }
 
                 var processURL = function (url, deferred, w) {
+                    var googleLocalWindow = null;
+                    if (url == "https://dev.welive.eu/aac/eauth/google") { // Google Optimized Flow.
+                        // alert("Google Flow.");
+                        w.close();
+                        window.plugins.googleplus.login(
+                            {
+                                // 'scopes': '... ', // optional, space-separated list of scopes, If not included or empty, defaults to `profile` and `email`.
+                                'webClientId': Config.getGoogleSignInClientID(), // optional clientId of your Web application from Credentials settings of your project - On Android, this MUST be included to get an idToken. On iOS, it is not required.
+                                // 'offline': true, // optional, but requires the webClientId - if set to true the plugin will also return a serverAuthCode, which can be used to grant offline access to a non-Google server
+                            },
+                            function (obj) {
+                                var idToken = obj.idToken;
+                                // call back googleLocal
+                                var googleLocalUrl = 'https://dev.welive.eu/aac/eauth/authorize/googlelocal?token=' + idToken + '&client_id=' + Config.getClientId() + "&response_type=code&redirect_uri=" + Config.getRedirectUri();
+                                googleLocalWindow = window.open(googleLocalUrl, '_blank', 'location=no,toolbar=no');
+                                googleLocalWindow.addEventListener('loadstart', function (e) {
+                                    var url = e.url;
+                                    processURL(url, deferred, googleLocalWindow);
+                                });
+                            },
+                            function (msg) {
+                                deferred.reject();
+                                authWindow = null;
+                               // $state.go('app.home');
+                                $rootScope.loginStarted = false;
+                                $rootScope.login();
+                                //loginService.login();
+                            }
+                        );
+                    } 
+                   
                     var success = /http:\/\/localhost(\/)?\?code=(.+)$/.exec(url);
                     var error = /\?error=(.+)$/.exec(url);
                     if (w && (success || error)) {
