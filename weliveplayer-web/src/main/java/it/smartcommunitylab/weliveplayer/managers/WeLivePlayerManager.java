@@ -273,24 +273,6 @@ public class WeLivePlayerManager {
 			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 
-		
-		List<Artifact> copy = new ArrayList<Artifact>(artifacts.size());
-
-		for (Artifact foo : artifacts) {
-			copy.add(foo);
-		}
-		
-		List<Artifact> paginatedList = new ArrayList<>();
-		// pagination.
-		if (copy != null && !copy.isEmpty() && (page * count) <= copy.size()) {
-			if (((page + 1) * count) <= copy.size()) {
-				paginatedList = copy.subList(page * count, (page + 1) * count);
-			} else {
-				paginatedList = copy.subList(page * count, copy.size());
-			}
-
-		}
-
 		/**
 		 * APP RECOMMENDATION.
 		 * 1. Check if coordinates arrived, Use it
@@ -299,7 +281,7 @@ public class WeLivePlayerManager {
 		 */
 		try {
 
-			if (!paginatedList.isEmpty()) {
+			if (!artifacts.isEmpty()) {
 
 				// requested coordinates.
 				if (lat != null && lon != null && !lat.isEmpty() && !lon.isEmpty()) {
@@ -345,41 +327,51 @@ public class WeLivePlayerManager {
 					String recommAPIUri = env.getProperty("welive.de.user.recomm.apps.uri") + "?radius="
 							+ env.getProperty("app.recommendation.radius") + "&lat=" + sX + "&lon=" + sY;
 					recommAPIUri = recommAPIUri.replace("{id}", userId);
-					
+
 					System.out.println("Recommendation-> " + recommAPIUri);
 
 					String response = weLivePlayerUtils.sendGET(recommAPIUri, "application/json", null, authHeader, -1);
-					
+
 					System.out.println(response);
-					
+
 					List<Integer> recommApps = mapper.readValue(response, List.class);
 					if (recommApps != null && !recommApps.isEmpty()) {
 						// map recommends apps to paginated list.
-						for (Integer recAppId : recommApps) {
-							for (Artifact artifact : paginatedList) {
-								if (Integer.valueOf(artifact.getId()).intValue() == recAppId) {
-									System.out.println("Artifact " + artifact.getId() + "recommended");
-									artifact.setRecommendation(true);
-									// log here.
-									weLivePlayerUtils.logPlayerAppRecommendation(userId, artifact.getId(), pilotId,
-											artifact.getName());
-								}
+						for (Artifact artifact : artifacts) {
+							if (recommApps.contains(Integer.valueOf(artifact.getId()))) {
+								System.out.println("Artifact " + artifact.getId() + " recommended");
+								artifact.setRecommendation(true);
+								// log here.
+								weLivePlayerUtils.logPlayerAppRecommendation(userId, artifact.getId(), pilotId,
+										artifact.getName());
+							} else {
+								artifact.setRecommendation(false);
 							}
 						}
+					} else {
+						artifacts.get(0).setRecommendation(true);
 					}
 				}
-//				else {
-//					paginatedList.get(0).setRecommendation(true);
-//				}
 			}
 
 		} catch (Exception e) {
 			logger.error("Error retrieving recommendations: " + e.getMessage());
-            // paginatedList.get(0).setRecommendation(true);
 			// throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 
-		System.out.println(paginatedList);
+		System.out.println(artifacts.toString());
+		
+		List<Artifact> paginatedList = new ArrayList<>();
+		// pagination.
+		if (artifacts != null && !artifacts.isEmpty() && (page * count) <= artifacts.size()) {
+			if (((page + 1) * count) <= artifacts.size()) {
+				paginatedList = artifacts.subList(page * count, (page + 1) * count);
+			} else {
+				paginatedList = artifacts.subList(page * count, artifacts.size());
+			}
+
+		}
+		
 		return paginatedList;
 
 	}

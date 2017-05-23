@@ -225,4 +225,11 @@ public class Artifact {
 		}
 
 	}
+
+	@Override
+	public String toString() {
+		return "Artifact [id=" + id + ", recommendation=" + recommendation + "]";
+	}
+	
+	
 }
