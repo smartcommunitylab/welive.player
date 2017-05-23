@@ -307,8 +307,13 @@ public class WeLivePlayerManager {
 						if (userProfile != null && userProfile.getLastKnownLocation() != null
 								&& userProfile.getLastKnownLocation().containsKey("lat")
 								&& userProfile.getLastKnownLocation().containsKey("lng")) {
-							sX = userProfile.getLastKnownLocation().get("lat");
-							sY = userProfile.getLastKnownLocation().get("lng");
+							double tempX = Double.valueOf(userProfile.getLastKnownLocation().get("lat"));
+							double tempY = Double.valueOf(userProfile.getLastKnownLocation().get("lng"));
+							if (tempX != 0 && tempY != 0) {
+								sX = userProfile.getLastKnownLocation().get("lat");
+								sY = userProfile.getLastKnownLocation().get("lng");
+							}
+							
 						}
 					} catch (WeLivePlayerCustomException wle) {
 						// else -> pilot coordinates.
