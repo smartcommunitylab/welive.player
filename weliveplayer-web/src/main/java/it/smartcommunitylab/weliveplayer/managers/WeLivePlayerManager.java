@@ -348,8 +348,13 @@ public class WeLivePlayerManager {
 								artifact.setRecommendation(false);
 							}
 						}
-					} else {
-						artifacts.get(0).setRecommendation(true);
+					} 
+					else {
+//						artifacts.get(0).setRecommendation(true);
+						for (int i = 0; i < artifacts.size(); i++) {
+							artifacts.get(i).setRecommendation(false);	
+						}
+						
 					}
 				}
 			}
