@@ -345,14 +345,20 @@ public class WeLivePlayerManager {
 					String recommAPIUri = env.getProperty("welive.de.user.recomm.apps.uri") + "?radius="
 							+ env.getProperty("app.recommendation.radius") + "&lat=" + sX + "&lon=" + sY;
 					recommAPIUri = recommAPIUri.replace("{id}", userId);
+					
+					System.out.println("Recommendation-> " + recommAPIUri);
 
 					String response = weLivePlayerUtils.sendGET(recommAPIUri, "application/json", null, authHeader, -1);
+					
+					System.out.println(response);
+					
 					List<Integer> recommApps = mapper.readValue(response, List.class);
 					if (recommApps != null && !recommApps.isEmpty()) {
 						// map recommends apps to paginated list.
 						for (Integer recAppId : recommApps) {
 							for (Artifact artifact : paginatedList) {
 								if (Integer.valueOf(artifact.getId()).intValue() == recAppId) {
+									System.out.println("Artifact " + artifact.getId() + "recommended");
 									artifact.setRecommendation(true);
 									// log here.
 									weLivePlayerUtils.logPlayerAppRecommendation(userId, artifact.getId(), pilotId,
@@ -361,17 +367,19 @@ public class WeLivePlayerManager {
 							}
 						}
 					}
-				} else {
-					paginatedList.get(0).setRecommendation(true);
 				}
+//				else {
+//					paginatedList.get(0).setRecommendation(true);
+//				}
 			}
 
 		} catch (Exception e) {
 			logger.error("Error retrieving recommendations: " + e.getMessage());
-			paginatedList.get(0).setRecommendation(true);
+            // paginatedList.get(0).setRecommendation(true);
 			// throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 
+		System.out.println(paginatedList);
 		return paginatedList;
 
 	}
