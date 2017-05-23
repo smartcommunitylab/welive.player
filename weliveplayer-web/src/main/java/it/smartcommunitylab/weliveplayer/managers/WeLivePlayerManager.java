@@ -273,13 +273,20 @@ public class WeLivePlayerManager {
 			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 
+		
+		List<Artifact> copy = new ArrayList<Artifact>(artifacts.size());
+
+		for (Artifact foo : artifacts) {
+			copy.add(foo);
+		}
+		
 		List<Artifact> paginatedList = new ArrayList<>();
 		// pagination.
-		if (artifacts != null && !artifacts.isEmpty() && (page * count) <= artifacts.size()) {
-			if (((page + 1) * count) <= artifacts.size()) {
-				paginatedList = artifacts.subList(page * count, (page + 1) * count);
+		if (copy != null && !copy.isEmpty() && (page * count) <= copy.size()) {
+			if (((page + 1) * count) <= copy.size()) {
+				paginatedList = copy.subList(page * count, (page + 1) * count);
 			} else {
-				paginatedList = artifacts.subList(page * count, artifacts.size());
+				paginatedList = copy.subList(page * count, copy.size());
 			}
 
 		}
