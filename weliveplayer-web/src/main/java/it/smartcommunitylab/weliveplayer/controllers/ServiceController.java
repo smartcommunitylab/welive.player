@@ -58,13 +58,16 @@ public class ServiceController {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/api/apps/{pilotId}/{appType}")
 	public @ResponseBody Response<List<Artifact>> getArtifacts(@PathVariable String pilotId,
-			@PathVariable String appType, @RequestParam(required = false) Integer start,
+			@PathVariable String appType,
+			@RequestParam(required = false) String lat,
+			@RequestParam(required = false) String lon,
+			@RequestParam(required = false) Integer start,
 			@RequestParam(required = false) Integer count, HttpServletRequest httpRequest)
 			throws WeLivePlayerCustomException {
 
 		String authHeader = httpRequest.getHeader("Authorization");
 
-		return new Response<List<Artifact>>(weLivePlayerManager.getArtifacts(authHeader, getUserId(authHeader), pilotId, appType,
+		return new Response<List<Artifact>>(weLivePlayerManager.getArtifacts(authHeader, getUserId(authHeader), pilotId, appType, lat, lon,
 				(start == null ? 0 : start), (count == null ? 20 : count)));
 
 	}

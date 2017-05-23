@@ -252,9 +252,11 @@ public class WeLivePlayerManager {
 		return artifacts;
 	}
 
-	public List<Artifact> getArtifacts(String authHeader, String userId, String pilotId, String appType, int page,
-			int count) throws WeLivePlayerCustomException {
+	public List<Artifact> getArtifacts(String authHeader, String userId, String pilotId, String appType, String lat,
+			String lon, int page, int count) throws WeLivePlayerCustomException {
 
+		double sX = -1,sY = -1;
+		
 		// log here.
 		weLivePlayerUtils.logPlayerAppsAccess(userId, pilotId);
 
@@ -282,28 +284,80 @@ public class WeLivePlayerManager {
 
 		}
 
-		// make first application recommended(to remove later).
-		if (!paginatedList.isEmpty()) {
-			// make call to user app recommendation api.
-			String recommAPIUri = env.getProperty("welive.de.user.recomm.apps.uri");
-			recommAPIUri = recommAPIUri.replace("{id}", userId);
-			try {
-				String response = weLivePlayerUtils.sendGET(recommAPIUri, "application/json", null, authHeader, -1);
-				List<?> recommApps = mapper.readValue(response, List.class);
-				if (recommApps != null && !recommApps.isEmpty()) {
-					// log here.
-					// weLivePlayerUtils.logPlayerAppRecommendation(userId, recommAppId, pilotId);
-					// map recommends apps to paginated list.
+		/**
+		 * APP RECOMMENDATION.
+		 * 1. Check if coordinates arrived, Use it
+		 * 2. Check if profile has last know location. Use it
+		 * 3. if 1,2 fails then take location from Pilot.
+		 */
+		try {
 
+			if (!paginatedList.isEmpty()) {
+
+				// requested coordinates.
+				if (lat != null && lon != null && !lat.isEmpty() && !lon.isEmpty()) {
+					sX = Double.parseDouble(lat);
+					sY = Double.parseDouble(lon);
+				}
+
+				// else -> user profile
+				if (sX == -1 && sY == -1) {
+					try {
+						Profile userProfile = getUserProfile(authHeader);
+						if (userProfile != null && userProfile.getLastKnownLocation() != null
+								&& userProfile.getLastKnownLocation().containsKey("lat")
+								&& userProfile.getLastKnownLocation().containsKey("lng")) {
+							sX = userProfile.getLastKnownLocation().get("lat");
+							sY = userProfile.getLastKnownLocation().get("lng");
+						}
+					} catch (WeLivePlayerCustomException wle) {
+						// else -> pilot coordinates.
+						String[] pilotCoordinates = env.getProperty(pilotId.toLowerCase()).split(",");
+						if (pilotCoordinates.length == 2) {
+							sX = Double.parseDouble(pilotCoordinates[0]);
+							sY = Double.parseDouble(pilotCoordinates[1]);
+						}
+					}
+				}
+
+				// else -> pilot coordinates.
+				if (sX == -1 && sY == -1) {
+					String[] pilotCoordinates = env.getProperty(pilotId.toLowerCase()).split(",");
+					if (pilotCoordinates.length == 2) {
+						sX = Double.parseDouble(pilotCoordinates[0]);
+						sY = Double.parseDouble(pilotCoordinates[1]);
+					}
+				}
+
+				if (sX > 0 && sY > 0) {
+					String recommAPIUri = env.getProperty("welive.de.user.recomm.apps.uri") + "?radius="
+							+ env.getProperty("app.recommendation.radius") + "&lat=" + sX + "&lon=" + sY;
+					recommAPIUri = recommAPIUri.replace("{id}", userId);
+
+					String response = weLivePlayerUtils.sendGET(recommAPIUri, "application/json", null, authHeader, -1);
+					List<Integer> recommApps = mapper.readValue(response, List.class);
+					if (recommApps != null && !recommApps.isEmpty()) {
+						// map recommends apps to paginated list.
+						for (Integer recAppId : recommApps) {
+							for (Artifact artifact : paginatedList) {
+								if (Integer.valueOf(artifact.getId()).intValue() == recAppId) {
+									artifact.setRecommendation(true);
+									// log here.
+									weLivePlayerUtils.logPlayerAppRecommendation(userId, artifact.getId(), pilotId,
+											artifact.getName());
+								}
+							}
+						}
+					}
 				} else {
 					paginatedList.get(0).setRecommendation(true);
 				}
-			} catch (Exception e) {
-				logger.error("Error retrieving recommendations: "+e.getMessage());
-				paginatedList.get(0).setRecommendation(true);
-				//throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 			}
 
+		} catch (Exception e) {
+			logger.error("Error retrieving recommendations: " + e.getMessage());
+			paginatedList.get(0).setRecommendation(true);
+			// throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 
 		return paginatedList;
