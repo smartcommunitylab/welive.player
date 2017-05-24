@@ -246,6 +246,7 @@ public class WeLivePlayerManager {
 					}
 				} else {
 					logger.error("WLP: Calling[" + url + "] " + response);
+					throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, response);
 				}
 			} else {
 				logger.info("WLP: Calling[" + url + "] " + response);
