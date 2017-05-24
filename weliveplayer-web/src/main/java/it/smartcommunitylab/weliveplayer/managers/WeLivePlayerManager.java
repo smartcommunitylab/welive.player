@@ -183,6 +183,7 @@ public class WeLivePlayerManager {
 		url = url.replace("{appType}", appType);// appType
 
 		try {
+			logger.info("WLP: Calling[" + url + "] ");
 			String response = weLivePlayerUtils.sendGET(url, "application/json", null, authHeader, -1);
 			if (response != null && !response.isEmpty()) {
 				JSONObject root = new JSONObject(response);
