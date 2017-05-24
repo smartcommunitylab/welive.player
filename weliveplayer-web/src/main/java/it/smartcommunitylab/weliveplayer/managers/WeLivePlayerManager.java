@@ -161,9 +161,11 @@ public class WeLivePlayerManager {
 					}
 				}
 
+			} else {
+				logger.info("WLP: Calling[" + url + "] " + response);
 			}
 		} catch (Exception e) {
-
+			logger.error("WLP: Calling[" + url + "] " + e.getMessage());
 			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 
@@ -242,10 +244,12 @@ public class WeLivePlayerManager {
 
 					}
 				}
+			} else {
+				logger.info("WLP: Calling[" + url + "] " + response);
 			}
 
 		} catch (Exception e) {
-
+			logger.error("WLP: Calling[" + url + "] " + e.getLocalizedMessage());
 			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 
@@ -255,8 +259,8 @@ public class WeLivePlayerManager {
 	public List<Artifact> getArtifacts(String authHeader, String userId, String pilotId, String appType, String lat,
 			String lon, int page, int count) throws WeLivePlayerCustomException {
 
-		double sX = -1,sY = -1;
-		
+		double sX = -1, sY = -1;
+
 		// log here.
 		weLivePlayerUtils.logPlayerAppsAccess(userId, pilotId);
 
@@ -270,14 +274,14 @@ public class WeLivePlayerManager {
 				artifacts = artifactsDataset.get(pilotId);
 			}
 		} catch (ExecutionException e) {
+			logger.error("WLP: Calling[GetArtifact] " + e.getMessage());
 			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 
 		/**
-		 * APP RECOMMENDATION.
-		 * 1. Check if coordinates arrived, Use it
-		 * 2. Check if profile has last know location. Use it
-		 * 3. if 1,2 fails then take location from Pilot.
+		 * APP RECOMMENDATION. 1. Check if coordinates arrived, Use it 2. Check
+		 * if profile has last know location. Use it 3. if 1,2 fails then take
+		 * location from Pilot.
 		 */
 		try {
 
@@ -302,10 +306,10 @@ public class WeLivePlayerManager {
 								sX = userProfile.getLastKnownLocation().get("lat");
 								sY = userProfile.getLastKnownLocation().get("lng");
 							}
-							
+
 						}
 					} catch (WeLivePlayerCustomException wle) {
-						logger.error("WLP:Problem retrieving CDV Profile- " +wle.getLocalizedMessage());
+						logger.error("WLP: Calling[getUserProfile] " + wle.getLocalizedMessage());
 						// else -> pilot coordinates.
 						String[] pilotCoordinates = env.getProperty(pilotId.toLowerCase()).split(",");
 						if (pilotCoordinates.length == 2) {
@@ -329,18 +333,18 @@ public class WeLivePlayerManager {
 							+ env.getProperty("app.recommendation.radius") + "&lat=" + sX + "&lon=" + sY;
 					recommAPIUri = recommAPIUri.replace("{id}", userId);
 
-					logger.info("WLP:Recommendation-> " + recommAPIUri);
+					logger.info("WLP: Calling[recommAPIUri]-> " + recommAPIUri);
 
 					String response = weLivePlayerUtils.sendGET(recommAPIUri, "application/json", null, authHeader, -1);
 
-					logger.info("WLP: " + response);
+					logger.info("WLP: [RecommendationResponse] " + response);
 
 					List<Integer> recommApps = mapper.readValue(response, List.class);
 					if (recommApps != null && !recommApps.isEmpty()) {
 						// map recommends apps to paginated list.
 						for (Artifact artifact : artifacts) {
 							if (recommApps.contains(Integer.valueOf(artifact.getId()))) {
-								System.out.println("Artifact " + artifact.getId() + " recommended");
+								logger.info("Artifact " + artifact.getId() + " recommended");
 								artifact.setRecommendation(true);
 								// log here.
 								weLivePlayerUtils.logPlayerAppRecommendation(userId, artifact.getId(), pilotId,
@@ -349,24 +353,21 @@ public class WeLivePlayerManager {
 								artifact.setRecommendation(false);
 							}
 						}
-					} 
-					else {
-//						artifacts.get(0).setRecommendation(true);
+					} else {
 						for (int i = 0; i < artifacts.size(); i++) {
-							artifacts.get(i).setRecommendation(false);	
+							artifacts.get(i).setRecommendation(false);
 						}
-						
+
 					}
 				}
 			}
 
 		} catch (Exception e) {
 			logger.error("WLP:Error retrieving recommendations: " + e.getMessage());
-			// throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 
 		logger.info(artifacts.toString());
-		
+
 		List<Artifact> paginatedList = new ArrayList<>();
 		// pagination.
 		if (artifacts != null && !artifacts.isEmpty() && (page * count) <= artifacts.size()) {
@@ -377,7 +378,7 @@ public class WeLivePlayerManager {
 			}
 
 		}
-		
+
 		return paginatedList;
 
 	}
@@ -396,6 +397,7 @@ public class WeLivePlayerManager {
 		try {
 			commentsList = appCommentsCache.get(artifactId);
 		} catch (ExecutionException e) {
+			logger.error("WLP: Calling[getArtifactComments] " + e.getMessage());
 			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 
@@ -466,25 +468,6 @@ public class WeLivePlayerManager {
 								profile.setZipCode(profileJson.getString("zipCode"));
 							if (profileJson.has("referredPilot") && !profileJson.isNull("referredPilot"))
 								profile.setReferredPilot(profileJson.getString("referredPilot"));
-							// if (profileJson.has("usedApps")
-							// &&
-							// !profileJson.get("usedApps").toString().equalsIgnoreCase("[]"))
-							// {
-							//
-							// JSONArray usedApps = (JSONArray)
-							// profileJson.get("usedApps");
-							//
-							// List<String> usedAppsSet = new
-							// ArrayList<String>();
-							//
-							// for (int i = 0; i < usedApps.length(); i++) {
-							// JSONObject usedApp = (JSONObject)
-							// usedApps.get(i);
-							// usedAppsSet.add(String.valueOf(usedApp.get("appName")));
-							// }
-							//
-							// profile.setUsedApps(usedAppsSet);
-							// }
 							if (profileJson.has("skills")
 									&& !profileJson.get("skills").toString().equalsIgnoreCase("[]")) {
 
@@ -505,34 +488,9 @@ public class WeLivePlayerManager {
 										mapper.readValue(profileJson.get("languages").toString(), List.class));
 								for (int i = 0; i < profile.getLanguages().size(); i++) {
 									String l = profile.getLanguages().get(i);
-									profile.getLanguages().set(i,StringUtils.capitalize(l));
+									profile.getLanguages().set(i, StringUtils.capitalize(l));
 								}
 							}
-							// if (profileJson.has("thirdParties")
-							// &&
-							// !profileJson.get("thirdParties").toString().equalsIgnoreCase("[]"))
-							// {
-							// profile.setThirdParties(
-							// mapper.readValue(profileJson.get("thirdParties").toString(),
-							// List.class));
-							// }
-							// if (profileJson.has("lastKnownLocation")
-							// &&
-							// !profileJson.get("lastKnownLocation").toString().equalsIgnoreCase("{}"))
-							// {
-							// profile.setLastKnownLocation(mapper
-							// .readValue(profileJson.get("lastKnownLocation").toString(),
-							// HashMap.class));
-							// }
-							// if (profileJson.has("profileData")
-							// &&
-							// !profileJson.get("profileData").toString().equalsIgnoreCase("{}"))
-							// {
-							// profile.setProfileData(
-							// mapper.readValue(profileJson.get("profileData").toString(),
-							// HashMap.class));
-							// }
-
 							// get user tags.
 							String userTagsUrl = env.getProperty("welive.cdv.getUserTags.uri");
 							userTagsUrl = userTagsUrl.replace("{id}", userId);
@@ -551,16 +509,21 @@ public class WeLivePlayerManager {
 
 						}
 
+					} else {
+						logger.info("WLP: Calling[" + url + "] " + response);
 					}
 
 				} else {
+					logger.error("WLP: Calling[" + aacUri + "] user not found");
 					throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
 							"user not found");
 				}
+			} else {
+				logger.info("WLP: Calling[" + aacUri + "] " + response);
 			}
 
 		} catch (Exception e) {
-
+			logger.error("WLP: Calling[getUserProfile] " + e.getMessage());
 			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 
@@ -587,13 +550,14 @@ public class WeLivePlayerManager {
 					userId = root.getString("userId");
 
 				} else {
+					logger.error("WLP: Calling[" + aacUri + "] user not found");
 					throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
 							"user not found");
 				}
 			}
 
 		} catch (Exception e) {
-
+			logger.error("WLP: Calling[" + aacUri + "] " + e.getMessage());
 			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 
@@ -604,6 +568,8 @@ public class WeLivePlayerManager {
 
 		Map<String, String> status = new HashMap<String, String>();
 
+		String url = env.getProperty("welive.cdv.updateUserprofile.uri");
+
 		try {
 
 			if (profile != null) {
@@ -611,9 +577,6 @@ public class WeLivePlayerManager {
 				// check if passed in token user has same id as the one in
 				// profile body.
 				if (profile.getCcUserID().equalsIgnoreCase(userId)) {
-
-					String url = env.getProperty("welive.cdv.updateUserprofile.uri");
-					// url = url.replace("{id}", userId);
 
 					String response = weLivePlayerUtils.sendPOST(url, null, "application/json", authHeader,
 							profile.updateProfileBody(), true);
@@ -641,6 +604,7 @@ public class WeLivePlayerManager {
 			}
 
 		} catch (Exception e) {
+			logger.error("WLP: Calling[" + url + "] " + e.getMessage());
 			status.put(WeLivePlayerUtils.ERROR_CODE, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
 			status.put(WeLivePlayerUtils.ERROR_MSG, e.getMessage());
 		}
