@@ -332,7 +332,7 @@ public class WeLivePlayerManager {
 					}
 				}
 
-				if (sX > 0 && sY > 0) {
+				if (sX != -1 && sY != -1) {
 					String recommAPIUri = env.getProperty("welive.de.user.recomm.apps.uri") + "?radius="
 							+ env.getProperty("app.recommendation.radius") + "&lat=" + sX + "&lon=" + sY;
 					recommAPIUri = recommAPIUri.replace("{id}", userId);
