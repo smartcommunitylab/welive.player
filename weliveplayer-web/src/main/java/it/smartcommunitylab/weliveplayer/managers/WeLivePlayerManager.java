@@ -244,6 +244,8 @@ public class WeLivePlayerManager {
 						artifacts.add(temp);
 
 					}
+				} else {
+					logger.error("WLP: Calling[" + url + "] " + response);
 				}
 			} else {
 				logger.info("WLP: Calling[" + url + "] " + response);
