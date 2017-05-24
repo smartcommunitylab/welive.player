@@ -305,6 +305,7 @@ public class WeLivePlayerManager {
 							
 						}
 					} catch (WeLivePlayerCustomException wle) {
+						logger.error("WLP:Problem retrieving CDV Profile- " +wle.getLocalizedMessage());
 						// else -> pilot coordinates.
 						String[] pilotCoordinates = env.getProperty(pilotId.toLowerCase()).split(",");
 						if (pilotCoordinates.length == 2) {
@@ -328,11 +329,11 @@ public class WeLivePlayerManager {
 							+ env.getProperty("app.recommendation.radius") + "&lat=" + sX + "&lon=" + sY;
 					recommAPIUri = recommAPIUri.replace("{id}", userId);
 
-					System.out.println("Recommendation-> " + recommAPIUri);
+					logger.info("WLP:Recommendation-> " + recommAPIUri);
 
 					String response = weLivePlayerUtils.sendGET(recommAPIUri, "application/json", null, authHeader, -1);
 
-					System.out.println(response);
+					logger.info("WLP: " + response);
 
 					List<Integer> recommApps = mapper.readValue(response, List.class);
 					if (recommApps != null && !recommApps.isEmpty()) {
@@ -360,11 +361,11 @@ public class WeLivePlayerManager {
 			}
 
 		} catch (Exception e) {
-			logger.error("Error retrieving recommendations: " + e.getMessage());
+			logger.error("WLP:Error retrieving recommendations: " + e.getMessage());
 			// throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 		}
 
-		System.out.println(artifacts.toString());
+		logger.info(artifacts.toString());
 		
 		List<Artifact> paginatedList = new ArrayList<>();
 		// pagination.
