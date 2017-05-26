@@ -93,10 +93,13 @@
                     }
                 }
                 , function(error) {
-                    Utils.toast($filter('translate')('lbl_error'));
-                    
+                    if (error) {
+                        Utils.toast(error);
+                    } else {
+                        Utils.toast($filter('translate')('lbl_error'));
+                    }
                 });
-
+            
             $scope.editProfile = function () {
                 $scope.cdvProfile = 'edit';
                 $scope.canRefresh = false;
@@ -150,13 +153,21 @@
                                 }
                             }
                             , function (error) {
-                                Utils.toast($filter('translate')('lbl_error'));
+                                if (error) {
+                                    Utils.toast(error);
+                                } else {
+                                    Utils.toast($filter('translate')('lbl_error'));
+                                }
                                 $scope.doRefresh();
                             });
                     }
                     , function(error) {
                         $scope.cdvProfile = 'exist';
-                        Utils.toast($filter('translate')('lbl_error'));
+                        if (error) {
+                             Utils.toast(error);
+                         } else {
+                             Utils.toast($filter('translate')('lbl_error'));
+                        }
                         $scope.doRefresh();
                     })
             }
@@ -213,6 +224,12 @@
                         }
                         , function (error) {
                             $scope.$broadcast('scroll.refreshComplete');
+                            if (error) {
+                                Utils.toast(error);
+                            } else {
+                                Utils.toast($filter('translate')('lbl_error'));
+                            }
+                            
                         });
                 }
                 else {

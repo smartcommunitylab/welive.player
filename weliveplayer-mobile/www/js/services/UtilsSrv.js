@@ -31,7 +31,7 @@ angular.module('weliveplayer.services.utils', [])
                 };
 
                 var creationError = function(error) {
-                    deferred.reject();
+                    deferred.reject(error);
                 };
 
                 var singlePromise = utilsService.fetchApps(element, opts).then(creationSuccess, creationError);
@@ -67,31 +67,28 @@ angular.module('weliveplayer.services.utils', [])
                 }
             } else {
                 LoginSrv.accessToken().then(
-                    function(token) {
+                    function (token) {
                         var url = Config.getWeLiveProxyUri() + "apps/" + region + "/" + Config.getDefaultAppType() + "?start=" + opts.start + "&count=" + opts.count;
                         $http.get(url, {
-                            timeout: 5000,
+                            timeout: 20000,
                             headers: {
                                 "Authorization": "Bearer " + token
                             }
                         })
-
-                            .then(function(response) {
-                                var apps = response.data.data;
-                                deferred.resolve(apps);
-
-                            }, function(error) {
-                                deferred.reject();
+                       .then(function (response) {
+                           var apps = response.data.data;
+                           deferred.resolve(apps);
+                            },
+                            function (error) {
+                                deferred.reject("error retrieving data.");
                             })
-
                     }
-                    , function(responseError) {
-                        deferred.reject();
+                    , function (responseError) {
+                        deferred.reject("error retrieving data.");
                     }
-
-                );
-
+                   );
             }
+            
             return deferred.promise;
         }
 

@@ -34,7 +34,12 @@ angular.module('weliveplayer.controllers.home', [])
 
         var creationError = function (error) {
             Utils.loaded();
-            Utils.toast($filter('translate')('lbl_error'));
+            if (error) {
+                Utils.toast(error);
+            } else {
+                Utils.toast($filter('translate')('lbl_error'));
+            }
+            
         };
 
         // before routine.
@@ -131,9 +136,13 @@ angular.module('weliveplayer.controllers.home', [])
                     $scope.$broadcast('scroll.refreshComplete');
                     $scope.items = Utils.orderByType($scope.sort.choice, apps);
                 }
-                , function error() {
+                , function error(error) {
                     $scope.$broadcast('scroll.refreshComplete');
-                    Utils.toast($filter('translate')('lbl_error'));
+                    if (error) {
+                        Utils.toast(error);    
+                    } else {
+                        Utils.toast($filter('translate')('lbl_error'));
+                    }
                 }
             )
         }

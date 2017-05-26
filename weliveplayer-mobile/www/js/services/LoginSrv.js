@@ -180,40 +180,40 @@ angular.module('weliveplayer.services.login', [])
         var logoutURL = "https://dev.welive.eu/aac/logout";
 
         $http.get(logoutURL)
-
-        .then(
+            .then(
             function (response) {
-
-                StorageSrv.reset().then(
-                    function (response) {
-                        try {
-                            cookieMaster.clear(
-                                function () {
-                                    console.log('Cookies have been cleared');
-                                    deferred.resolve(response.data);
-                                }
-                                , function () {
-                                    console.log('Cookies could not be cleared');
-                                    deferred.resolve(response.data);
-                                });
-                        } catch (e) {
-                            deferred.resolve(e);
-                        }
-
-
-                        deferred.resolve(true);
-                    }
-                    , function (responseError) {
-                        deferred.reject(responseError.data.error);
+                StorageSrv.reset().then(function (response) {
+                    // alert("Success logout from welive.");
+                    try {
+                        cookieMaster.clear(function (success) {
+                            console.log('Cookies have been cleared');
+                            // alert('Cookies have been cleared');
+                            window.plugins.googleplus.disconnect(function (msg) {
+                                console.log("Logout from GooglePlus");
+                                deferred.resolve(response);
+                            }, function (error) {
+                                deferred.resolve(error);
+                            });
+                        }, function (error) {
+                            // alert('Cookies could not be cleared');
+                            console.log('Cookies could not be cleared');
+                            deferred.reject(error);
+                        });
+                    } catch (e) {
+                        // alert('Cookies could not be cleared');
+                        deferred.resolve(e);
+                    }    
+                    
+                }, function (error) {
+                    // alert('Cookies could not be cleared');
+                    deferred.reject(error);
                     }
                 );
-
-            }
-            , function (responseError) {
+            }, function (responseError) {
+                // alert('Local Storage could not be cleared');
                 deferred.reject(responseError);
-            }
-        );
-
+            });
+        
         return deferred.promise;
     };
 
@@ -264,13 +264,13 @@ angular.module('weliveplayer.services.login', [])
                 if (response.data.userId) {
                     deferred.resolve(response.data);
                 } else {
-                    deferred.reject();
+                    deferred.reject("error retrieving profile.");
                 }
 
 
             }
             , function (responseError) {
-                deferred.reject(responseError);
+                deferred.reject("error retrieving profile.");
             }
         );
 
@@ -294,10 +294,10 @@ angular.module('weliveplayer.services.login', [])
                 if (response.data) {
                     deferred.resolve(response);
                 } else {
-                    deferred.reject();
+                    deferred.reject("error retrieving profile.");
                 }
             }, function (error) {
-                deferred.reject(error);
+                deferred.reject("error retrieving profile.");
             })
 
         } else {
@@ -314,15 +314,15 @@ angular.module('weliveplayer.services.login', [])
                         if (response.data) {
                             deferred.resolve(response);
                         } else {
-                            deferred.reject();
+                            deferred.reject("error retrieving profile.");
                         }
                     }, function (error) {
-                        deferred.reject(error);
+                        deferred.reject("error retrieving profile.");
                     })
 
                 }
                 , function (responseError) {
-                    deferred.reject();
+                    deferred.reject("error retrieving profile.");
                 }
 
             );
@@ -349,15 +349,15 @@ angular.module('weliveplayer.services.login', [])
                         if (response.data.errorCode === 0) {
                             deferred.resolve(response);
                         } else {
-                            deferred.reject();
+                            deferred.reject("error updating profile.");
                         }
                     }, function (error) {
-                        deferred.reject(error);
+                        deferred.reject("error updating profile.");
                     })
 
             }
             , function (responseError) {
-                deferred.reject();
+                deferred.reject("error updating profile.");
             }
 
         );
@@ -410,17 +410,17 @@ angular.module('weliveplayer.services.login', [])
 
                             deferred.resolve(access_token);
                         } else {
-                            deferred.reject(null);
+                            deferred.reject("error retrieving token");
                         }
                     }
                     , function (responseError) {
-                        deferred.reject(responseError);
+                        deferred.reject("error retrieving token");
                     }
                     );
 
             }
         } else {
-            deferred.reject();
+            deferred.reject("error retrieving token");
         }
 
         return deferred.promise;
