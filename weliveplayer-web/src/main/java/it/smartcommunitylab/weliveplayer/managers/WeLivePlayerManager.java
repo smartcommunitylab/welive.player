@@ -90,7 +90,7 @@ public class WeLivePlayerManager {
 	@PostConstruct
 	public void init() throws ExecutionException {
 		// create a cache for List<Artifact> based on city.
-		artifactsPSA = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES)
+		artifactsPSA = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<Artifact>>() {
 					@Override
 					public List<Artifact> load(String city) throws Exception {
@@ -99,7 +99,7 @@ public class WeLivePlayerManager {
 					}
 				});
 
-		artifactsBB = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES)
+		artifactsBB = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<Artifact>>() {
 					@Override
 					public List<Artifact> load(String city) throws Exception {
@@ -108,7 +108,7 @@ public class WeLivePlayerManager {
 					}
 				});
 
-		artifactsDataset = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES)
+		artifactsDataset = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<Artifact>>() {
 					@Override
 					public List<Artifact> load(String city) throws Exception {
@@ -117,7 +117,7 @@ public class WeLivePlayerManager {
 					}
 				});
 
-		appCommentsCache = CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.MINUTES)
+		appCommentsCache = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES)
 				.build(new CacheLoader<String, List<Comment>>() {
 
 					@Override
