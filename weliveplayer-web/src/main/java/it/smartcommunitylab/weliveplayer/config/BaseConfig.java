@@ -54,6 +54,7 @@ public class BaseConfig extends WebMvcConfigurerAdapter {
 		registry.addResourceHandler("/resources/*").addResourceLocations("/resources/");
 		registry.addResourceHandler("/css/**").addResourceLocations("/resources/css/");
 		registry.addResourceHandler("/fonts/**").addResourceLocations("/resources/fonts/");
+		registry.addResourceHandler("/img/**").addResourceLocations("/img/");
 		registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/");
 		registry.addResourceHandler("/lib/**").addResourceLocations("/resources/lib/");
 		registry.addResourceHandler("/templates/**").addResourceLocations("/resources/templates/");
