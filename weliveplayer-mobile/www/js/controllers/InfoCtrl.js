@@ -4,7 +4,7 @@ angular.module('weliveplayer.controllers.info', [])
         cordova.getAppVersion(function(version) {
             $scope.version = $filter('translate')('lbl_version') + " " + version;
         }, function(error) {
-            $scope.version = $filter('translate')('lbl_version') + "0.3.0";
+            $scope.version = $filter('translate')('lbl_version') + "0.3.1";
             }
         );
 

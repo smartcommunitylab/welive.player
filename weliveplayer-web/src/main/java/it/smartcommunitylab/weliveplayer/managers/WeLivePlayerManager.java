@@ -201,6 +201,8 @@ public class WeLivePlayerManager {
 								imageLink = env.getProperty("welive.server") + imageLink;
 							}
 							temp.setLinkImage(imageLink);
+						} else {
+							temp.setLinkImage(env.getProperty("welive.server") + "/weliveplayer/img/default.png");
 						}
 						temp.setName(artifact.getString("name"));
 						temp.setDescription(artifact.getString("description").replace("\\n", "<br />"));
