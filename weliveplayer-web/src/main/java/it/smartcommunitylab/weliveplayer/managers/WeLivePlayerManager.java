@@ -131,6 +131,7 @@ public class WeLivePlayerManager {
 	}
 
 	protected List<Comment> getComments(String artifactId) throws WeLivePlayerCustomException {
+		
 		List<Comment> commentsList = new ArrayList<Comment>();
 
 		String url = env.getProperty("welive.mkp.singleApp.uri");
@@ -173,6 +174,7 @@ public class WeLivePlayerManager {
 	}
 
 	private List<Artifact> getArtifacts(String pilotId, String appType) throws WeLivePlayerCustomException {
+		
 		List<Artifact> artifacts = new ArrayList<Artifact>();
 
 		String url = env.getProperty("welive.mkp.uri");
@@ -193,7 +195,8 @@ public class WeLivePlayerManager {
 						JSONObject artifact = artifactsArray.getJSONObject(i);
 						Artifact temp = new Artifact();
 						temp.setId(artifact.getString("artefactId"));
-
+						String appName = artifact.getString("name"); 
+						temp.setName(appName);
 						temp.setCity(pilotId);
 						String imageLink = artifact.getString("linkImage");
 						if (!imageLink.isEmpty()) {
@@ -201,10 +204,11 @@ public class WeLivePlayerManager {
 								imageLink = env.getProperty("welive.server") + imageLink;
 							}
 							temp.setLinkImage(imageLink);
+							logger.debug(appName + "- "  + imageLink);
 						} else {
 							temp.setLinkImage(env.getProperty("welive.server") + "/weliveplayer/img/default.png");
 						}
-						temp.setName(artifact.getString("name"));
+						
 						temp.setDescription(artifact.getString("description").replace("\\n", "<br />"));
 						temp.seteId(artifact.getString("eId"));
 
