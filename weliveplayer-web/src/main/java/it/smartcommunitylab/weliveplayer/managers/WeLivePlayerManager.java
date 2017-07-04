@@ -87,7 +87,7 @@ public class WeLivePlayerManager {
 	 * 
 	 * @throws ExecutionException
 	 */
-	@PostConstruct
+//	@PostConstruct
 	public void init() throws ExecutionException {
 		// create a cache for List<Artifact> based on city.
 		artifactsPSA = CacheBuilder.newBuilder().expireAfterWrite(10, TimeUnit.MINUTES)
@@ -275,18 +275,21 @@ public class WeLivePlayerManager {
 		weLivePlayerUtils.logPlayerAppsAccess(userId, pilotId);
 
 		List<Artifact> artifacts = new ArrayList<>();
-		try {
+//		try {
 			if (appType.equalsIgnoreCase(PSA)) {
-				artifacts = artifactsPSA.get(pilotId);
+				artifacts = getArtifacts(pilotId, PSA);
+//				artifacts = artifactsPSA.get(pilotId);
 			} else if (appType.equalsIgnoreCase(BB)) {
-				artifacts = artifactsBB.get(pilotId);
+//				artifacts = artifactsBB.get(pilotId);
+				artifacts = getArtifacts(pilotId, BB);
 			} else if (appType.equalsIgnoreCase(DS)) {
-				artifacts = artifactsDataset.get(pilotId);
+//				artifacts = artifactsDataset.get(pilotId);
+				artifacts = getArtifacts(pilotId, DS);
 			}
-		} catch (ExecutionException e) {
-			logger.error("WLP: Calling[GetArtifact] " + e.getMessage());
-			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
-		}
+//		} catch (ExecutionException e) {
+//			logger.error("WLP: Calling[GetArtifact] " + e.getMessage());
+//			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+//		}
 
 		/**
 		 * APP RECOMMENDATION. 1. Check if coordinates arrived, Use it 2. Check
