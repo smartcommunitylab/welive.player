@@ -405,14 +405,7 @@ public class WeLivePlayerManager {
 			weLivePlayerUtils.logAppInfoAccess(userId, artifactId, appInfo[0], appInfo[1]);
 		}
 
-		List<Comment> commentsList = new ArrayList<Comment>();
-
-		try {
-			commentsList = appCommentsCache.get(artifactId);
-		} catch (ExecutionException e) {
-			logger.error("WLP: Calling[getArtifactComments] " + e.getMessage());
-			throw new WeLivePlayerCustomException(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
-		}
+		List<Comment> commentsList = getComments(artifactId);
 
 		List<Comment> paginatedList = new ArrayList<>();
 		// pagination.
