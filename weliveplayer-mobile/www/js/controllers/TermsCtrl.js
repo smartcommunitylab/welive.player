@@ -1,5 +1,5 @@
 angular.module('weliveplayer.controllers.terms', [])
-    .controller('TermsCtrl', function ($scope, $ionicHistory, $state, $filter, $ionicPopup, $ionicSideMenuDelegate, $timeout, $translate, StorageSrv, Config) {
+    .controller('TermsCtrl', function ($scope, $ionicHistory, $state, $filter, $ionicPopup, $ionicSideMenuDelegate, $timeout, $translate, $window, StorageSrv, Config) {
 
         // before routine.
         $scope.$on('$ionicView.enter', function () {
@@ -7,6 +7,10 @@ angular.module('weliveplayer.controllers.terms', [])
             $scope.accepting = !StorageSrv.get("isPrivacyAccepted");
         });
 
+        $scope.link = function () {
+            var url = 'https://secure.edps.europa.eu/EDPSWEB/webdav/site/mySite/shared/Documents/EDPS/DataProt/Legislation/Dir_1995_46_EN.pdf';
+            window.open(url, '_blank', '');
+        }
         //go to the app's first page
         $scope.goToProposalsList = function () {
             // Avoid back button in the next view.
