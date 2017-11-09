@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="18" id="it.smartcommunitylab.weliveplayer" version="0.3.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="198" id="it.smartcommunitylab.weliveplayer" version="0.3.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>WeLive Player</name>
     <description>An Ionic Framework and Cordova project.</description>
     <author email="info@smartcommunitylab.it" href="http://smartcommunitylab.it">SmartCommunity	Lab</author>
