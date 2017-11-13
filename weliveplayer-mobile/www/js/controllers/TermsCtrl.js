@@ -9,7 +9,7 @@ angular.module('weliveplayer.controllers.terms', [])
 
         $scope.link = function () {
             var url = 'https://secure.edps.europa.eu/EDPSWEB/webdav/site/mySite/shared/Documents/EDPS/DataProt/Legislation/Dir_1995_46_EN.pdf';
-            window.open(url, '_blank', '');
+            window.open(url, '_system', 'location=yes');
         }
         //go to the app's first page
         $scope.goToProposalsList = function () {
